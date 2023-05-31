@@ -37,7 +37,7 @@ fun DotoringTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composab
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = DotoringTypography,
         shapes = Shapes,
         content = content
     )
