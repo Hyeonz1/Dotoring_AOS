@@ -2,6 +2,7 @@
     <string name="app_name">Dotoring</string>
 
     <string name="register_title"><font color="#8BD045" >멘토</font>로 회원 가입</string>
+
     <string name="register1_q1">Q. <font color="#8BD045">멘토</font>님은 어떤 분 인가요?</string>
     <string name="register1_im">A. 저는</string>
     <string name="register1_company">소속</string>
@@ -11,5 +12,11 @@
     <string name="register1_work">직무</string>
     <string name="register1_">입니다.</string>
     <string name="register1_next">다음</string>
+
+    <string name="register2_q2">Q. <font color="#8BD045">증빙서류</font>를 업로드 해 주세요.</string>
+    <string name="register2_upload_certificate_of_employment"><b><u>재직증명서</u></b> 업로드하기</string>
+    <string name="register2_upload_certificate_of_graduate"><b><u>졸업증명서</u></b> 업로드하기</string>
+    <string name="register2_upload_choice">(선택)</string>
+    <string name="register2_upload_extension">PDF 또는 이미지</string>
 
 </resources>
