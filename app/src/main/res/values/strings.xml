@@ -16,7 +16,7 @@
     <string name="register2_q2">Q. <font color="#8BD045">증빙서류</font>를 업로드 해 주세요.</string>
     <string name="register2_upload_certificate_of_employment">A. <b><u>재직증명서</u></b> 업로드하기</string>
     <string name="register2_upload_certificate_of_graduate">A. <b><u>졸업증명서</u></b> 업로드하기</string>
-    <string name="register2_upload_choice">(선택)</string>
+    <string name="register2_upload_choice"><font color="#979797">(선택)</font></string>
     <string name="register2_upload_extension">PDF 또는 이미지</string>
 
 </resources>
