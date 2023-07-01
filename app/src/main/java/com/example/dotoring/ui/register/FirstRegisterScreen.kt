@@ -2,6 +2,7 @@ package com.example.dotoring.ui.register
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -54,11 +55,13 @@ private fun ProgressBar(page: Int) {
 @Composable
 private fun Introduce() {
     Row() {
+
         Text(
             text = stringResource(id = R.string.register1_im),
-            modifier = Modifier.padding(top = 10.dp))
+            modifier = Modifier.padding(top = 10.dp),
+            fontSize = 18.sp)
 
-        Spacer(modifier = Modifier.size(10.dp))
+        Spacer(modifier = Modifier.size(25.dp))
 
         Column() {
 
@@ -92,7 +95,7 @@ private fun IntroduceContent(textField: String, text: String ) {
         TextField(
             value = "",
             onValueChange = {},
-            modifier = Modifier.size(width = 110.dp, height = 40.dp),
+            modifier = Modifier.size(width = 120.dp, height = 40.dp),
             placeholder = { Text(
                                 text = textField,
                                 fontSize = 13.sp,
@@ -106,16 +109,16 @@ private fun IntroduceContent(textField: String, text: String ) {
                 placeholderColor = colorResource(id = R.color.grey_500)
 
             ))
-        Spacer(modifier = Modifier.size(10.dp))
-        Text(text = text)
+        Spacer(modifier = Modifier.size(25.dp))
+        Text(
+            text = text,
+            fontSize = 18.sp)
     }
 }
 
 @Composable
 fun CommonRegisterScreen(screenNumber: Int, question: Int) {
-    Row(
-        modifier = Modifier.padding(start = 50.dp, top = 50.dp, end = 50.dp)
-    ) {
+    Row() {
         Column() {
             HtmlText(
                 textId = R.string.register_title,
@@ -127,23 +130,23 @@ fun CommonRegisterScreen(screenNumber: Int, question: Int) {
                 textId = question,
                 fontSize = 18.sp)
         }
-        Spacer(modifier = Modifier.fillMaxWidth())
     }
 }
 
 @Composable
 fun RegisterScreenFirst() {
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.padding(start = 50.dp, top = 50.dp)
     ) {
         CommonRegisterScreen(1, R.string.register1_q1)
 
         Spacer(modifier = Modifier.size(100.dp))
 
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column() {
             Introduce()
+
             Spacer(modifier = Modifier.size(100.dp))
+
             Button(
                 onClick = { /*TODO*/ },
                 modifier = Modifier.size(width = 300.dp, height = 45.dp),
