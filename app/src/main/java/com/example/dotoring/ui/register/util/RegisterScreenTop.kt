@@ -5,12 +5,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dotoring.R
+import com.example.dotoring.ui.theme.DotoringTheme
 import de.charlex.compose.HtmlText
 
 @Composable
@@ -37,7 +42,7 @@ private fun ProgressBar(page: Int) {
 }
 
 @Composable
-fun RegisterScreenTop(screenNumber: Int, question: Int) {
+fun RegisterScreenTop(screenNumber: Int, question: Int, guide: String = "") {
     Row() {
         Column() {
             HtmlText(
@@ -46,9 +51,34 @@ fun RegisterScreenTop(screenNumber: Int, question: Int) {
             Spacer(modifier = Modifier.size(80.dp))
             ProgressBar(screenNumber)
             Spacer(modifier = Modifier.size(10.dp))
-            HtmlText(
-                textId = question,
-                fontSize = 18.sp)
+            Row() {
+                Text(
+                    text = stringResource(id = R.string.register_Q)
+                )
+
+                Column() {
+                    HtmlText(
+                        textId = question,
+                        fontSize = 18.sp
+                    )
+
+                    Spacer(modifier = Modifier.size(5.dp))
+
+                    Text(
+                        text = guide,
+                        color = colorResource(id = R.color.grey_500),
+                        fontSize = 10.sp
+                    )
+                }
+            }
         }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun RegisterScreenPreview() {
+    DotoringTheme {
+        RegisterScreenTop(3, R.string.register3_q3, stringResource(R.string.register3_guide))
     }
 }
