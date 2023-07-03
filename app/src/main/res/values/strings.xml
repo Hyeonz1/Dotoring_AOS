@@ -20,6 +20,7 @@
     <string name="register2_upload_extension">PDF 또는 이미지</string>
 
     <string name="register3_q3">Q. <font color="#8BD045">어떻게</font> 불러드릴까요?</string>
+    <string name="register3_A">A.</string>
     <string name="register3_input">닉네임</string>
     <string name="register3_nickname_duplication_check">중복 확인</string>
     <string name="register3_error">이미 있는 닉네임입니다.</string>
