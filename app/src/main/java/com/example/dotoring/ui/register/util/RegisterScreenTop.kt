@@ -49,26 +49,29 @@ fun RegisterScreenTop(screenNumber: Int, question: Int, guide: String = "") {
                 textId = R.string.register_title,
                 fontSize = 15.sp)
             Spacer(modifier = Modifier.size(80.dp))
-            ProgressBar(screenNumber)
-            Spacer(modifier = Modifier.size(10.dp))
-            Row() {
-                Text(
-                    text = stringResource(id = R.string.register_Q)
-                )
 
-                Column() {
-                    HtmlText(
-                        textId = question,
-                        fontSize = 18.sp
-                    )
-
-                    Spacer(modifier = Modifier.size(5.dp))
-
+            Column() {
+                ProgressBar(screenNumber)
+                Spacer(modifier = Modifier.size(10.dp))
+                Row() {
                     Text(
-                        text = guide,
-                        color = colorResource(id = R.color.grey_500),
-                        fontSize = 10.sp
+                        text = stringResource(id = R.string.register_Q)
                     )
+
+                    Column() {
+                        HtmlText(
+                            textId = question,
+                            fontSize = 18.sp
+                        )
+
+                        Spacer(modifier = Modifier.size(5.dp))
+
+                        Text(
+                            text = guide,
+                            color = colorResource(id = R.color.grey_500),
+                            fontSize = 10.sp
+                        )
+                    }
                 }
             }
         }
