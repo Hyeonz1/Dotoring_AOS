@@ -4,7 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,6 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dotoring.R
+import com.example.dotoring.ui.register.util.RegisterScreenNextButton
+import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
 import de.charlex.compose.HtmlText
 
@@ -44,9 +45,10 @@ private fun ImageUploadButton() {
 @Composable
 fun SecondRegisterScreen() {
     Column(
-        modifier = Modifier.padding(start = 50.dp, top = 50.dp)
+        modifier = Modifier.padding(top = 50.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CommonRegisterScreen(screenNumber = 2, question = R.string.register2_q2)
+        RegisterScreenTop(screenNumber = 2, question = R.string.register2_q2)
 
         Spacer(modifier = Modifier.padding(35.dp))
 
@@ -78,19 +80,7 @@ fun SecondRegisterScreen() {
 
             Spacer(modifier = Modifier.size(60.dp))
 
-            Button(
-                onClick = { /*TODO*/ },
-                modifier = Modifier.size(width = 300.dp, height = 45.dp),
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = colorResource(id = R.color.white),
-                    backgroundColor = colorResource(id = R.color.green),
-                    disabledBackgroundColor = colorResource(id = R.color.grey_200),
-                    disabledContentColor = colorResource(id = R.color.grey_500)
-                ),
-                shape = RoundedCornerShape(30.dp)
-            ) {
-                Text(text = stringResource(id = R.string.register1_next))
-            }
+            RegisterScreenNextButton()
         }
     }
 }
