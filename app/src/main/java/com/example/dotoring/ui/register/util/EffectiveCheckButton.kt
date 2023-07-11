@@ -23,8 +23,8 @@ fun EffectiveCheckButton(onClick: () -> Unit = {}, text: String = "Sample Text")
     OutlinedButton(
         onClick = onClick,
         modifier = Modifier
-            .size(width = 60.dp, height = 25.dp)
-            .padding(3.dp),
+            .size(width = 60.dp, height = 28.dp)
+            .padding(4.8.dp),
         elevation = ButtonDefaults.elevation(
             defaultElevation = 0.dp,
             pressedElevation = 0.dp,
@@ -33,7 +33,7 @@ fun EffectiveCheckButton(onClick: () -> Unit = {}, text: String = "Sample Text")
             focusedElevation = 0.dp,
         ),
         shape = RoundedCornerShape(30.dp),
-        border = BorderStroke(width = 1.dp, color = colorResource(id = R.color.black)),
+        border = BorderStroke(width = 0.5.dp, color = colorResource(id = R.color.black)),
         colors = ButtonDefaults.buttonColors(
             contentColor = colorResource(id = R.color.black),
             backgroundColor = colorResource(id = R.color.white),
@@ -49,7 +49,7 @@ fun EffectiveCheckButton(onClick: () -> Unit = {}, text: String = "Sample Text")
     ){
             Text(
                 text = text,
-                fontSize = 10.sp,
+                fontSize = 9.sp,
                 letterSpacing = (-1).sp)
     }
 }
