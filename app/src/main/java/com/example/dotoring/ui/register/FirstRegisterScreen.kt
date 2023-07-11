@@ -93,7 +93,8 @@ private fun IntroduceContent(textField: String, text: String ) {
 @Composable
 fun RegisterScreenFirst() {
     Column(
-        modifier = Modifier.padding(start = 50.dp, top = 50.dp)
+        modifier = Modifier.padding(top = 50.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         RegisterScreenTop(1, R.string.register1_q1)
 
