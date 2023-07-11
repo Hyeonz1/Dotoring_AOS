@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,40 +43,42 @@ private fun ProgressBar(page: Int) {
 
 @Composable
 fun RegisterScreenTop(screenNumber: Int, question: Int, guide: String = "") {
-    Surface() {
-        Row() {
-            Column() {
-                HtmlText(
-                    textId = R.string.register_title,
-                    fontSize = 15.sp)
-                Spacer(modifier = Modifier.size(80.dp))
+    Row() {
+        Spacer(modifier = Modifier.weight(1f))
 
-                Column() {
-                    ProgressBar(screenNumber)
-                    Spacer(modifier = Modifier.size(10.dp))
-                    Row() {
-                        Text(
-                            text = stringResource(id = R.string.register_Q)
+        Column() {
+            HtmlText(
+                textId = R.string.register_title,
+                fontSize = 15.sp)
+            Spacer(modifier = Modifier.size(80.dp))
+
+            Column() {
+                ProgressBar(screenNumber)
+                Spacer(modifier = Modifier.size(10.dp))
+                Row() {
+                    Text(
+                        text = stringResource(id = R.string.register_Q)
+                    )
+
+                    Column() {
+                        HtmlText(
+                            textId = question,
+                            fontSize = 18.sp
                         )
 
-                        Column() {
-                            HtmlText(
-                                textId = question,
-                                fontSize = 18.sp
-                            )
+                        Spacer(modifier = Modifier.size(5.dp))
 
-                            Spacer(modifier = Modifier.size(5.dp))
-
-                            Text(
-                                text = guide,
-                                color = colorResource(id = R.color.grey_500),
-                                fontSize = 10.sp
-                            )
-                        }
+                        Text(
+                            text = guide,
+                            color = colorResource(id = R.color.grey_500),
+                            fontSize = 10.sp
+                        )
                     }
                 }
             }
         }
+
+        Spacer(modifier = Modifier.weight(3f))
     }
 }
 
