@@ -19,4 +19,10 @@
     <string name="register2_upload_choice"><font color="#979797">(선택)</font></string>
     <string name="register2_upload_extension">PDF 또는 이미지</string>
 
+    <string name="university">전남대학교 학생들이</string>
+    <string name="mentor_login1">선배님을 기다리고 있어요</string>
+    <string name="login_text">회원서비스 이용을 위해 로그인해 주세요.</string>
+    <string name="login">로그인</string>
+    <string name="password">비밀번호</string>
+
 </resources>
