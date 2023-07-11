@@ -45,7 +45,8 @@ private fun ImageUploadButton() {
 @Composable
 fun SecondRegisterScreen() {
     Column(
-        modifier = Modifier.padding(start = 50.dp, top = 50.dp)
+        modifier = Modifier.padding(top = 50.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         RegisterScreenTop(screenNumber = 2, question = R.string.register2_q2)
 
