@@ -58,7 +58,7 @@ fun ThirdRegisterScreen() {
                 ) {
                     CommonTextField(value = nicknameInput, onValueChange = { nicknameInput = it })
 
-                    EffectiveCheckButton(text = stringResource(id = R.string.register3_nickname_duplication_check))
+                    EffectiveCheckButton(text = stringResource(id = R.string.register_nickname_duplication_check))
                 }
 
                 Spacer(modifier = Modifier.size(28.dp))
