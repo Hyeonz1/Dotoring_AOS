@@ -28,6 +28,10 @@
     <string name="register3_error">이미 있는 닉네임입니다.</string>
     <string name="register3_">라고 불러 주세요.</string>
 
+    <string name="register4_q4"><font color="#8BD045">멘토</font> 님을 더 알고 싶어요!</string>
+    <string name="register4_guide">10자 이상, 100자 이하로 작성</string>
+    <string name="register4_placeholder">멘토 분야에 대해 소개해 주세요.</string>
+
     <string name="university">전남대학교 학생들이</string>
     <string name="mentor_login1">선배님을 기다리고 있어요</string>
     <string name="login_text">회원서비스 이용을 위해 로그인해 주세요.</string>
