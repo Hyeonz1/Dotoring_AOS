@@ -4,6 +4,7 @@
     <string name="register_title"><font color="#8BD045" >멘토</font>로 회원 가입</string>
     <string name="register_Q">Q. </string>
     <string name="register_A">A. </string>
+    <string name="register_nickname_duplication_check">중복 확인</string>
 
     <string name="register1_q1"><font color="#8BD045">멘토</font>님은 어떤 분 인가요?</string>
     <string name="register1_im">저는</string>
@@ -23,8 +24,7 @@
 
     <string name="register3_q3"><font color="#8BD045">어떻게</font> 불러드릴까요?</string>
     <string name="register3_guide">3자 이상, 8자 이하, 숫자 1개 이상 입력하여 작성</string>
-    <string name="register3_input">닉네임</string>
-    <string name="register3_nickname_duplication_check">중복 확인</string>
+    <string name="register3_input">닉네임</string>경
     <string name="register3_error">이미 있는 닉네임입니다.</string>
     <string name="register3_">라고 불러 주세요.</string>
 
@@ -34,7 +34,26 @@
 
     <string name="register5_q5">이 점은 <font color="#8BD045">유의</font>해 주세요.</string>
     <string name="register5_guide">동의하지 않으시면 가입이 제한됩니다.</string>
-    <string name="register5_accept">동의합니다.</string>
+    <string name="register5_accept">A. 동의합니다.</string>
+
+    <string name="register6_q6">Q. <font color="#8BD045">계정</font> 설정만 하면 끝이에요!</string>
+    <string name="register6_set_ID">A. 아이디 설정하기</string>
+    <string name="register6_ID">아이디</string>
+    <string name="register6_ID_guide">영문과 숫자를 포함한 8&#8211;12글자로 표기해주세요.</string>
+    <string name="register6_ID_error">이미 있는 아이디입니다.</string>
+    <string name="register6_set_pass_word">A. 비밀번호 설정하기</string>
+    <string name="register6_pass_word">비밀번호</string>
+    <string name="register6_pass_word_guide">영문과 숫자, 특수문자를 포함한 7&#8211;12글자로 표기해주세요.</string>
+    <string name="register6_pass_word_check">다시 한 번 써 주세요.</string>
+    <string name="register6_pass_word_error">입력한 비밀번호와 달라요.</string>
+    <string name="register6_set_email">A. 이메일 등록하기</string>
+    <string name="register6_email">이메일</string>
+    <string name="register6_send_verification_code">인증 코드 발송</string>
+    <string name="register6_verification_code_time">%1$s</string>
+    <string name="register6_verification_code">인증 코드</string>
+    <string name="register6_verify">인증하기</string>
+    <string name="register6_verify_error">인증 코드가 달라요.</string>
+    <string name="register6_to_login_page">로그인하러 가기</string>
 
     <string name="university">전남대학교 학생들이</string>
     <string name="mentor_login1">선배님을 기다리고 있어요</string>
