@@ -21,6 +21,7 @@ import com.example.dotoring.ui.theme.DotoringTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.Dp
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -28,7 +29,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 fun CommonTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    placeholder: String = "",
+    width: Dp = 250.dp
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     // parameters below will be passed to BasicTextField for correct behavior of the text field,
@@ -43,6 +46,7 @@ fun CommonTextField(
         backgroundColor = colorResource(id = R.color.white),
         placeholderColor = colorResource(id = R.color.grey_500)
     )
+
     BasicTextField(
         value = value,
         onValueChange = onValueChange,
@@ -57,7 +61,7 @@ fun CommonTextField(
                 interactionSource = interactionSource,
                 colors = colors
             )
-            .size(width = 230.dp, height = 25.dp),
+            .size(width = width, height = 25.dp),
         visualTransformation = VisualTransformation.None,
         // internal implementation of the BasicTextField will dispatch focus events
         interactionSource = interactionSource,
@@ -73,7 +77,7 @@ fun CommonTextField(
             // same interaction source as the one passed to BasicTextField to read focus state
             // for text field styling
             placeholder = {Text(
-                text = "닉네임",
+                text = placeholder,
                 fontSize = 13.sp) },
             colors = colors,
             interactionSource = interactionSource,
@@ -92,6 +96,6 @@ private fun RegisterScreenPreview() {
 
     DotoringTheme {
 
-        CommonTextField(nicknameInput, { nicknameInput = it } )
+        CommonTextField( nicknameInput, { nicknameInput = it } )
     }
 }

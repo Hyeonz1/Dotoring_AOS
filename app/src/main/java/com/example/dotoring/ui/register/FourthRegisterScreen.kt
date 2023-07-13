@@ -43,7 +43,7 @@ fun FourthRegisterScreen() {
 
             Spacer(modifier = Modifier.size(10.dp))
 
-            CommonTextField(value = "", onValueChange = {})
+            RoundedCornerTextField(value = "", onValueChange = {})
 
             Spacer(modifier = Modifier.weight(5f))
 
@@ -56,7 +56,7 @@ fun FourthRegisterScreen() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CommonTextField(
+fun RoundedCornerTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier

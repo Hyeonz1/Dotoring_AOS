@@ -11,4 +11,6 @@
     <color name="green">#8BD045</color>
     <color name="grey_200">#EBEBEB</color>
     <color name="grey_500">#979797</color>
+    <color name="grey_700">#838383</color>
+    <color name="error">#FF7B7B</color>
 </resources>
