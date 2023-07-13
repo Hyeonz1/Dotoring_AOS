@@ -49,7 +49,7 @@ fun EffectiveCheckButton(onClick: () -> Unit = {}, text: String = "Sample Text")
     ){
             Text(
                 text = text,
-                fontSize = 9.sp,
+                fontSize = 8.sp,
                 letterSpacing = (-1).sp)
     }
 }
