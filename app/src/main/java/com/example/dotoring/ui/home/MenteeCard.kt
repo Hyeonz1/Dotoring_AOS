@@ -20,12 +20,18 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dotoring.R
+import com.example.dotoring.ui.home.data.Mentee
 import com.example.dotoring.ui.theme.DotoringTheme
 
 @Composable
-fun MentoCard() {
+fun MenteeCard(mentee: Mentee) {
     val space: Dp = 5.dp
     val spaceBetweenPhotoAndDescription: Dp = 10.dp
+
+    val nickname = mentee.nickname
+    val profileImage = mentee.profileImage
+    val major = mentee.major
+    val introduction = mentee.introduction
 
     Card(
         modifier = Modifier
@@ -51,7 +57,7 @@ fun MentoCard() {
 
             Column() {
                 Text(
-                    text = "닉네임",
+                    text = nickname,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     color = colorResource(id = R.color.navy)
@@ -60,7 +66,7 @@ fun MentoCard() {
                 Spacer(modifier = Modifier.size(space))
 
                 Text(
-                    text = "학과",
+                    text = major,
                     fontSize = 10.sp
                 )
 
@@ -74,7 +80,7 @@ fun MentoCard() {
                 Spacer(modifier = Modifier.size(space))
 
                 Text(
-                    text = "한 줄 소개",
+                    text = introduction,
                     fontSize = 10.sp
                 )
             }
@@ -89,6 +95,6 @@ fun MentoCard() {
 @Composable
 private fun HomePreview() {
     DotoringTheme {
-        MentoCard()
+        MenteeCard((Mentee(nickname = "현지", profileImage = "ㅋㅋ", major = "소프트웨어공학과", introduction = "하이")))
     }
 }
