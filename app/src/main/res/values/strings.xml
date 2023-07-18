@@ -68,4 +68,9 @@
     <string name="home_major">학과</string>
     <string name="home_job_objectives">희망 직무</string>
 
+    <string name="bottom_sheet_major_filter">학과 필터</string>
+    <string name="bottom_sheet_job_objectives_filter">희망 직무 필터</string>
+    <string name="bottom_sheet_reset">초기화</string>
+
+
 </resources>
