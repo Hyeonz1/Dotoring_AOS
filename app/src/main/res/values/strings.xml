@@ -61,4 +61,16 @@
     <string name="login">로그인</string>
     <string name="password">비밀번호</string>
 
+    <string name="main_dotoring">도토링</string>
+
+    <string name="home_for_u">%1$s 님을 위한</string>
+    <string name="home_recommended_mentee">추천멘티</string>
+    <string name="home_major">학과</string>
+    <string name="home_job_objectives">희망 직무</string>
+
+    <string name="bottom_sheet_major_filter">학과 필터</string>
+    <string name="bottom_sheet_job_objectives_filter">희망 직무 필터</string>
+    <string name="bottom_sheet_reset">초기화</string>
+
+
 </resources>
