@@ -61,4 +61,7 @@
     <string name="login">로그인</string>
     <string name="password">비밀번호</string>
 
+    <string name="message_info">쪽지 내용은 300자 이내로 제한됩니다.</string>
+    <string name="message_textField">내용을 입력해 주세요.</string>
+
 </resources>
