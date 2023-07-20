@@ -1,20 +1,31 @@
 <resources>
     <string name="app_name">Dotoring</string>
 
+    <string name="branch_logo_our_mentoring">우리들의 멘토링</string>
+    <string name="branch_logo_app_name">도토링</string>
+    <string name="branch_helper">후배들에게 도움을 주는</string>
+    <string name="branch_mento">멘토</string>
+    <string name="branch_wanna_grow_up">더 성장하고 싶은</string>
+    <string name="branch_mentee">멘티</string>
+
     <string name="register_title"><font color="#8BD045" >멘토</font>로 회원 가입</string>
     <string name="register_Q">Q. </string>
     <string name="register_A">A. </string>
     <string name="register_nickname_duplication_check">중복 확인</string>
 
     <string name="register1_q1"><font color="#8BD045">멘토</font>님은 어떤 분 인가요?</string>
-    <string name="register1_im">저는</string>
+    <string name="register1_im">A. 저는</string>
     <string name="register1_company">소속</string>
     <string name="register1_belong_to">에 소속된</string>
     <string name="register1_years">연차</string>
     <string name="register1_years_of_experience">년 차</string>
     <string name="register1_work">직무</string>
     <string name="register1_">입니다.</string>
+    <string name="register1_majored">저는 대학교에서</string>
+    <string name="register1_major">학과</string>
+    <string name="register1_go">를 다녔어요.</string>
     <string name="register1_next">다음</string>
+
 
     <string name="register2_q2"><font color="#8BD045">증빙서류</font>를 업로드 해 주세요.</string>
     <string name="register2_upload_certificate_of_employment"><b><u>재직증명서</u></b> 업로드하기</string>
