@@ -9,6 +9,7 @@ import com.example.dotoring.dto.register.loginIdCertificationResponse
 import com.example.dotoring.dto.register.nicknameCertificationRequest
 import com.example.dotoring.dto.register.nicknameCertificationResponse
 import com.example.dotoring.dto.register.registerRequest
+import com.example.dotoring.dto.register.registerResponse
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.JavaNetCookieJar
@@ -68,7 +69,7 @@ interface DotoringAPIService {
     @POST("api/mento")
     fun requestRegister(
         @Body requestRegisterRequest: registerRequest
-    ): Call<emailCertificationResponse>
+    ): Call<registerResponse>
 }
 
 
