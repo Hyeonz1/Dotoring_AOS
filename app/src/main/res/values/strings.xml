@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Dotoring</string>
 
+    <string name="branch_logo_our_mentoring">우리들의 멘토링</string>
+    <string name="branch_logo_app_name">도토링</string>
+    <string name="branch_helper">후배들에게 도움을 주는</string>
+    <string name="branch_mento">멘토</string>
+    <string name="branch_wanna_grow_up">더 성장하고 싶은</string>
+    <string name="branch_mentee">멘티</string>
+
     <string name="register_title"><font color="#8BD045" >멘토</font>로 회원 가입</string>
     <string name="register_Q">Q. </string>
     <string name="register_A">A. </string>
