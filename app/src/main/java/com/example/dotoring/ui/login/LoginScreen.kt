@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +16,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
 import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
@@ -26,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,8 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.TintableBackgroundView
 import com.example.dotoring.R
-
-class LoginScreen {
+import com.example.dotoring.ui.theme.DotoringTheme
     @Composable
     fun LoginScreen(
     ) {
@@ -47,12 +48,6 @@ class LoginScreen {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            Image(
-                painter=painterResource(R.drawable.dotoring_background_logo),
-                contentDescription=null,
-                Modifier
-                    .fillMaxSize()
-            )
             Column(
                 modifier = Modifier
                     .background(Color.White)
@@ -119,12 +114,13 @@ class LoginScreen {
                 }
             }
         }
+        Image(
+            painter=painterResource(R.drawable.dotoring_background_logo),
+            contentDescription=null,
+            contentScale = ContentScale.Fit)
+
+
     }
-
-@Composable
-fun LoginValueErrMsg(){
-
-}
 
 
 @Composable
@@ -151,6 +147,7 @@ fun LoginField(textField: String) {
 @Preview(showSystemUi = true)
 @Composable
 fun LoginPreview() {
+    DotoringTheme {
     LoginScreen()
 }
 }
