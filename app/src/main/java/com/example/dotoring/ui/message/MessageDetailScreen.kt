@@ -124,7 +124,7 @@ fun MessageDetailScreen() {
                     }
                     Column(Modifier.background(Gray)) {
                         val scrollState = rememberLazyListState()
-                        LazyColumn(state = scrollState) {
+                        LazyColumn(state = scrollState, reverseLayout = true) {
                             items(3) {
                                 //id가 멘토면 MentoChatBox, 멘티면 MentiChatBox로 만들어지게끔 구현
                                 MentiChatBox("안녕! 나는 수미야\n하이\n ㅎㅎ")
@@ -190,7 +190,7 @@ fun MessageField(textField: String) {
                 focusedIndicatorColor = Gray,
                 unfocusedIndicatorColor = Gray,
                 backgroundColor = Gray,
-                placeholderColor = Gray
+                placeholderColor = Color.Black
             ))
         Button(modifier = Modifier
             .padding(10.dp)
