@@ -1,5 +1,7 @@
 package com.example.dotoring.ui.message
 
+import android.graphics.Paint.Align
+import android.text.Layout
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -32,6 +34,8 @@ import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Bottom
+import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -55,7 +59,7 @@ import com.example.dotoring.ui.theme.Gray
 import com.example.dotoring.ui.theme.Green
 import com.example.dotoring.ui.theme.Navy
 import kotlinx.coroutines.launch
-
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -147,14 +151,15 @@ fun MessageDetailScreen() {
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 35.dp)
+                        .padding(top = 35.dp, start = 25.dp, end = 25.dp)
                         .align(Alignment.TopCenter)
                         .background(Color.White),
                     shape = RoundedCornerShape(35.dp),
                 ) {
                     MessageField(textField = stringResource(id = R.string.message_textField))
-
                 }
+
+
                 Box(
                     modifier = Modifier
                         .align(BottomEnd)
@@ -182,11 +187,26 @@ fun MessageField(textField: String) {
                 textAlign = TextAlign.Left) },
             colors = TextFieldDefaults.textFieldColors(
                 textColor = colorResource(id = R.color.black),
-                focusedIndicatorColor = colorResource(id = R.color.black),
+                focusedIndicatorColor = Gray,
                 unfocusedIndicatorColor = Gray,
                 backgroundColor = Gray,
-                placeholderColor = colorResource(id = R.color.black)
+                placeholderColor = Gray
             ))
+        Button(modifier = Modifier
+            .padding(10.dp)
+            .width(40.dp)
+            .height(40.dp)
+            .align(End)
+            , shape = RoundedCornerShape(30.dp),
+            onClick = { /*TODO*/ }) {
+            Image(
+                painter = painterResource(R.drawable.send_active),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+        }
 
     }
 }
