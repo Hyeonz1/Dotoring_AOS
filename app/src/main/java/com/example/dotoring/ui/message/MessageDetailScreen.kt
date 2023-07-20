@@ -40,6 +40,7 @@ import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.End
+import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -65,7 +66,6 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MessageDetailScreen() {
-    val scope = rememberCoroutineScope()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
 
     BackdropScaffold(
@@ -146,12 +146,19 @@ fun MessageDetailScreen() {
             Box(modifier = Modifier
                 .background(Color.White)
                 .fillMaxSize()
-                .padding(vertical = 45.dp, horizontal = 0.dp)) {
-                Text(modifier = Modifier.align(Alignment.TopCenter), color = Color.Gray, text = stringResource(id = R.string.message_info ), fontSize = 12.sp)
+                .padding(top=15.dp, bottom = 45.dp)) {
+                Surface(modifier = Modifier
+                    .width(100.dp)
+                    .height(5.dp)
+                    .align(TopCenter), shape = RoundedCornerShape(40.dp),
+                    color = Color.Gray){}
+                Text(modifier = Modifier
+                    .padding(top = 30.dp)
+                    .align(Alignment.TopCenter), color = Color.Gray, text = stringResource(id = R.string.message_info ), fontSize = 12.sp)
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 35.dp, start = 25.dp, end = 25.dp)
+                        .padding(top = 50.dp, start = 25.dp, end = 25.dp)
                         .align(Alignment.TopCenter)
                         .background(Color.White),
                     shape = RoundedCornerShape(35.dp),
@@ -169,7 +176,8 @@ fun MessageDetailScreen() {
             }
 
 
-        })
+        }
+    )
 }
 
 
