@@ -2,7 +2,10 @@ package com.example.dotoring.ui.register
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,36 +14,50 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TextFieldDefaults.indicatorLine
+import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dotoring.R
 import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
 import com.example.dotoring.ui.theme.DotoringTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import com.example.dotoring.util.FilterBottomSheet
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun Introduce() {
-    var companyInput by remember { mutableStateOf("") }
-    var yearInput by remember { mutableStateOf("") }
-    var jobInput by remember { mutableStateOf("") }
-    var majorInput by remember { mutableStateOf("") }
+private fun Introduce( registerViewModel: RegisterViewModel = viewModel() ) {
+    val registerUiState by registerViewModel.uiState.collectAsState()
+    val context = LocalContext.current
+
+    val focusManager = LocalFocusManager.current
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -57,28 +74,40 @@ private fun Introduce() {
             Column() {
                 Column() {
                     IntroduceContent(
-                        value = companyInput,
-                        onValueChange = { companyInput = it },
+                        value = registerUiState.company,
+                        onValueChange = { registerViewModel.updateUserCompany(it) },
                         placeholder = stringResource(id = R.string.register1_company),
-                        text = stringResource(R.string.register1_belong_to)
+                        text = stringResource(R.string.register1_belong_to),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(
+                            FocusDirection.Next)}),
+                        readOnly = false
                     )
 
                     Spacer(modifier = Modifier.size(10.dp))
 
                     IntroduceContent(
-                        value = yearInput,
-                        onValueChange = { yearInput = it },
+                        value = registerUiState.careerLevel,
+                        onValueChange = { registerViewModel.updateUserCareer(it) },
                         placeholder = stringResource(id = R.string.register1_years),
-                        text = stringResource(R.string.register1_years_of_experience)
+                        text = stringResource(R.string.register1_years_of_experience),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(
+                            FocusDirection.Next) }),
+                        readOnly = false
                     )
 
                     Spacer(modifier = Modifier.size(10.dp))
 
                     IntroduceContent(
-                        value = jobInput,
-                        onValueChange = { jobInput = it },
+                        value = registerUiState.job,
+                        onValueChange = { registerViewModel.updateUserJob(it)},
                         placeholder = stringResource(id = R.string.register1_work),
-                        text = stringResource(R.string.register1_)
+                        text = stringResource(R.string.register1_),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(
+                            FocusDirection.Next) }),
+                        readOnly = false
                     )
                 }
 
@@ -94,10 +123,15 @@ private fun Introduce() {
                     Spacer(modifier = Modifier.size(10.dp))
 
                     IntroduceContent(
-                        value = majorInput,
-                        onValueChange = { majorInput = it },
+                        value = registerUiState.major,
+                        onValueChange = {  registerViewModel.updateUserMajor(it)},
                         placeholder = stringResource(id = R.string.register1_major),
-                        text = stringResource(id = R.string.register1_go)
+                        text = stringResource(id = R.string.register1_go),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(
+                            onDone = { registerViewModel.enableNextButton()
+                                focusManager.clearFocus()}),
+                        readOnly = false,
                     )
                 }
             }
@@ -107,7 +141,15 @@ private fun Introduce() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun IntroduceContent(value: String, onValueChange: (String) -> Unit, placeholder: String, text: String ) {
+private fun IntroduceContent(
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    text: String,
+    keyboardActions: KeyboardActions,
+    keyboardOptions: KeyboardOptions,
+    readOnly: Boolean,
+    ) {
     val interactionSource = remember { MutableInteractionSource() }
 
     val colors = TextFieldDefaults.textFieldColors(
@@ -138,7 +180,10 @@ private fun IntroduceContent(value: String, onValueChange: (String) -> Unit, pla
             visualTransformation = VisualTransformation.None,
             interactionSource = interactionSource,
             enabled = true,
-            singleLine = true
+            singleLine = true,
+            keyboardActions = keyboardActions,
+            keyboardOptions = keyboardOptions,
+            readOnly = readOnly
         ) {
             TextFieldDefaults.TextFieldDecorationBox(
                 value = value,
@@ -164,36 +209,44 @@ private fun IntroduceContent(value: String, onValueChange: (String) -> Unit, pla
         }
 
         Spacer(modifier = Modifier.size(25.dp))
+
         Text(
             text = text,
             fontSize = 18.sp)
     }
 }
 
-
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun RegisterScreenFirst() {
-    Column(
-        modifier = Modifier
-            .padding(top = 50.dp)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        RegisterScreenTop(1, R.string.register1_q1)
+fun RegisterScreenFirst(registerViewModel: RegisterViewModel = viewModel() ) {
 
-        Spacer(modifier = Modifier.size(100.dp))
+    val firstNextBtnState = registerViewModel.firstBtnState
 
+    FilterBottomSheet(backLayerContent = {
         Column(
+            modifier = Modifier
+                .padding(top = 50.dp)
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Introduce()
+            RegisterScreenTop(1, R.string.register1_q1)
 
             Spacer(modifier = Modifier.size(100.dp))
 
-            RegisterScreenNextButton()
-        }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Introduce(
+                    registerViewModel
+                )
 
-    }
+                Spacer(modifier = Modifier.size(100.dp))
+
+                RegisterScreenNextButton(onClick = {}, enabled = firstNextBtnState)
+            }
+
+        }
+    }, text = "직무 필터 선택")
     // HtmlText(textId = R.string.register_title)
 }
 
