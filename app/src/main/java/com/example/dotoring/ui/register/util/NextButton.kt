@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.example.dotoring.R
 
 @Composable
-fun RegisterScreenNextButton(onClick: ()->Unit = {}) {
+fun RegisterScreenNextButton(onClick: ()->Unit = {}, enabled: Boolean = false) {
     Button(
         onClick = onClick,
         modifier = Modifier.size(width = 300.dp, height = 45.dp),
@@ -23,7 +23,8 @@ fun RegisterScreenNextButton(onClick: ()->Unit = {}) {
             disabledBackgroundColor = colorResource(id = R.color.grey_200),
             disabledContentColor = colorResource(id = R.color.grey_500)
         ),
-        shape = RoundedCornerShape(30.dp)
+        shape = RoundedCornerShape(30.dp),
+        enabled = enabled
     ) {
         Text(text = stringResource(id = R.string.register1_next))
     }
