@@ -1,4 +1,4 @@
-package com.example.dotoring.ui.register
+package com.example.dotoring.ui.register.sixth
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -105,7 +106,8 @@ fun SixthRegisterScreen() {
                 value = passWordInput,
                 onValueChange = { passWordInput = it },
                 placeholder = stringResource(id = R.string.register6_pass_word),
-                width = width
+                width = width,
+                imeAction = ImeAction.Next
             )
 
             Column() {
@@ -116,7 +118,8 @@ fun SixthRegisterScreen() {
                         value = passWordVerificationInput,
                         onValueChange = { passWordVerificationInput = it },
                         placeholder = stringResource(id = R.string.register6_pass_word_check),
-                        width = width
+                        width = width,
+                        imeAction = ImeAction.Next
                     )
 
                     Checkbox(
@@ -226,7 +229,8 @@ private fun TextFieldWithEffectiveCheckButton(value: String, onValueChange: (Str
             value = value,
             onValueChange = onValueChange,
             placeholder = placeholder,
-            width = width
+            width = width,
+            imeAction = ImeAction.Next
         )
 
         EffectiveCheckButton(text = btnText)

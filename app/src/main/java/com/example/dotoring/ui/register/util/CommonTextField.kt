@@ -4,6 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActionScope
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
@@ -20,6 +23,7 @@ import com.example.dotoring.R
 import com.example.dotoring.ui.theme.DotoringTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 
@@ -31,7 +35,10 @@ fun CommonTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = "",
-    width: Dp = 250.dp
+    width: Dp = 250.dp,
+    imeAction: ImeAction,
+    onDone: (KeyboardActionScope.() -> Unit)? = null,
+    onNext: (KeyboardActionScope.() -> Unit)? = null
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     // parameters below will be passed to BasicTextField for correct behavior of the text field,
@@ -66,7 +73,12 @@ fun CommonTextField(
         // internal implementation of the BasicTextField will dispatch focus events
         interactionSource = interactionSource,
         enabled = enabled,
-        singleLine = singleLine
+        singleLine = singleLine,
+        keyboardOptions = KeyboardOptions(imeAction = imeAction),
+        keyboardActions = KeyboardActions(
+            onNext = onNext,
+            onDone = onDone
+        )
     ) {
         TextFieldDefaults.TextFieldDecorationBox(
             value = value,
@@ -96,6 +108,6 @@ private fun RegisterScreenPreview() {
 
     DotoringTheme {
 
-        CommonTextField( nicknameInput, { nicknameInput = it } )
+        CommonTextField( nicknameInput, { nicknameInput = it }, imeAction = ImeAction.Done )
     }
 }
