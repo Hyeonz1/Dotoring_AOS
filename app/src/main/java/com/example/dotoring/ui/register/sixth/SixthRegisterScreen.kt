@@ -1,4 +1,4 @@
-package com.example.dotoring.ui.register
+package com.example.dotoring.ui.register.sixth
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -6,25 +6,30 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dotoring.R
 import com.example.dotoring.ui.register.util.CommonTextField
 import com.example.dotoring.ui.register.util.EffectiveCheckButton
@@ -32,14 +37,9 @@ import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
 
 @Composable
-fun SixthRegisterScreen() {
-    var idInput by remember { mutableStateOf("") }
-    var passWordInput by remember { mutableStateOf("") }
-    var passWordVerificationInput by remember { mutableStateOf("") }
-    var emailInput by remember { mutableStateOf("") }
-    var verificationCode by remember { mutableStateOf("") }
-
-    val checkedState = remember { mutableStateOf(true) }
+fun SixthRegisterScreen( registerSixthViewModel: RegisterSixthViewModel = viewModel() ) {
+    val registerSixthUiState by registerSixthViewModel.uiState.collectAsState()
+    val focusManager = LocalFocusManager.current
 
     val width: Dp = 310.dp
 
@@ -65,11 +65,14 @@ fun SixthRegisterScreen() {
             Column() {
 
                 TextFieldWithEffectiveCheckButton(
-                    value = idInput,
-                    onValueChange = {idInput = it},
+                    value = registerSixthUiState.memberId,
+                    onValueChange = { registerSixthViewModel.updateUserId(it) },
                     placeholder = stringResource(id = R.string.register6_ID),
                     btnText = stringResource(R.string.register_nickname_duplication_check),
-                    width = width
+                    width = width,
+                    onClick = {
+                        registerSixthViewModel.toggleErrorTextColor() },
+                    onNext = { focusManager.moveFocus(FocusDirection.Next)}
                 )
 
                 Text(
@@ -80,12 +83,11 @@ fun SixthRegisterScreen() {
                     fontSize = 10.sp
                 )
 
-
                 Text(
                     text = stringResource(id = R.string.register6_ID_error),
                     modifier = Modifier
                         .padding(start = 2.dp, top = 3.dp),
-                    color = colorResource(id = R.color.error),
+                    color = registerSixthUiState.idErrorTextColor,
                     fontSize = 10.sp
                 )
             }
@@ -102,10 +104,13 @@ fun SixthRegisterScreen() {
             Spacer(modifier = Modifier.size(spaceBetweenTitleAndContent))
 
             CommonTextField(
-                value = passWordInput,
-                onValueChange = { passWordInput = it },
+                value = registerSixthUiState.password,
+                onValueChange = { registerSixthViewModel.updateUserPassword(it) },
                 placeholder = stringResource(id = R.string.register6_pass_word),
-                width = width
+                width = width,
+                imeAction = ImeAction.Next,
+                onNext = { focusManager.moveFocus(FocusDirection.Next)},
+                visualTransformation = PasswordVisualTransformation()
             )
 
             Column() {
@@ -113,20 +118,30 @@ fun SixthRegisterScreen() {
                     contentAlignment = Alignment.CenterEnd
                 ) {
                     CommonTextField(
-                        value = passWordVerificationInput,
-                        onValueChange = { passWordVerificationInput = it },
+                        value = registerSixthUiState.passwordCertification,
+                        onValueChange = { registerSixthViewModel.updatePasswordCertification(it) },
                         placeholder = stringResource(id = R.string.register6_pass_word_check),
-                        width = width
+                        width = width,
+                        imeAction = ImeAction.Next,
+                        onNext = { registerSixthViewModel.passwordErrorCheck()
+                            focusManager.moveFocus(FocusDirection.Next)},
+                        modifier = Modifier.onFocusChanged {
+                            if( it.isCaptured ) {
+                                registerSixthViewModel.passwordErrorCheck()
+                            } },
+                        visualTransformation = PasswordVisualTransformation()
                     )
 
                     Checkbox(
-                        checked = checkedState.value,
-                        onCheckedChange = { checkedState.value = it },
+                        checked = registerSixthUiState.passwordCertified,
+                        onCheckedChange = { },
                         colors = CheckboxDefaults.colors(
                             checkedColor = colorResource(id = R.color.green),
                             uncheckedColor = colorResource(id = R.color.grey_500),
-                            checkmarkColor = Color(0xffffffff)
-                        )
+                            checkmarkColor = Color(0xffffffff),
+                            disabledColor = colorResource(id = R.color.green)
+                        ),
+                        enabled = false
                     )
                 }
 
@@ -134,7 +149,7 @@ fun SixthRegisterScreen() {
                     text = stringResource(id = R.string.register6_pass_word_error),
                     modifier = Modifier
                         .padding(start = 2.dp, top = 3.dp),
-                    color = colorResource(id = R.color.error),
+                    color = registerSixthUiState.passwordErrorTextColor,
                     fontSize = 10.sp
                 )
             }
@@ -156,35 +171,43 @@ fun SixthRegisterScreen() {
             ) {
 
                 TextFieldWithEffectiveCheckButton(
-                    value = emailInput,
-                    onValueChange = { emailInput = it },
+                    value = registerSixthUiState.email,
+                    onValueChange = { registerSixthViewModel.updateEmail(it) },
                     placeholder = stringResource(id = R.string.register6_email),
                     btnText = stringResource(R.string.register6_send_verification_code),
-                    width = width
+                    width = width,
+                    onClick = {/*ToDo*/
+                        registerSixthViewModel.startTimer()}, //countdown & 코드 발송
+                    onNext = {focusManager.moveFocus(FocusDirection.Next)}
                 )
 
                 Text(
-                    text = stringResource(id = R.string.register6_verification_code_time),
+                    text = registerSixthUiState.certificationPeriod,
                     modifier = Modifier
-                        .padding(end = 2.dp, top = 3.dp),
+                        .padding(end = 15.dp, top = 3.dp),
                     color = colorResource(id = R.color.error),
                     fontSize = 10.sp
                 )
 
                 Column() {
                     TextFieldWithEffectiveCheckButton(
-                        value = verificationCode,
-                        onValueChange = { verificationCode = it },
+                        value = registerSixthUiState.validationCode,
+                        onValueChange = { registerSixthViewModel.updateValidationCode(it) },
                         placeholder = stringResource(id = R.string.register6_verification_code),
                         btnText = stringResource(R.string.register6_verify),
-                        width = width
+                        width = width,
+                        onClick = {/*ToDo*/}, //코드 인증
+                        onDone = { focusManager.clearFocus()
+                                 registerSixthViewModel.updateBtnState()
+                                 registerSixthViewModel.toggleEmailErrorTextColor() },
+                        imeAction = ImeAction.Done
                     )
 
                     Text(
                         text = stringResource(id = R.string.register6_verify_error),
                         modifier = Modifier
                             .padding(start = 2.dp, top = 3.dp),
-                        color = colorResource(id = R.color.error),
+                        color = registerSixthUiState.emailErrorTextColor,
                         fontSize = 10.sp
                     )
                 }
@@ -193,14 +216,14 @@ fun SixthRegisterScreen() {
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Register6ScreenNextButton()
+        Register6ScreenNextButton(onClick = {/*ToDo*/}, enabled = registerSixthUiState.btnState)
 
         Spacer(modifier = Modifier.weight(0.8f))
     }
 }
 
 @Composable
-private fun Register6ScreenNextButton(onClick: ()->Unit = {}) {
+private fun Register6ScreenNextButton(onClick: ()->Unit = {}, enabled: Boolean = false) {
     Button(
         onClick = onClick,
         modifier = Modifier.size(width = 300.dp, height = 45.dp),
@@ -210,14 +233,15 @@ private fun Register6ScreenNextButton(onClick: ()->Unit = {}) {
             disabledBackgroundColor = colorResource(id = R.color.grey_200),
             disabledContentColor = colorResource(id = R.color.grey_500)
         ),
-        shape = RoundedCornerShape(30.dp)
+        shape = RoundedCornerShape(30.dp),
+        enabled = enabled
     ) {
         Text(text = stringResource(id = R.string.register6_to_login_page))
     }
 }
 
 @Composable
-private fun TextFieldWithEffectiveCheckButton(value: String, onValueChange: (String) -> Unit, placeholder: String, btnText: String, width: Dp) {
+private fun TextFieldWithEffectiveCheckButton(value: String, onValueChange: (String) -> Unit, placeholder: String, btnText: String, width: Dp, onClick: () -> Unit = {}, onNext: (KeyboardActionScope.() -> Unit)? = {}, onDone: (KeyboardActionScope.() -> Unit)? = {}, imeAction: ImeAction = ImeAction.Next ) {
     Box(
         modifier = Modifier,
         contentAlignment = Alignment.CenterEnd
@@ -226,10 +250,13 @@ private fun TextFieldWithEffectiveCheckButton(value: String, onValueChange: (Str
             value = value,
             onValueChange = onValueChange,
             placeholder = placeholder,
-            width = width
+            width = width,
+            imeAction = imeAction,
+            onNext = onNext,
+            onDone = onDone
         )
 
-        EffectiveCheckButton(text = btnText)
+        EffectiveCheckButton(onClick = onClick, text = btnText)
     }
 }
 

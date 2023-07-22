@@ -1,4 +1,4 @@
-package com.example.dotoring.ui.register
+package com.example.dotoring.ui.register.second
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
