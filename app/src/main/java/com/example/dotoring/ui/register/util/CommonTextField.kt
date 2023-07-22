@@ -38,7 +38,8 @@ fun CommonTextField(
     width: Dp = 250.dp,
     imeAction: ImeAction,
     onDone: (KeyboardActionScope.() -> Unit)? = null,
-    onNext: (KeyboardActionScope.() -> Unit)? = null
+    onNext: (KeyboardActionScope.() -> Unit)? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     // parameters below will be passed to BasicTextField for correct behavior of the text field,
@@ -69,7 +70,7 @@ fun CommonTextField(
                 colors = colors
             )
             .size(width = width, height = 25.dp),
-        visualTransformation = VisualTransformation.None,
+        visualTransformation = visualTransformation,
         // internal implementation of the BasicTextField will dispatch focus events
         interactionSource = interactionSource,
         enabled = enabled,
@@ -82,7 +83,7 @@ fun CommonTextField(
     ) {
         TextFieldDefaults.TextFieldDecorationBox(
             value = value,
-            visualTransformation = VisualTransformation.None,
+            visualTransformation = visualTransformation,
             innerTextField = it,
             singleLine = singleLine,
             enabled = enabled,
