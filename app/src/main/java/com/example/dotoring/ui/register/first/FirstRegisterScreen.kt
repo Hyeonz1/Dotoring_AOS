@@ -1,11 +1,8 @@
-package com.example.dotoring.ui.register
+package com.example.dotoring.ui.register.first
 
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,14 +13,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TextFieldDefaults.indicatorLine
-import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -43,9 +37,7 @@ import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
 import com.example.dotoring.ui.theme.DotoringTheme
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import com.example.dotoring.util.FilterBottomSheet
@@ -53,8 +45,8 @@ import com.example.dotoring.util.FilterBottomSheet
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun Introduce( registerViewModel: RegisterViewModel = viewModel() ) {
-    val registerUiState by registerViewModel.uiState.collectAsState()
+private fun Introduce( registerFirstViewModel: RegisterFirstViewModel = viewModel() ) {
+    val registerFirstUiState by registerFirstViewModel.uiState.collectAsState()
     val context = LocalContext.current
 
     val focusManager = LocalFocusManager.current
@@ -74,8 +66,8 @@ private fun Introduce( registerViewModel: RegisterViewModel = viewModel() ) {
             Column() {
                 Column() {
                     IntroduceContent(
-                        value = registerUiState.company,
-                        onValueChange = { registerViewModel.updateUserCompany(it) },
+                        value = registerFirstUiState.company,
+                        onValueChange = { registerFirstViewModel.updateUserCompany(it) },
                         placeholder = stringResource(id = R.string.register1_company),
                         text = stringResource(R.string.register1_belong_to),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -87,8 +79,8 @@ private fun Introduce( registerViewModel: RegisterViewModel = viewModel() ) {
                     Spacer(modifier = Modifier.size(10.dp))
 
                     IntroduceContent(
-                        value = registerUiState.careerLevel,
-                        onValueChange = { registerViewModel.updateUserCareer(it) },
+                        value = registerFirstUiState.careerLevel,
+                        onValueChange = { registerFirstViewModel.updateUserCareer(it) },
                         placeholder = stringResource(id = R.string.register1_years),
                         text = stringResource(R.string.register1_years_of_experience),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
@@ -100,8 +92,8 @@ private fun Introduce( registerViewModel: RegisterViewModel = viewModel() ) {
                     Spacer(modifier = Modifier.size(10.dp))
 
                     IntroduceContent(
-                        value = registerUiState.job,
-                        onValueChange = { registerViewModel.updateUserJob(it)},
+                        value = registerFirstUiState.job,
+                        onValueChange = { registerFirstViewModel.updateUserJob(it)},
                         placeholder = stringResource(id = R.string.register1_work),
                         text = stringResource(R.string.register1_),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -123,13 +115,13 @@ private fun Introduce( registerViewModel: RegisterViewModel = viewModel() ) {
                     Spacer(modifier = Modifier.size(10.dp))
 
                     IntroduceContent(
-                        value = registerUiState.major,
-                        onValueChange = {  registerViewModel.updateUserMajor(it)},
+                        value = registerFirstUiState.major,
+                        onValueChange = {  registerFirstViewModel.updateUserMajor(it)},
                         placeholder = stringResource(id = R.string.register1_major),
                         text = stringResource(id = R.string.register1_go),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(
-                            onDone = { registerViewModel.enableNextButton()
+                            onDone = { registerFirstViewModel.enableNextButton()
                                 focusManager.clearFocus()}),
                         readOnly = false,
                     )
@@ -218,9 +210,9 @@ private fun IntroduceContent(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun RegisterScreenFirst(registerViewModel: RegisterViewModel = viewModel() ) {
+fun RegisterScreenFirst(registerFirstViewModel: RegisterFirstViewModel = viewModel() ) {
 
-    val firstNextBtnState = registerViewModel.firstBtnState
+    val firstNextBtnState = registerFirstViewModel.firstBtnState
 
     FilterBottomSheet(backLayerContent = {
         Column(
@@ -237,7 +229,7 @@ fun RegisterScreenFirst(registerViewModel: RegisterViewModel = viewModel() ) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Introduce(
-                    registerViewModel
+                    registerFirstViewModel
                 )
 
                 Spacer(modifier = Modifier.size(100.dp))

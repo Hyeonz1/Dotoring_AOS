@@ -1,4 +1,4 @@
-package com.example.dotoring.ui.register
+package com.example.dotoring.ui.register.fourth
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -8,28 +8,42 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActionScope
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TextFieldDefaults.indicatorLine
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dotoring.R
+import com.example.dotoring.ui.register.third.RegisterThirdViewModel
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
 import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
 
 @Composable
-fun FourthRegisterScreen() {
+fun FourthRegisterScreen(registerFourthViewModel: RegisterFourthViewModel = viewModel()) {
+
+    val registerFourthUiState by registerFourthViewModel.uiState.collectAsState()
+
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier.padding(top = 50.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -43,11 +57,17 @@ fun FourthRegisterScreen() {
 
             Spacer(modifier = Modifier.size(10.dp))
 
-            RoundedCornerTextField(value = "", onValueChange = {})
+            RoundedCornerTextField(
+                value = registerFourthUiState.introduction,
+                onValueChange = {registerFourthViewModel.updateIntroductionInput(it)},
+                onDone = {
+                    focusManager.clearFocus()
+                    registerFourthViewModel.enableNextButton() }
+            )
 
             Spacer(modifier = Modifier.weight(5f))
 
-            RegisterScreenNextButton()
+            RegisterScreenNextButton(enabled = registerFourthUiState.btnState)
 
             Spacer(modifier = Modifier.weight(4f))
         }
@@ -59,7 +79,8 @@ fun FourthRegisterScreen() {
 fun RoundedCornerTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDone: (KeyboardActionScope.() -> Unit)?
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     // parameters below will be passed to BasicTextField for correct behavior of the text field,
@@ -93,7 +114,9 @@ fun RoundedCornerTextField(
         // internal implementation of the BasicTextField will dispatch focus events
         interactionSource = interactionSource,
         enabled = enabled,
-        singleLine = singleLine
+        singleLine = singleLine,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = onDone)
     ) {
         TextFieldDefaults.TextFieldDecorationBox(
             value = value,

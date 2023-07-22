@@ -1,27 +1,24 @@
-package com.example.dotoring.ui.register
+package com.example.dotoring.ui.register.first
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.dotoring.util.FilterBottomSheet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import com.example.dotoring.util.FilterBottomSheet
 import kotlinx.coroutines.flow.update
 
+class RegisterFirstViewModel(): ViewModel() {
 
-class RegisterViewModel(): ViewModel() {
-
-    private val _uiState = MutableStateFlow(RegisterUiState())
-    val uiState: StateFlow<RegisterUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(RegisterFirstUiState())
+    val uiState: StateFlow<RegisterFirstUiState> = _uiState.asStateFlow()
 
     var companyInput by mutableStateOf("")
         private set
@@ -71,9 +68,10 @@ class RegisterViewModel(): ViewModel() {
     }
 
     fun enableNextButton() {
-       firstBtnState = true
+        firstBtnState = true
         Log.d("현지", "test")
     }
+
 
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
