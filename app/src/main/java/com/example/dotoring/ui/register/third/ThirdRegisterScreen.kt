@@ -11,9 +11,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -21,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dotoring.R
 import com.example.dotoring.ui.register.util.CommonTextField
@@ -74,12 +72,23 @@ fun ThirdRegisterScreen(registerThirdViewModel: RegisterThirdViewModel = viewMod
                         onClick = {
                                   //통신
                                   if (registerThirdUiState.nicknameCertified) {
+                                      registerThirdViewModel.toggleNicknameErrorTextColor()
                                       registerThirdViewModel.enableBtnState()
+                                  } else {
+                                      registerThirdViewModel.toggleNicknameErrorTextColor()
                                   }
                         },
                         text = stringResource(id = R.string.register_nickname_duplication_check)
                         )
                 }
+
+                Text(
+                    text = stringResource(id = R.string.register3_error),
+                    modifier = Modifier
+                        .padding(start = 2.dp, top = 3.dp),
+                    color = registerThirdUiState.nicknameErrorColor,
+                    fontSize = 10.sp
+                )
 
                 Spacer(modifier = Modifier.size(28.dp))
 
