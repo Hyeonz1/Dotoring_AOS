@@ -16,6 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.net.CookieManager
 
@@ -71,6 +72,11 @@ interface DotoringAPIService {
     fun searchMentee(
         @Query("majors") majors: String,
         @Query("jobs") jobs: String
+    ): Call<CommonResponse>
+
+    @GET("api/mento/{id}")
+    fun loadDetailedInfo(
+        @Path("id") userId: String
     ): Call<CommonResponse>
 }
 
