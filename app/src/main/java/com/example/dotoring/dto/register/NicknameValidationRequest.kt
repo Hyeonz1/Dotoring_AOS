@@ -1,6 +1,5 @@
 package com.example.dotoring.dto.register
 
-data class nicknameCertificationRequest(
+data class NicknameValidationRequest(
     val nickname: String
-
 )
