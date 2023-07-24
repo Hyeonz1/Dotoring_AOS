@@ -1,5 +1,5 @@
 package com.example.dotoring.dto.register
 
-data class LoginIdValidationRequest(
+data class IdValidationRequest(
     val loginId: String
 )

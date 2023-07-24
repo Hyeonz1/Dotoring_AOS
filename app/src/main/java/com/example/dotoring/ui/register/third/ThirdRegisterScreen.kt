@@ -70,10 +70,9 @@ fun ThirdRegisterScreen(registerThirdViewModel: RegisterThirdViewModel = viewMod
 
                     EffectiveCheckButton(
                         onClick = {
-                                  //통신
+                                  registerThirdViewModel.verifyNickname()
                                   if (registerThirdUiState.nicknameCertified) {
                                       registerThirdViewModel.toggleNicknameErrorTextColor()
-                                      registerThirdViewModel.enableBtnState()
                                   } else {
                                       registerThirdViewModel.toggleNicknameErrorTextColor()
                                   }

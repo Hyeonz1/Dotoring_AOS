@@ -71,6 +71,7 @@ fun SixthRegisterScreen( registerSixthViewModel: RegisterSixthViewModel = viewMo
                     btnText = stringResource(R.string.register_nickname_duplication_check),
                     width = width,
                     onClick = {
+                        registerSixthViewModel.userIdDuplicationCheck()
                         registerSixthViewModel.toggleErrorTextColor() },
                     onNext = { focusManager.moveFocus(FocusDirection.Next)}
                 )
@@ -176,7 +177,8 @@ fun SixthRegisterScreen( registerSixthViewModel: RegisterSixthViewModel = viewMo
                     placeholder = stringResource(id = R.string.register6_email),
                     btnText = stringResource(R.string.register6_send_verification_code),
                     width = width,
-                    onClick = {/*ToDo*/
+                    onClick = {
+                        registerSixthViewModel.sendAuthenticationCode()
                         registerSixthViewModel.startTimer()}, //countdown & 코드 발송
                     onNext = {focusManager.moveFocus(FocusDirection.Next)}
                 )
@@ -196,10 +198,8 @@ fun SixthRegisterScreen( registerSixthViewModel: RegisterSixthViewModel = viewMo
                         placeholder = stringResource(id = R.string.register6_verification_code),
                         btnText = stringResource(R.string.register6_verify),
                         width = width,
-                        onClick = {/*ToDo*/}, //코드 인증
-                        onDone = { focusManager.clearFocus()
-                                 registerSixthViewModel.updateBtnState()
-                                 registerSixthViewModel.toggleEmailErrorTextColor() },
+                        onClick = { registerSixthViewModel.codeCertification() },
+                        onDone = { focusManager.clearFocus() },
                         imeAction = ImeAction.Done
                     )
 
