@@ -2,8 +2,9 @@ package com.example.dotoring.network
 
 import com.example.dotoring.dto.CommonResponse
 import com.example.dotoring.dto.register.EmailCertificationRequest
+import com.example.dotoring.dto.register.EmailCodeRequest
 import com.example.dotoring.dto.register.FinalSignUpRequest
-import com.example.dotoring.dto.register.LoginIdValidationRequest
+import com.example.dotoring.dto.register.IdValidationRequest
 import com.example.dotoring.dto.register.NicknameValidationRequest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -52,10 +53,15 @@ interface DotoringAPIService {
 
     @POST("api/member/validate-loginId")
     fun loginIdValidation(
-        @Body loginValidationRequest: LoginIdValidationRequest
+        @Body loginValidationRequest: IdValidationRequest
     ): Call<CommonResponse>
 
     @GET("api/member/email")
+    fun sendAuthenticationCode(
+        @Body emailCodeRequest: EmailCodeRequest
+    ): Call<CommonResponse>
+
+    @POST("api/member/validate-code")
     fun emailCertification(
         @Body emailCertificationRequest: EmailCertificationRequest
     ): Call<CommonResponse>

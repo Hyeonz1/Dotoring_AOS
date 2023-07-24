@@ -1,5 +1,5 @@
 package com.example.dotoring.dto.register
 
 data class EmailCertificationRequest(
-    val email: String
+    val code: String
 )
