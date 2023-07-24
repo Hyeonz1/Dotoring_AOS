@@ -1,15 +1,10 @@
 package com.example.dotoring.network
 
-import com.example.dotoring.dto.register.docsCertificationRequest
-import com.example.dotoring.dto.register.docsCertificationResponse
-import com.example.dotoring.dto.register.emailCertificationRequest
-import com.example.dotoring.dto.register.emailCertificationResponse
-import com.example.dotoring.dto.register.loginIdCertificationRequest
-import com.example.dotoring.dto.register.loginIdCertificationResponse
-import com.example.dotoring.dto.register.nicknameCertificationRequest
-import com.example.dotoring.dto.register.nicknameCertificationResponse
-import com.example.dotoring.dto.register.registerRequest
-import com.example.dotoring.dto.register.registerResponse
+import com.example.dotoring.dto.CommonResponse
+import com.example.dotoring.dto.register.EmailCertificationRequest
+import com.example.dotoring.dto.register.FinalSignUpRequest
+import com.example.dotoring.dto.register.LoginIdValidationRequest
+import com.example.dotoring.dto.register.NicknameValidationRequest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.JavaNetCookieJar
@@ -19,7 +14,10 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 import java.net.CookieManager
 
 private const val BASE_URL =
@@ -46,30 +44,40 @@ val retrofit = Retrofit.Builder()
 
 
 interface DotoringAPIService {
-    @POST("api/certifications")
-    fun docsCertification(
-        @Body docsCertificationRequest: docsCertificationRequest
-    ): Call<docsCertificationResponse>
 
-    @POST("api/member/nickname")
-    fun nicknameCertification(
-        @Body nicknameCertificationRequest: nicknameCertificationRequest
-    ): Call<nicknameCertificationResponse>
+    @POST("api/member/validate-nickname")
+    fun nicknameValidation(
+        @Body nicknameValidationRequest: NicknameValidationRequest
+    ): Call<CommonResponse>
 
-    @POST("api/member/loginId")
-    fun loginIdCertification(
-        @Body loginIdCertificationRequest: loginIdCertificationRequest
-    ): Call<loginIdCertificationResponse>
+    @POST("api/member/validate-loginId")
+    fun loginIdValidation(
+        @Body loginValidationRequest: LoginIdValidationRequest
+    ): Call<CommonResponse>
 
-    @POST("api/member/email")
+    @GET("api/member/email")
     fun emailCertification(
-        @Body emailCertificationRequest: emailCertificationRequest
-    ): Call<emailCertificationResponse>
+        @Body emailCertificationRequest: EmailCertificationRequest
+    ): Call<CommonResponse>
 
-    @POST("api/mento")
-    fun requestRegister(
-        @Body requestRegisterRequest: registerRequest
-    ): Call<registerResponse>
+    @GET("api/member/job-major")
+    fun getJobAndMajorList(): Call<CommonResponse>
+
+    @POST("api/signup-mento")
+    fun signUpAsMento(
+        @Body finalSignUpRequest: FinalSignUpRequest
+    ):Call <CommonResponse>
+
+    @GET("api/mento")
+    fun searchMentee(
+        @Query("majors") majors: String,
+        @Query("jobs") jobs: String
+    ): Call<CommonResponse>
+
+    @GET("api/mento/{id}")
+    fun loadDetailedInfo(
+        @Path("id") userId: String
+    ): Call<CommonResponse>
 }
 
 
