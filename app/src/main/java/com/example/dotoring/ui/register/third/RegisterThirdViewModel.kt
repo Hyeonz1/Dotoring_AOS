@@ -1,5 +1,6 @@
 package com.example.dotoring.ui.register.third
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,7 +9,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import com.example.dotoring.dto.CommonResponse
+import com.example.dotoring.dto.register.NicknameValidationRequest
+import com.example.dotoring.network.DotoringAPI
 import kotlinx.coroutines.flow.update
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RegisterThirdViewModel: ViewModel() {
 
@@ -19,7 +26,6 @@ class RegisterThirdViewModel: ViewModel() {
         private set
 
     var btnState by mutableStateOf(false)
-
 
     fun updateNickname(nicknameInput: String) {
         nickname = nicknameInput
@@ -46,4 +52,27 @@ class RegisterThirdViewModel: ViewModel() {
             currentState.copy(btnState = btnState)
         }
     }
+
+    fun verifyNickname() {
+        val verifyNicknameRequest = NicknameValidationRequest(nickname = uiState.value.nickname)
+        val verifyNicknameResponseCall: Call<CommonResponse> = DotoringAPI.retrofitService.nicknameValidation(verifyNicknameRequest)
+
+        verifyNicknameResponseCall.enqueue(object: Callback<CommonResponse> {
+            override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
+                if (response.isSuccessful && response.body() != null) {
+                    _uiState.update { currentState ->
+                        currentState.copy(nicknameCertified = true)
+                    }
+                    enableBtnState()
+                }
+            }
+            override fun onFailure(call: Call<CommonResponse>, t: Throwable) {
+                Log.d("통신", "통신 실패: $t")
+                Log.d("회원 가입 통신", "요청 내용 - $verifyNicknameResponseCall")
+            }
+        })
+
+
+    }
+
 }
