@@ -79,7 +79,7 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
 
     BackdropScaffold(
         scaffoldState = scaffoldState,
-        backLayerBackgroundColor = Gray,
+        backLayerBackgroundColor = Color.White,
         peekHeight = 200.dp,
         modifier = Modifier,
         appBar = {},
@@ -91,7 +91,7 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
                             .height(120.dp)
                             .fillMaxWidth()
                             .shadow(
-                                elevation = 5.dp,
+                                elevation = 10.dp,
                                 spotColor = Color(0x99000000),
                                 ambientColor = Color(0x50000000)
                             )
@@ -132,7 +132,7 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
                         }
 
                     }
-                    Column(Modifier.background(Gray)) {
+                    Column(Modifier.background(Color.White)) {
                         val scrollState = rememberLazyListState()
                         LazyColumn(state = scrollState) {
                             items(3) {
@@ -249,15 +249,22 @@ fun MessageButton(scaffoldState: BackdropScaffoldState) {
         },
         colors = ButtonDefaults.buttonColors(backgroundColor = Navy)
     ) {
+        if(scaffoldState.currentValue==BackdropValue.Concealed)
+        {
         Image(
+            painter = painterResource(R.drawable.chatting),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxSize())}
+        else{Image(
             painter = painterResource(R.drawable.message),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .fillMaxSize()
-        )
+                .fillMaxSize())}}
     }
-}
+
 
 //text: String, name: String, time: String
 @Composable

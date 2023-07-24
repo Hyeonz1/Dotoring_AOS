@@ -1,5 +1,5 @@
 package com.example.dotoring.ui.message.messageDetail
 
-class MessageDetailUiState (
+data class MessageDetailUiState (
     val sendingMessage: String = "",
 )
