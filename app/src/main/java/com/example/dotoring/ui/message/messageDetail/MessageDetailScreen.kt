@@ -1,4 +1,4 @@
-package com.example.dotoring.ui.message
+package com.example.dotoring.ui.message.messageDetail
 
 import android.graphics.Paint.Align
 import android.text.Layout
@@ -32,7 +32,12 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Alignment.Companion.BottomCenter
@@ -40,6 +45,7 @@ import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.End
+import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -53,7 +59,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dotoring.R
+import com.example.dotoring.ui.register.first.RegisterFirstViewModel
 import com.example.dotoring.ui.theme.DotoringTheme
 import com.example.dotoring.ui.theme.Gray
 import com.example.dotoring.ui.theme.Green
@@ -64,13 +72,15 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MessageDetailScreen() {
-    val scope = rememberCoroutineScope()
+fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewModel()) {
+    var message by remember { mutableStateOf("") }
+    val messageDetailUiState by messageDetailViewModel.uiState.collectAsState()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
 
     BackdropScaffold(
         scaffoldState = scaffoldState,
         backLayerBackgroundColor = Gray,
+        peekHeight = 200.dp,
         modifier = Modifier,
         appBar = {},
         backLayerContent = {
@@ -82,8 +92,8 @@ fun MessageDetailScreen() {
                             .fillMaxWidth()
                             .shadow(
                                 elevation = 5.dp,
-                                spotColor = Color(0x40000000),
-                                ambientColor = Color(0x40000000)
+                                spotColor = Color(0x99000000),
+                                ambientColor = Color(0x50000000)
                             )
                     ) {
                         Row(
@@ -146,17 +156,24 @@ fun MessageDetailScreen() {
             Box(modifier = Modifier
                 .background(Color.White)
                 .fillMaxSize()
-                .padding(vertical = 45.dp, horizontal = 0.dp)) {
-                Text(modifier = Modifier.align(Alignment.TopCenter), color = Color.Gray, text = stringResource(id = R.string.message_info ), fontSize = 12.sp)
+                .padding(top=15.dp, bottom = 45.dp)) {
+                Surface(modifier = Modifier
+                    .width(100.dp)
+                    .height(5.dp)
+                    .align(TopCenter), shape = RoundedCornerShape(40.dp),
+                    color = Color.Gray){}
+                Text(modifier = Modifier
+                    .padding(top = 30.dp)
+                    .align(Alignment.TopCenter), color = Color.Gray, text = stringResource(id = R.string.message_info ), fontSize = 12.sp)
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 35.dp, start = 25.dp, end = 25.dp)
+                        .padding(top = 50.dp, start = 25.dp, end = 25.dp)
                         .align(Alignment.TopCenter)
                         .background(Color.White),
                     shape = RoundedCornerShape(35.dp),
                 ) {
-                    MessageField(textField = stringResource(id = R.string.message_textField))
+                    MessageField(value = message, onValueChange = {message = it}, textField = stringResource(id = R.string.message_textField))
                 }
 
 
@@ -169,17 +186,19 @@ fun MessageDetailScreen() {
             }
 
 
-        })
+        }
+    )
 }
 
 
 @Composable
-fun MessageField(textField: String) {
+fun MessageField(value:String,onValueChange:(String)->Unit, textField: String) {
     Column(modifier = Modifier
         .background(color= Gray)) {
+
         TextField(
-            value = "",
-            onValueChange = {},
+            value = value,
+            onValueChange = onValueChange,
             placeholder = { Text(
                 text = textField,
                 fontSize = 14.sp,
@@ -190,7 +209,7 @@ fun MessageField(textField: String) {
                 focusedIndicatorColor = Gray,
                 unfocusedIndicatorColor = Gray,
                 backgroundColor = Gray,
-                placeholderColor = Gray
+                placeholderColor = Color.Black
             ))
         Button(modifier = Modifier
             .padding(10.dp)

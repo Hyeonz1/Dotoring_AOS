@@ -1,13 +1,14 @@
-package com.example.dotoring.ui.message
+package com.example.dotoring.ui.message.messageBox
 
-import androidx.compose.foundation.BorderStroke
+import android.service.autofill.OnClickAction
+import android.widget.AdapterView.OnItemClickListener
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,23 +28,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dotoring.R
 import com.example.dotoring.ui.theme.DotoringTheme
 import com.example.dotoring.ui.theme.Gray
 import com.example.dotoring.ui.theme.Navy
-import com.example.dotoring.ui.theme.Purple200
 import com.example.dotoring.ui.theme.nanumSquareFamily
-import kotlinx.coroutines.launch
 
-    @Composable
-    fun MessageBoxScreen(
+@Composable
+    fun MessageBoxScreen( messageBoxViewModel: MessageBoxViewModel = viewModel()
     ) {
         val listSize = 100
         val scrollState = rememberLazyListState()
@@ -78,6 +76,7 @@ import kotlinx.coroutines.launch
                     .fillMaxWidth()
                     .height(100.dp)
                     .padding(horizontal = 10.dp)
+                    .clickable {  }
 
             ) {
                 Box(
@@ -107,14 +106,14 @@ import kotlinx.coroutines.launch
                                 fontFamily = nanumSquareFamily, fontWeight = FontWeight.Normal
                             )
                             Text("닉네임은 여덟글자", fontSize = 15.sp, color = Navy,fontFamily = nanumSquareFamily, fontWeight = FontWeight.ExtraBold)
-                            Text("학과", fontSize = 12.sp, fontFamily = nanumSquareFamily, fontWeight = FontWeight.Normal)
+                            Text("학과", fontSize = 12.sp, fontFamily = nanumSquareFamily, fontWeight = FontWeight.Normal, color= Color.Black)
                             Spacer(modifier = Modifier.size(12.dp))
                             Text(
                                 "마지막대화내용은열두글자",
                                 fontSize = 12.sp,
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.End,
-                                fontFamily = nanumSquareFamily, fontWeight = FontWeight.Normal
+                                fontFamily = nanumSquareFamily, fontWeight = FontWeight.Normal, color= Color.Black
                             )
 
                         }
