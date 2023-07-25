@@ -31,6 +31,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
 import com.example.dotoring.ui.register.third.RegisterThirdViewModel
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
@@ -38,7 +41,10 @@ import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
 
 @Composable
-fun FourthRegisterScreen(registerFourthViewModel: RegisterFourthViewModel = viewModel()) {
+fun FourthRegisterScreen(
+    registerFourthViewModel: RegisterFourthViewModel = viewModel(),
+    navController: NavHostController
+) {
 
     val registerFourthUiState by registerFourthViewModel.uiState.collectAsState()
 
@@ -146,6 +152,6 @@ fun RoundedCornerTextField(
 @Composable
 private fun RegisterScreenPreview() {
     DotoringTheme {
-        FourthRegisterScreen()
+        FourthRegisterScreen(navController = rememberNavController())
     }
 }

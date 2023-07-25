@@ -49,7 +49,7 @@ import com.example.dotoring.ui.theme.DotoringTheme
 import androidx.compose.runtime.getValue
 
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavHostController) {
     Row() {
         Spacer(modifier = Modifier.weight(1f))
 

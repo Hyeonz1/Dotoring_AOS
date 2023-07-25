@@ -30,6 +30,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
 import com.example.dotoring.ui.register.util.CommonTextField
 import com.example.dotoring.ui.register.util.EffectiveCheckButton
@@ -37,7 +40,10 @@ import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
 
 @Composable
-fun SixthRegisterScreen( registerSixthViewModel: RegisterSixthViewModel = viewModel() ) {
+fun SixthRegisterScreen(
+    registerSixthViewModel: RegisterSixthViewModel = viewModel(),
+    navController: NavHostController
+) {
     val registerSixthUiState by registerSixthViewModel.uiState.collectAsState()
     val focusManager = LocalFocusManager.current
 
@@ -264,6 +270,6 @@ private fun TextFieldWithEffectiveCheckButton(value: String, onValueChange: (Str
 @Composable
 private fun RegisterScreenPreview() {
     DotoringTheme {
-        SixthRegisterScreen()
+        SixthRegisterScreen(navController = rememberNavController())
     }
 }

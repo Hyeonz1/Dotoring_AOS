@@ -22,13 +22,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
 import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
 
 @Composable
-fun FifthRegisterScreen( registerFifthViewModel: RegisterFifthViewModel = viewModel()) {
+fun FifthRegisterScreen(
+    registerFifthViewModel: RegisterFifthViewModel = viewModel(),
+    navController: NavHostController
+    ) {
 
     val registerFifthUiState by registerFifthViewModel.uiState.collectAsState()
 
@@ -94,6 +100,6 @@ fun FifthRegisterScreen( registerFifthViewModel: RegisterFifthViewModel = viewMo
 @Composable
 private fun RegisterScreenPreview() {
     DotoringTheme {
-        FifthRegisterScreen()
+        FifthRegisterScreen(navController = rememberNavController())
     }
 }
