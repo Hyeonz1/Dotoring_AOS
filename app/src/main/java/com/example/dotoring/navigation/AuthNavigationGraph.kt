@@ -55,10 +55,10 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
 sealed class AuthScreen(val route: String) {
     object Login : AuthScreen(route = "LOGIN")
     object Waiting : AuthScreen(route = "WAITING")
-    object Register1 : AuthScreen(route = "REGISTER")
-    object Register2 : AuthScreen(route = "REGISTER")
-    object Register3 : AuthScreen(route = "REGISTER")
-    object Register4 : AuthScreen(route = "REGISTER")
-    object Register5 : AuthScreen(route = "REGISTER")
-    object Register6 : AuthScreen(route = "REGISTER")
+    object Register1 : AuthScreen(route = "REGISTER1")
+    object Register2 : AuthScreen(route = "REGISTER2")
+    object Register3 : AuthScreen(route = "REGISTER3")
+    object Register4 : AuthScreen(route = "REGISTER4")
+    object Register5 : AuthScreen(route = "REGISTER5")
+    object Register6 : AuthScreen(route = "REGISTER6")
 }
