@@ -26,27 +26,27 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
         }
 
         composable(route = AuthScreen.Register1.route) {
-            RegisterScreenFirst()
+            RegisterScreenFirst(navController = navController)
         }
 
         composable(route = AuthScreen.Register2.route) {
-            SecondRegisterScreen()
+            SecondRegisterScreen(navController = navController)
         }
 
         composable(route = AuthScreen.Register3.route) {
-            ThirdRegisterScreen()
+            ThirdRegisterScreen(navController = navController)
         }
 
         composable(route = AuthScreen.Register4.route) {
-            FourthRegisterScreen()
+            FourthRegisterScreen(navController = navController)
         }
 
         composable(route = AuthScreen.Register5.route) {
-            FifthRegisterScreen()
+            FifthRegisterScreen(navController = navController)
         }
 
         composable(route = AuthScreen.Register6.route) {
-            SixthRegisterScreen()
+            SixthRegisterScreen(navController = navController)
         }
 
     }

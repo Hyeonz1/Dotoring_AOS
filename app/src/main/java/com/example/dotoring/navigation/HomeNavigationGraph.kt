@@ -21,14 +21,14 @@ fun HomeNavGraph(navController: NavHostController, modifier: Modifier = Modifier
         startDestination = BottomNavScreen.Home.route
     ) {
         composable(route = BottomNavScreen.Home.route) {
-            MainScreen()
+            MainScreen(navController = navController)
         }
 
         composable(route = BottomNavScreen.Calendar.route) {
 
         }
         composable(route = BottomNavScreen.Message.route) {
-            MessageBoxScreen()
+            MessageBoxScreen(navController = navController)
         }
 
         composable(route = BottomNavScreen.Mypage.route) {
@@ -47,7 +47,7 @@ fun NavGraphBuilder.mentiDetailNavGraph(navController: NavHostController) {
         startDestination = MentiDetailScreen.MentiDetailed.route
     ) {
         composable(route = MentiDetailScreen.MentiDetailed.route) {
-            MenteeDetailed()
+            MenteeDetailed(navController = navController)
         }
     }
 }
@@ -58,7 +58,7 @@ fun NavGraphBuilder.messageDetailNavGraph(navController: NavHostController) {
         startDestination = MessageDetailScreen.MessageDetailed.route
     ) {
         composable(route = MessageDetailScreen.MessageDetailed.route) {
-            MessageDetailScreen()
+            MessageDetailScreen(navContoller = navController)
         }
     }
 }
