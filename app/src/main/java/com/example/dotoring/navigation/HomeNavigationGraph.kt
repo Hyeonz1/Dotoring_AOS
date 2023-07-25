@@ -58,7 +58,7 @@ fun NavGraphBuilder.messageDetailNavGraph(navController: NavHostController) {
         startDestination = MessageDetailScreen.MessageDetailed.route
     ) {
         composable(route = MessageDetailScreen.MessageDetailed.route) {
-            MessageDetailScreen(navContoller = navController)
+            MessageDetailScreen(navController = navController)
         }
     }
 }
