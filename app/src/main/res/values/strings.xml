@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Dotoring</string>
 
+    <string name="navigation_home">홈</string>
+    <string name="navigation_calendar">일정</string>
+    <string name="navigation_message">쪽지함</string>
+    <string name="navigation_setting">마이페이지</string>
+
     <string name="branch_logo_our_mentoring">우리들의 멘토링</string>
     <string name="branch_logo_app_name">도토링</string>
     <string name="branch_helper">후배들에게 도움을 주는</string>
@@ -50,7 +55,7 @@
     <string name="register6_q6"> <font color="#8BD045">계정</font> 설정만 하면 끝이에요!</string>
     <string name="register6_set_ID">A. 아이디 설정하기</string>
     <string name="register6_ID">아이디</string>
-    <string name="register6_ID_guide">영문과 숫자를 포함한 8&#8211;12글자로 표기해주세요.</string>
+    <string name="register6_ID_guide">영문과 숫자를 포함한 8&#8211;12글자로 해주세요.</string>
     <string name="register6_ID_error">이미 있는 아이디입니다.</string>
     <string name="register6_set_pass_word">A. 비밀번호 설정하기</string>
     <string name="register6_pass_word">비밀번호</string>

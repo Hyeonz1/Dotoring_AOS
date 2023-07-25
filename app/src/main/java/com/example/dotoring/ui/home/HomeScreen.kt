@@ -6,14 +6,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -29,13 +34,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.dotoring.BottomNavScreen
 import com.example.dotoring.R
+import com.example.dotoring.navigation.HomeNavGraph
 import com.example.dotoring.ui.home.data.DataSource
 import com.example.dotoring.ui.home.data.Mentee
 import com.example.dotoring.ui.theme.DotoringTheme
+import androidx.compose.runtime.getValue
 
 @Composable
-fun HomeScreen() {
+fun MainScreen(navController: NavHostController) {
     Row() {
         Spacer(modifier = Modifier.weight(1f))
 
@@ -107,6 +121,17 @@ fun HomeScreen() {
         }
 
         Spacer(modifier = Modifier.weight(1f))
+    }
+}
+
+@Composable
+fun HomeScreen(navController: NavHostController = rememberNavController()) {
+    Scaffold (
+        bottomBar = {BottomBar(navController)}
+            ) { padding ->
+        HomeNavGraph(navController = navController,
+            modifier = Modifier.padding(padding))
+
     }
 }
 
@@ -198,3 +223,61 @@ fun ChoiceBottomSheet() {
         }
     }
 }*/
+
+@Composable
+fun BottomBar(navController: NavHostController) {
+    val screens = listOf(
+        BottomNavScreen.Home,
+        BottomNavScreen.Calendar,
+        BottomNavScreen.Message,
+        BottomNavScreen.Mypage
+    )
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    val bottomBarDestination = screens.any { it.route == currentDestination?.route }
+    if (bottomBarDestination) {
+        BottomNavigation(
+            backgroundColor = Color.White
+        ) {
+            screens.forEach { screen ->
+                AddItem(
+                    screen = screen,
+                    currentDestination = currentDestination,
+                    navController = navController
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun RowScope.AddItem(
+    screen: BottomNavScreen,
+    currentDestination: NavDestination?,
+    navController: NavHostController
+) {
+    BottomNavigationItem(
+        label = {
+            Text(text = stringResource(screen.resourceId))
+        },
+        icon = {
+            Icon(
+                painter = painterResource(id = screen.icon),
+                contentDescription = "Navigation Icon"
+            )
+        },
+        selected = currentDestination?.hierarchy?.any {
+            it.route == screen.route
+        } == true,
+        selectedContentColor = Color(0xff8BD045),
+        unselectedContentColor = Color(0xffC3C3C3),
+        onClick = {
+            navController.navigate(screen.route) {
+                popUpTo(navController.graph.findStartDestination().id)
+                launchSingleTop = true
+            }
+        }
+    )
+}

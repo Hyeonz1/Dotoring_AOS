@@ -40,6 +40,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.util.FilterBottomSheet
 
 
@@ -210,7 +213,10 @@ private fun IntroduceContent(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun RegisterScreenFirst(registerFirstViewModel: RegisterFirstViewModel = viewModel() ) {
+fun RegisterScreenFirst(
+    registerFirstViewModel: RegisterFirstViewModel = viewModel(),
+    navController: NavHostController
+) {
 
     val firstNextBtnState = registerFirstViewModel.firstBtnState
 
@@ -247,6 +253,6 @@ fun RegisterScreenFirst(registerFirstViewModel: RegisterFirstViewModel = viewMod
 @Composable
 private fun RegisterScreenPreview() {
     DotoringTheme {
-        RegisterScreenFirst()
+        RegisterScreenFirst(navController = rememberNavController())
     }
 }
