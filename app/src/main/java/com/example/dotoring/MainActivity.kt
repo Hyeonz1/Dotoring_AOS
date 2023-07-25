@@ -3,14 +3,11 @@ package com.example.dotoring
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.example.dotoring.navigation.RootNavigationGraph
 import com.example.dotoring.ui.theme.DotoringTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,16 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DotoringTheme {
-                val navController = rememberNavController()
-
-                Scaffold(
-                    bottomBar = { BottomNavigationBar(navController = navController) }
-                ) {
-
-                    Box(Modifier.padding(it)) {
-                        NavGraph(navController = navController)
-                    }
-                }
+                RootNavigationGraph(navController = rememberNavController())
             }
         }
     }
