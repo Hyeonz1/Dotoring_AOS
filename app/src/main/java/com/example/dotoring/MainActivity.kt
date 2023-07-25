@@ -6,7 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.dotoring.ui.message.messageDetail.MessageDetailScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.dotoring.navigation.RootNavigationGraph
 import com.example.dotoring.ui.theme.DotoringTheme
 
 class MainActivity : ComponentActivity() {
@@ -14,8 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DotoringTheme {
-                // A surface container using the 'background' color from the theme
-                MessageDetailScreen()
+                RootNavigationGraph(navController = rememberNavController())
             }
         }
     }

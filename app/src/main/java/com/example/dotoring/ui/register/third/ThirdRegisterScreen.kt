@@ -20,6 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
 import com.example.dotoring.ui.register.util.CommonTextField
 import com.example.dotoring.ui.register.util.EffectiveCheckButton
@@ -28,7 +31,10 @@ import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
 
 @Composable
-fun ThirdRegisterScreen(registerThirdViewModel: RegisterThirdViewModel = viewModel() ) {
+fun ThirdRegisterScreen(
+    registerThirdViewModel: RegisterThirdViewModel = viewModel(),
+    navController: NavHostController
+) {
 
     val registerThirdUiState by registerThirdViewModel.uiState.collectAsState()
 
@@ -113,6 +119,6 @@ fun ThirdRegisterScreen(registerThirdViewModel: RegisterThirdViewModel = viewMod
 @Composable
 private fun RegisterScreenPreview() {
     DotoringTheme {
-        ThirdRegisterScreen()
+        ThirdRegisterScreen(navController = rememberNavController())
     }
 }

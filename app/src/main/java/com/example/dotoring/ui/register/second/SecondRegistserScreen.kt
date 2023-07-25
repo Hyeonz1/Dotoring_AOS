@@ -18,6 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
 import com.example.dotoring.ui.register.util.RegisterScreenTop
@@ -43,7 +45,9 @@ private fun ImageUploadButton() {
 }
 
 @Composable
-fun SecondRegisterScreen() {
+fun SecondRegisterScreen(
+    navController: NavHostController
+) {
     Column(
         modifier = Modifier.padding(top = 50.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -89,6 +93,6 @@ fun SecondRegisterScreen() {
 @Composable
 private fun RegisterScreenPreview() {
     DotoringTheme {
-        SecondRegisterScreen()
+        SecondRegisterScreen(navController = rememberNavController())
     }
 }
