@@ -92,14 +92,16 @@ import com.example.dotoring.ui.theme.DotoringTheme
                 ) {
                     LoginField(value = id, onValueChange = {id = it},
                         textField = stringResource(id = R.string.id),
-                        onNext = {loginViewModel.idErrorCheck()
+                        onNext = {
+//                            loginViewModel.idErrorCheck()
                             focusManager.moveFocus(FocusDirection.Next)}
                     )
                     LoginField(value = pwd, onValueChange = {pwd = it},
                         textField = stringResource(id = R.string.password),
                         onDone = { focusManager.clearFocus()
-                            loginViewModel.updateBtnState()
-                            loginViewModel.passwordErrorCheck() }
+//                            loginViewModel.updateBtnState()
+//                            loginViewModel.passwordErrorCheck()
+                        }
                     )
                 }
                 Spacer(modifier = Modifier.size(30.dp))

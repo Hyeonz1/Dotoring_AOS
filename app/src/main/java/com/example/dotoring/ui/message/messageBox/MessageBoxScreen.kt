@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -39,6 +40,7 @@ import com.example.dotoring.ui.theme.DotoringTheme
 import com.example.dotoring.ui.theme.Gray
 import com.example.dotoring.ui.theme.Navy
 import com.example.dotoring.ui.theme.nanumSquareFamily
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
     fun MessageBoxScreen( messageBoxViewModel: MessageBoxViewModel = viewModel()
@@ -55,11 +57,16 @@ import com.example.dotoring.ui.theme.nanumSquareFamily
             Text("  쪽지함", fontFamily = nanumSquareFamily, fontWeight = FontWeight.ExtraBold, fontSize = 30.sp,color= colorResource(id=R.color.black), modifier = Modifier )
             Spacer(modifier = Modifier.size(40.dp))
 
-            Column {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
 
                 LazyColumn(state = scrollState) {
                     items(listSize) {
-                        MessageListItem()
+                        Surface(modifier = Modifier.clickable {
+                            //MessageBoxViewModel.goToMessageDetailScreen(roomPk)
+                        }) {
+                            MessageListItem()
+                        }
                     }
                 }
 
@@ -69,19 +76,22 @@ import com.example.dotoring.ui.theme.nanumSquareFamily
 
     @Composable
     fun MessageListItem(){
-        Column() {
+        Column(modifier = Modifier
+            .width(300.dp)
+            , horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .width(350.dp)
                     .height(100.dp)
-                    .padding(horizontal = 10.dp)
-                    .clickable {  }
+                    .padding(horizontal = 5.dp)
+                    .clickable { }
 
             ) {
                 Box(
                     modifier = Modifier
-                        .width(270.dp)
+                        .width(260.dp)
                         .align(Alignment.CenterEnd)
 
                 ) {

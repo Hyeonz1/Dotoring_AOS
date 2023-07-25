@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.dotoring.ui.login.LoginScreen
+import com.example.dotoring.ui.message.messageBox.MessageBoxScreen
 import com.example.dotoring.ui.message.messageDetail.MessageDetailScreen
 import com.example.dotoring.ui.theme.DotoringTheme
 
@@ -16,7 +17,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DotoringTheme {
                 // A surface container using the 'background' color from the theme
-                LoginScreen()
+                MessageBoxScreen()
             }
         }
     }

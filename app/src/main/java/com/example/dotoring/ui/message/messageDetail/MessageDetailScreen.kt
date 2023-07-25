@@ -5,6 +5,7 @@ import android.text.Layout
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActionScope
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
@@ -46,12 +49,15 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Alignment.Companion.TopCenter
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.VerticalAlignmentLine
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -74,6 +80,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 @Composable
 fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewModel()) {
     var message by remember { mutableStateOf("") }
+    val writer=true
     val messageDetailUiState by messageDetailViewModel.uiState.collectAsState()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
 
@@ -132,13 +139,22 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
                         }
 
                     }
-                    Column(Modifier.background(Color.White)) {
+
+                    Column(
+                        Modifier
+                            .background(Color.White)
+                            .padding(5.dp)) {
                         val scrollState = rememberLazyListState()
                         LazyColumn(state = scrollState) {
                             items(3) {
+                                    if(writer)
+                                    {MentoChatBox(text = "gg")}
+                                    else{MentiChatBox("안녕! 나는 수미야\n하이\n ㅎㅎ")}
+
+
                                 //id가 멘토면 MentoChatBox, 멘티면 MentiChatBox로 만들어지게끔 구현
-                                MentiChatBox("안녕! 나는 수미야\n하이\n ㅎㅎ")
-                                MentoChatBox(text = "gg")
+
+
                             }
                         }
                     }
@@ -156,7 +172,7 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
             Box(modifier = Modifier
                 .background(Color.White)
                 .fillMaxSize()
-                .padding(top=15.dp, bottom = 45.dp)) {
+                .padding(top = 15.dp, bottom = 45.dp)) {
                 Surface(modifier = Modifier
                     .width(100.dp)
                     .height(5.dp)
@@ -173,7 +189,8 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
                         .background(Color.White),
                     shape = RoundedCornerShape(35.dp),
                 ) {
-                    MessageField(value = message, onValueChange = {message = it}, textField = stringResource(id = R.string.message_textField))
+                    MessageField(value = message, onValueChange = {message = it}, textField = stringResource(id = R.string.message_textField)
+                    )
                 }
 
 
@@ -191,10 +208,12 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun MessageField(value:String,onValueChange:(String)->Unit, textField: String) {
+fun MessageField(value:String, onValueChange:(String)->Unit, textField: String) {
     Column(modifier = Modifier
         .background(color= Gray)) {
+        val keyboardController = LocalSoftwareKeyboardController.current
 
         TextField(
             value = value,
@@ -209,8 +228,11 @@ fun MessageField(value:String,onValueChange:(String)->Unit, textField: String) {
                 focusedIndicatorColor = Gray,
                 unfocusedIndicatorColor = Gray,
                 backgroundColor = Gray,
-                placeholderColor = Color.Black
-            ))
+                placeholderColor = Color.Black),
+            keyboardActions = KeyboardActions(onDone = {
+                keyboardController?.hide()
+            })
+        )
         Button(modifier = Modifier
             .padding(10.dp)
             .width(40.dp)
