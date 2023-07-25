@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.util.FilterBottomSheet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -76,7 +77,8 @@ class RegisterFirstViewModel(): ViewModel() {
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     fun showBottomSheet() {
-        FilterBottomSheet(rememberBackdropScaffoldState(initialValue = BackdropValue.Concealed), { RegisterScreenFirst() }, "직무 분야 선택")
+        FilterBottomSheet(rememberBackdropScaffoldState(initialValue = BackdropValue.Concealed), { RegisterScreenFirst(navController = rememberNavController(
+        )) }, "직무 분야 선택")
     }
 
 }
