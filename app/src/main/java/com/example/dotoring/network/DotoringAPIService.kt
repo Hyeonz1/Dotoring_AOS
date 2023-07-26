@@ -23,14 +23,15 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import java.net.CookieManager
 
+
 private const val BASE_URL =
-    "http://192.168.0.110:8080/"
+    "http://192.168.0.32:8080/"
 
 val interceptor = HttpLoggingInterceptor().apply {
     level = HttpLoggingInterceptor.Level.BODY
 }
 
-val client = OkHttpClient.Builder()
+val client: OkHttpClient = OkHttpClient.Builder()
     .addInterceptor(interceptor)
     .cookieJar(JavaNetCookieJar(CookieManager()))
     .build()
@@ -39,12 +40,11 @@ val gson : Gson = GsonBuilder()
     .setLenient()
     .create()
 
-val retrofit = Retrofit.Builder()
+val retrofit: Retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
     .addConverterFactory(GsonConverterFactory.create(gson))
     .client(client)
     .build()
-
 
 interface DotoringAPIService {
 
