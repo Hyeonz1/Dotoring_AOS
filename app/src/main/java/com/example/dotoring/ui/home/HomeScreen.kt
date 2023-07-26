@@ -1,5 +1,6 @@
 package com.example.dotoring.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -53,7 +54,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun MainScreen(navController: NavHostController, homeViewModel: HomeViewModel = viewModel(),
 ) {
     val homeUiState by homeViewModel.uiState.collectAsState()
-
+Log.d("홈통신", " 홈통신 실행")
     homeViewModel.loadMentiList()
 
     Row() {

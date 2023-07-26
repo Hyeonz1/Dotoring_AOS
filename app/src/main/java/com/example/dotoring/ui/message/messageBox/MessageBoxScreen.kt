@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,6 +42,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
 import com.example.dotoring.navigation.Graph
+import com.example.dotoring.navigation.MentiDetailScreen
 import com.example.dotoring.navigation.MessageDetailScreen
 import com.example.dotoring.ui.theme.DotoringTheme
 import com.example.dotoring.ui.theme.Gray
@@ -51,8 +53,8 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 @Composable
     fun MessageBoxScreen( messageBoxViewModel: MessageBoxViewModel = viewModel(), navController: NavHostController
     ) {
-
-        val listSize = 100
+        messageBoxViewModel.renderMessageBoxScreen(navController)
+        val messageBoxUiState by messageBoxViewModel.uiState.collectAsState()
         val scrollState = rememberLazyListState()
 
         Column(
@@ -68,12 +70,9 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
                 LazyColumn(state = scrollState) {
-                    items(listSize) {
-                        Surface(modifier = Modifier
-                            .clickable { messageBoxViewModel.goToMessageDetailScreen(navController) })
-                        {
-                            MessageListItem()
-                        }
+                    this.items(messageBoxUiState.messageList) {
+                        messageBox -> MessageListItem(messageBox=messageBox, navController = navController)
+//
                     }
                 }
 
@@ -82,7 +81,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
     }
 
     @Composable
-    fun MessageListItem(messageBoxViewModel: MessageBoxViewModel = viewModel()){
+    fun MessageListItem(messageBoxViewModel: MessageBoxViewModel = viewModel(), messageBox: MessageBox, navController: NavHostController){
         val messageBoxUiState by messageBoxViewModel.uiState.collectAsState()
         Column(modifier = Modifier
             .width(300.dp)
@@ -94,8 +93,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
                     .width(350.dp)
                     .height(100.dp)
                     .padding(horizontal = 5.dp)
-
-                    ,
+                    .clickable { navController.navigate(MessageDetailScreen.MessageDetailed.route) }
 
             ) {
                 Box(
@@ -117,18 +115,18 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
                         ) {
                             Text(
-                                text=messageBoxUiState.time,
+                                text=messageBox.updateAt,
                                 fontSize = 8.sp,
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.End,
                                 color = Color.Gray,
                                 fontFamily = nanumSquareFamily, fontWeight = FontWeight.Normal
                             )
-                            Text(text=messageBoxUiState.nickname, fontSize = 15.sp, color = Navy,fontFamily = nanumSquareFamily, fontWeight = FontWeight.ExtraBold)
-                            Text(text=messageBoxUiState.major, fontSize = 12.sp, fontFamily = nanumSquareFamily, fontWeight = FontWeight.Normal, color= Color.Black)
+                            Text(text=messageBox.nickname, fontSize = 15.sp, color = Navy,fontFamily = nanumSquareFamily, fontWeight = FontWeight.ExtraBold)
+                            Text(text=messageBox.nickname, fontSize = 12.sp, fontFamily = nanumSquareFamily, fontWeight = FontWeight.Normal, color= Color.Black)
                             Spacer(modifier = Modifier.size(12.dp))
                             Text(
-                                text=messageBoxUiState.lastMessage,
+                                text=messageBox.lastLetter,
                                 fontSize = 12.sp,
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.End,
