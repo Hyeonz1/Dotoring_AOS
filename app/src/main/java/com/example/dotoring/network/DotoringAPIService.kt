@@ -24,7 +24,7 @@ import retrofit2.http.Query
 import java.net.CookieManager
 
 private const val BASE_URL =
-    "http://192.168.0.9:8080/"
+    "http://192.168.0.110:8080/"
 
 val interceptor = HttpLoggingInterceptor().apply {
     level = HttpLoggingInterceptor.Level.BODY
@@ -103,7 +103,7 @@ interface DotoringAPIService {
 
     @GET("api/menti/{id}")
     fun loadMentiDetailedInfo(
-        @Path("id") mentiId: Int
+        @Path("id") id: Int
     ): Call<CommonResponse>
 
     @POST("api/auth/login")
@@ -131,7 +131,7 @@ interface DotoringAPIService {
 
     @GET("api/mento/letter/{roomPk}")
     fun loadDetailedMessage(
-        @Path("roomPk") roomPk: Int,
+        @Path("roomPk") roomPk: Long,
         @Query("page") page: Int,
         @Query("size") size: Int
 
