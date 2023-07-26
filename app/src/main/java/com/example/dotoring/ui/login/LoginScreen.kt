@@ -46,15 +46,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.TintableBackgroundView
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
+import com.example.dotoring.navigation.AuthScreen
 import com.example.dotoring.ui.theme.DotoringTheme
     @Composable
     fun LoginScreen(loginViewModel: LoginViewModel= viewModel(), navController: NavHostController) {
@@ -143,7 +141,7 @@ import com.example.dotoring.ui.theme.DotoringTheme
                     Text(text = "  |  ", fontSize = 12.sp)
                     Text("회원가입", fontSize = 12.sp, color= colorResource(id = R.color.grey_500), modifier = Modifier
                         .clickable {
-                            // onClick()
+                            navController.navigate(AuthScreen.Register1.route)
                         }
                     )
 
