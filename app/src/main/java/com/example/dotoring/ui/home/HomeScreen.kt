@@ -54,6 +54,8 @@ fun MainScreen(navController: NavHostController, homeViewModel: HomeViewModel = 
 ) {
     val homeUiState by homeViewModel.uiState.collectAsState()
 
+    homeViewModel.loadMentiList()
+
     Row() {
         Spacer(modifier = Modifier.weight(1f))
 
