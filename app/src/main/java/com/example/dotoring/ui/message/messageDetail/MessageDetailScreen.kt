@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -69,6 +70,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
+import com.example.dotoring.ui.message.messageBox.MessageBox
+import com.example.dotoring.ui.message.messageBox.MessageBoxViewModel
+import com.example.dotoring.ui.message.messageBox.MessageListItem
 import com.example.dotoring.ui.register.first.RegisterFirstViewModel
 import com.example.dotoring.ui.theme.DotoringTheme
 import com.example.dotoring.ui.theme.Gray
@@ -81,8 +85,9 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewModel(), navController: NavHostController) {
+    messageDetailViewModel.renderMessageDetailScreen(navController)
+
     var message by remember { mutableStateOf("") }
-    val writer=true
     val messageDetailUiState by messageDetailViewModel.uiState.collectAsState()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
 
@@ -148,10 +153,12 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
                             .padding(5.dp)) {
                         val scrollState = rememberLazyListState()
                         LazyColumn(state = scrollState) {
-                            items(3) {
-                                    if(writer)
-                                    {MentoChatBox(text = "gg")}
-                                    else{MentiChatBox("안녕! 나는 수미야\n하이\n ㅎㅎ")}
+                            this.items(messageDetailUiState.chatList) {
+                                    messageDetail ->
+                                if(messageDetail.writer){
+                                    MentoChatBox(messageDetail=messageDetail) }
+                                else{ MentiChatBox(messageDetail=messageDetail) }
+                                    //MentiChatBox("안녕! 나는 수미야\n하이\n ㅎㅎ")}
 
 
                                 //id가 멘토면 MentoChatBox, 멘티면 MentiChatBox로 만들어지게끔 구현
@@ -191,8 +198,7 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
                         .background(Color.White),
                     shape = RoundedCornerShape(35.dp),
                 ) {
-                    MessageField(value = message, onValueChange = {message = it}, textField = stringResource(id = R.string.message_textField)
-                    )
+                    MessageField(value = message, onValueChange = {message = it}, textField = stringResource(id = R.string.message_textField), navController = navController)
                 }
 
 
@@ -212,7 +218,8 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun MessageField(value:String, onValueChange:(String)->Unit, textField: String) {
+fun MessageField(navController: NavHostController,value:String, onValueChange:(String)->Unit, textField: String, messageDetailViewModel: MessageDetailViewModel = viewModel()) {
+
     Column(modifier = Modifier
         .background(color= Gray)) {
         val keyboardController = LocalSoftwareKeyboardController.current
@@ -241,7 +248,7 @@ fun MessageField(value:String, onValueChange:(String)->Unit, textField: String) 
             .height(40.dp)
             .align(End)
             , shape = RoundedCornerShape(30.dp),
-            onClick = { /*TODO*/ }) {
+            onClick = { messageDetailViewModel.sendMessage(navController) }) {
             Image(
                 painter = painterResource(R.drawable.send_active),
                 contentDescription = null,
@@ -292,7 +299,9 @@ fun MessageButton(scaffoldState: BackdropScaffoldState) {
 
 //text: String, name: String, time: String
 @Composable
-fun MentiChatBox(text:String) {
+fun MentiChatBox(messageDetailViewModel: MessageDetailViewModel = viewModel(), messageDetail: MessageDetail) {
+    val messageDetailUiState by messageDetailViewModel.uiState.collectAsState()
+
     Box(Modifier.padding(7.dp)){
         Surface(modifier = Modifier
             .fillMaxWidth(),
@@ -300,10 +309,10 @@ fun MentiChatBox(text:String) {
             color = Navy
         ) {
             Box() {
-                Text(modifier = Modifier.padding(start = 25.dp, top=7.dp, end=25.dp),text = "닉네임", color = Color.White, fontSize = 15.sp)
+                Text(modifier = Modifier.padding(start = 25.dp, top=7.dp, end=25.dp),text = messageDetail.nickname, color = Color.White, fontSize = 15.sp)
                 Text(modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(start = 25.dp, top = 15.dp, end = 25.dp),text = "00월00일 00시00분", color = Color.White, fontSize = 10.sp)
+                    .padding(start = 25.dp, top = 15.dp, end = 25.dp),text = messageDetail.createdAt, color = Color.White, fontSize = 10.sp)
 
             }
             Surface(modifier = Modifier
@@ -312,14 +321,16 @@ fun MentiChatBox(text:String) {
                 .align(Alignment.BottomCenter),
                 shape= RoundedCornerShape(35.dp),
                 color = Gray) {
-                Text(modifier = Modifier.padding(20.dp), text=text, color= Color.Black)
+                Text(modifier = Modifier.padding(20.dp), text=messageDetail.content, color= Color.Black)
 
             }
         }
     }
 }
 @Composable
-fun MentoChatBox(text:String) {
+fun MentoChatBox(messageDetailViewModel: MessageDetailViewModel = viewModel(), messageDetail: MessageDetail) {
+    val messageDetailUiState by messageDetailViewModel.uiState.collectAsState()
+
     Box(Modifier.padding(7.dp)){
         Surface(modifier = Modifier
             .fillMaxWidth(),
@@ -327,10 +338,10 @@ fun MentoChatBox(text:String) {
             color = Green
         ) {
             Box() {
-                Text(modifier = Modifier.padding(start = 25.dp, top=7.dp, end=25.dp),text = "닉네임", color = Color.White, fontSize = 15.sp)
+                Text(modifier = Modifier.padding(start = 25.dp, top=7.dp, end=25.dp),text = messageDetail.nickname, color = Color.White, fontSize = 15.sp)
                 Text(modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(start = 25.dp, top = 15.dp, end = 25.dp),text = "00월00일 00시00분", color = Color.White, fontSize = 10.sp)
+                    .padding(start = 25.dp, top = 15.dp, end = 25.dp),text = messageDetail.createdAt, color = Color.White, fontSize = 10.sp)
 
             }
             Surface(modifier = Modifier
@@ -339,7 +350,7 @@ fun MentoChatBox(text:String) {
                 .align(Alignment.BottomCenter),
                 shape= RoundedCornerShape(35.dp),
                 color = Gray) {
-                Text(modifier = Modifier.padding(20.dp), text=text, color= Color.Black)
+                Text(modifier = Modifier.padding(20.dp), text=messageDetail.content, color= Color.Black)
 
             }
         }

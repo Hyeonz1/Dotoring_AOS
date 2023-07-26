@@ -24,7 +24,7 @@ import retrofit2.http.Query
 import java.net.CookieManager
 
 private const val BASE_URL =
-    "https://192.168.0.9:8080/"
+    "http://192.168.0.110:8080/"
 
 val interceptor = HttpLoggingInterceptor().apply {
     level = HttpLoggingInterceptor.Level.BODY
