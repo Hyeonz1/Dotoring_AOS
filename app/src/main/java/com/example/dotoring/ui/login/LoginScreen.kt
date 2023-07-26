@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.OutlinedButton
@@ -42,6 +43,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -49,15 +51,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.TintableBackgroundView
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
 import com.example.dotoring.ui.theme.DotoringTheme
     @Composable
-    fun LoginScreen(loginViewModel: LoginViewModel= viewModel()) {
+    fun LoginScreen(loginViewModel: LoginViewModel= viewModel(), navController: NavHostController) {
         val loginUiState by loginViewModel.uiState.collectAsState()
-
-        var id by remember { mutableStateOf("") }
-        var pwd by remember { mutableStateOf("") }
         val focusManager = LocalFocusManager.current
+
 
 
         Box(){
@@ -79,8 +82,8 @@ import com.example.dotoring.ui.theme.DotoringTheme
                     .padding(horizontal = 40.dp, vertical = 160.dp)
             ) {
                 Column {
-                    Text(text = stringResource(id = R.string.university), fontSize = 24.sp, fontWeight = FontWeight.Bold)
-                    Text(text = stringResource(id = R.string.mentor_login1),fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(id = R.string.university), fontSize = 23.sp, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(id = R.string.mentor_login1),fontSize = 23.sp, fontWeight = FontWeight.Bold)
                     Text(text = stringResource(id = R.string.login_text), fontSize = 13.sp)
                 }
                 Spacer(modifier = Modifier.size(30.dp))
@@ -90,29 +93,31 @@ import com.example.dotoring.ui.theme.DotoringTheme
                         .align(alignment = Alignment.CenterHorizontally)
                         .fillMaxWidth()
                 ) {
-                    LoginField(value = id, onValueChange = {id = it},
+                    LoginField(value = loginUiState.id, onValueChange = {loginViewModel.updateId(it)},
                         textField = stringResource(id = R.string.id),
                         onNext = {
-//                            loginViewModel.idErrorCheck()
                             focusManager.moveFocus(FocusDirection.Next)}
+                    ,
                     )
-                    LoginField(value = pwd, onValueChange = {pwd = it},
+                    LoginField(value = loginUiState.pwd, onValueChange = {loginViewModel.updatePwd(it)},
                         textField = stringResource(id = R.string.password),
                         onDone = { focusManager.clearFocus()
-//                            loginViewModel.updateBtnState()
-//                            loginViewModel.passwordErrorCheck()
                         }
                     )
                 }
                 Spacer(modifier = Modifier.size(30.dp))
 
+                loginViewModel.updateBtnState()
+
                 OutlinedButton(
-                    onClick = { /*TODO*/ }, modifier = Modifier
+                    onClick = { loginViewModel.sendLogin(navController)
+                              }, modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(30.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-                    border = BorderStroke(width = 2.dp, Color.Black)
+                    border = BorderStroke(width = 2.dp, Color.Black),
+                    enabled = loginUiState.btnState
 
                 ) { Text(text = "로그인", fontSize = 15.sp) }
 
@@ -153,7 +158,7 @@ import com.example.dotoring.ui.theme.DotoringTheme
 
 @Composable
 fun LoginField(value:String, onValueChange:(String)->Unit, textField: String, onDone: (KeyboardActionScope.() -> Unit)? = null,
-               onNext: (KeyboardActionScope.() -> Unit)? = null) {
+               onNext: (KeyboardActionScope.() -> Unit)? = null, ) {
     Column() {TextField(
         value = value,
         onValueChange = onValueChange,
@@ -169,6 +174,9 @@ fun LoginField(value:String, onValueChange:(String)->Unit, textField: String, on
             backgroundColor = Color.Transparent,
             placeholderColor = colorResource(id = R.color.grey_500)),
         keyboardActions = KeyboardActions(onDone, onNext),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
+
+
     )
 
     }
@@ -179,6 +187,6 @@ fun LoginField(value:String, onValueChange:(String)->Unit, textField: String, on
 @Composable
 fun LoginPreview() {
     DotoringTheme {
-    LoginScreen()
+    LoginScreen(navController = rememberNavController())
 }
 }

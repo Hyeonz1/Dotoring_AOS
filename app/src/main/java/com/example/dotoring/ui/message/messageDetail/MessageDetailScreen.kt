@@ -66,6 +66,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
 import com.example.dotoring.ui.register.first.RegisterFirstViewModel
 import com.example.dotoring.ui.theme.DotoringTheme
@@ -78,7 +80,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewModel()) {
+fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewModel(), navController: NavHostController) {
     var message by remember { mutableStateOf("") }
     val writer=true
     val messageDetailUiState by messageDetailViewModel.uiState.collectAsState()
@@ -351,7 +353,7 @@ fun MentoChatBox(text:String) {
 @Composable
 fun MessageDetailPreview() {
     DotoringTheme {
-        MessageDetailScreen()
+        MessageDetailScreen(navController = rememberNavController())
     }
 }
 
