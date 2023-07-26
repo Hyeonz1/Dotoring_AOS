@@ -1,6 +1,7 @@
 package com.example.dotoring.ui.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,12 +22,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
+import com.example.dotoring.navigation.MentiDetailScreen
+import com.example.dotoring.ui.detail.MentiDetailedViewModel
 import com.example.dotoring.ui.home.data.Mentee
 import com.example.dotoring.ui.theme.DotoringTheme
 
 @Composable
-fun MenteeCard(mentee: Mentee) {
+fun MenteeCard(mentee: Mentee, navController: NavHostController, menteeDetailedViewModel: MentiDetailedViewModel = viewModel()) {
+/*
+    val menteeDetailedUiState by menteeDetailedViewModel.uiState.collectAsState()
+*/
+
     val space: Dp = 5.dp
     val spaceBetweenPhotoAndDescription: Dp = 10.dp
 
@@ -36,7 +48,12 @@ fun MenteeCard(mentee: Mentee) {
     Card(
         modifier = Modifier
             .size(width = 284.dp, height = 127.dp)
-            .clip(RoundedCornerShape(20.dp)),
+            .clip(RoundedCornerShape(20.dp))
+            .clickable {
+                       navController.navigate(MentiDetailScreen.MentiDetailed.route)
+                       menteeDetailedViewModel.loadMenteeInfo()
+                       },
+        elevation = 5.dp
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -95,6 +112,6 @@ fun MenteeCard(mentee: Mentee) {
 @Composable
 private fun HomePreview() {
     DotoringTheme {
-        MenteeCard((Mentee(nickname = "현지", profileImage = "ㅋㅋ", major = "소프트웨어공학과", introduction = "하이")))
+        MenteeCard((Mentee(nickname = "현지", profileImage = "ㅋㅋ", major = "소프트웨어공학과", introduction = "하이")), navController = rememberNavController())
     }
 }
