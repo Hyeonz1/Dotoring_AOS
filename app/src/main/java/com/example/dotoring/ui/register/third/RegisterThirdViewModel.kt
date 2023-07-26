@@ -34,6 +34,12 @@ class RegisterThirdViewModel: ViewModel() {
             currentState.copy(nickname = nicknameInput)
         }
     }
+
+    fun updateNicknameCertifiedState() {
+        _uiState.update { currentState ->
+            currentState.copy(nicknameCertified = true)
+        }
+    }
     fun toggleNicknameErrorTextColor() {
         if( _uiState.value.nicknameCertified ) {
             _uiState.update { currentState ->
@@ -55,20 +61,29 @@ class RegisterThirdViewModel: ViewModel() {
 
     fun verifyNickname() {
         val verifyNicknameRequest = NicknameValidationRequest(nickname = uiState.value.nickname)
+        Log.d("통신", "Request: ${verifyNicknameRequest.toString()}")
         val verifyNicknameResponseCall: Call<CommonResponse> = DotoringAPI.retrofitService.nicknameValidation(verifyNicknameRequest)
 
         verifyNicknameResponseCall.enqueue(object: Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
+                Log.d("통신", "onResponse")
+
                 if (response.isSuccessful && response.body() != null) {
+                    Log.d("통신", "Success")
+
                     _uiState.update { currentState ->
                         currentState.copy(nicknameCertified = true)
                     }
+
+                    updateNicknameCertifiedState()
+                    toggleNicknameErrorTextColor()
                     enableBtnState()
                 }
             }
             override fun onFailure(call: Call<CommonResponse>, t: Throwable) {
-                Log.d("통신", "통신 실패: $t")
-                Log.d("회원 가입 통신", "요청 내용 - $verifyNicknameResponseCall")
+                val string = t.message.toString()
+                Log.d("통신", "통신 실패: $string")
+                Log.d("통신", "요청 내용 - $verifyNicknameResponseCall")
             }
         })
 

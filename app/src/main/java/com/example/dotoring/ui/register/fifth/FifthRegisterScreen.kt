@@ -22,10 +22,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
+import com.example.dotoring.navigation.AuthScreen
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
 import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
@@ -83,7 +83,7 @@ fun FifthRegisterScreen(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                RegisterScreenNextButton(enabled = registerFifthUiState.btnState)
+                RegisterScreenNextButton(onClick = { navController.navigate(AuthScreen.Register6.route) }, enabled = registerFifthUiState.btnState)
 
                 Spacer(modifier = Modifier.weight(3f))
 

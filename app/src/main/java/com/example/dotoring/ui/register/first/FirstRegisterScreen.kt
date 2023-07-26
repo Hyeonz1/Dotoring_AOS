@@ -38,19 +38,15 @@ import com.example.dotoring.ui.register.util.RegisterScreenNextButton
 import com.example.dotoring.ui.theme.DotoringTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.dotoring.navigation.AuthScreen
 import com.example.dotoring.util.FilterBottomSheet
 
-
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun Introduce( registerFirstViewModel: RegisterFirstViewModel = viewModel() ) {
     val registerFirstUiState by registerFirstViewModel.uiState.collectAsState()
-    val context = LocalContext.current
 
     val focusManager = LocalFocusManager.current
 
@@ -218,7 +214,8 @@ fun RegisterScreenFirst(
     navController: NavHostController
 ) {
 
-    val firstNextBtnState = registerFirstViewModel.firstBtnState
+    val registerFirstUiState by registerFirstViewModel.uiState.collectAsState()
+
 
     FilterBottomSheet(backLayerContent = {
         Column(
@@ -240,7 +237,7 @@ fun RegisterScreenFirst(
 
                 Spacer(modifier = Modifier.size(100.dp))
 
-                RegisterScreenNextButton(onClick = {}, enabled = firstNextBtnState)
+                RegisterScreenNextButton(onClick = {navController.navigate(AuthScreen.Register2.route)}, enabled = registerFirstUiState.firstBtnState)
             }
 
         }

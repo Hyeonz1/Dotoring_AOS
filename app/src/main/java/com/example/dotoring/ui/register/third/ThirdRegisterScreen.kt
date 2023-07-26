@@ -20,10 +20,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
+import com.example.dotoring.navigation.AuthScreen
 import com.example.dotoring.ui.register.util.CommonTextField
 import com.example.dotoring.ui.register.util.EffectiveCheckButton
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
@@ -77,11 +77,6 @@ fun ThirdRegisterScreen(
                     EffectiveCheckButton(
                         onClick = {
                                   registerThirdViewModel.verifyNickname()
-                                  if (registerThirdUiState.nicknameCertified) {
-                                      registerThirdViewModel.toggleNicknameErrorTextColor()
-                                  } else {
-                                      registerThirdViewModel.toggleNicknameErrorTextColor()
-                                  }
                         },
                         text = stringResource(id = R.string.register_nickname_duplication_check)
                         )
@@ -109,7 +104,7 @@ fun ThirdRegisterScreen(
 
         Spacer(modifier = Modifier.weight(1.5f))
 
-        RegisterScreenNextButton(enabled = registerThirdUiState.btnState)
+        RegisterScreenNextButton(onClick = { navController.navigate(AuthScreen.Register4.route) },enabled = registerThirdUiState.btnState)
 
         Spacer(modifier = Modifier.weight(10f))
     }
