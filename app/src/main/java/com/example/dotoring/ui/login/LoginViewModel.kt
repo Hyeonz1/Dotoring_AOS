@@ -16,6 +16,7 @@ import com.example.dotoring.navigation.HomeNavGraph
 import com.example.dotoring.network.DotoringAPI
 import com.example.dotoring.ui.home.HomeScreen
 import com.example.dotoring.ui.login.data.TokenSharedPreferences
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -65,15 +66,18 @@ class LoginViewModel: ViewModel() {
         sendLoginRequestCall.enqueue(object : Callback<CommonResponse>
         {
 
+
             override fun onResponse(
                 call: Call<CommonResponse>,
                 response: Response<CommonResponse>
             ) {
                 Log.d("로그인", "통신 성공 : ${response.raw()}")
-                 Log.d("로그인", "통신 성공 : " + response.body().toString())
-                val jsonObject = JSONObject(response.body().toString())
+                Log.d("로그인", "통신 성공 : " + response.body().toString())
+                val jsonObject= Gson().toJson(response.body())
+                Log.d("로그인", "로그인??" +jsonObject)
+                val jo = JSONObject(jsonObject)
                 Log.d("f로그인","로그인 성공할락말락")
-                val jsonObjectSuccess = jsonObject.getBoolean("success")
+                val jsonObjectSuccess = jo.getBoolean("success")
                 Log.d("통신", "ㅌ통신성공??:")
 
                 if (jsonObjectSuccess) {

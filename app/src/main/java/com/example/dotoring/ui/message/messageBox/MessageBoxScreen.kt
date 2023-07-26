@@ -72,7 +72,6 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
                 LazyColumn(state = scrollState) {
                     this.items(messageBoxUiState.messageList) {
                         messageBox -> MessageListItem(messageBox=messageBox, navController = navController)
-//
                     }
                 }
 
