@@ -18,7 +18,7 @@ class MentiDetailedViewModel: ViewModel() {
     val uiState: StateFlow<MentiDetailedUiState> = _uiState.asStateFlow()
 
     fun loadMenteeInfo() {
-        val loadMenteeInfoRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.loadDetailedInfo(id = uiState.value.id)
+        val loadMenteeInfoRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.loadMentiDetailedInfo(id = uiState.value.id)
 
         loadMenteeInfoRequestCall.enqueue(object: Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
