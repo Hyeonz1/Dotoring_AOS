@@ -5,10 +5,10 @@ import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.dotoring.dto.CommonResponse
-import com.example.dotoring.dto.register.EmailCertificationRequest
 import com.example.dotoring.dto.register.EmailCodeRequest
 import com.example.dotoring.dto.register.IdValidationRequest
 import com.example.dotoring.network.DotoringAPI
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -62,6 +62,7 @@ class RegisterSixthViewModel: ViewModel() {
                 currentState.copy(passwordCertified = false)
             }
         }
+
         if( _uiState.value.passwordCertified ) {
             _uiState.update { currentState ->
                 currentState.copy(passwordErrorTextColor = Color.Transparent)
@@ -126,16 +127,27 @@ class RegisterSixthViewModel: ViewModel() {
     }
 
     fun userIdDuplicationCheck() {
+        Log.d("통신", "userIdDuplicationCheck - 시작")
+
         val idValidationRequest = IdValidationRequest(loginId = uiState.value.memberId)
+        Log.d("통신", "userIdDuplicationCheck - $idValidationRequest")
+
         val idValidationRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.loginIdValidation(idValidationRequest)
 
         idValidationRequestCall.enqueue(object: Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
+                Log.d("통신", "userIdDuplicationCheck - onResponse")
+                Log.d("통신", "userIdDuplicationCheck - response.code(): ${response.code()}")
 
-                val jsonObjectResponse = JSONObject(response.body().toString())
-                val jsonObjectSuccess = jsonObjectResponse.getBoolean("success")
+                val jsonObject = Gson().toJson(response.body())
+                Log.d("통신", "userIdDuplicationCheck - jsonObject: $jsonObject")
+
+                val jo = JSONObject(jsonObject)
+                val jsonObjectSuccess = jo.getBoolean("success")
 
                 if (jsonObjectSuccess) {
+                    Log.d("통신", "userIdDuplicationCheck - success")
+
                     _uiState.update { currentState ->
                         currentState.copy(idAvailable = true)
                     }
@@ -149,18 +161,24 @@ class RegisterSixthViewModel: ViewModel() {
     }
 
     fun sendAuthenticationCode() {
+        Log.d("통신", "sendAuthenticationCode - 시작")
+
         val authenticationCodeRequest = EmailCodeRequest(email = uiState.value.email)
+        Log.d("통신", "sendAuthenticationCode - $authenticationCodeRequest")
+
         val authenticationCodeRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.sendAuthenticationCode(authenticationCodeRequest)
 
         authenticationCodeRequestCall.enqueue(object: Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
+                Log.d("통신", "sendAuthenticationCode - onResponse")
 
-                /*val jsonObjectResponse = JSONObject(response.body().toString())
-                val jsonObjectSuccess = jsonObjectResponse.getBoolean("success")
+                val jsonObject = Gson().toJson(response.body())
+                val jo = JSONObject(jsonObject)
+                val jsonObjectSuccess = jo.getBoolean("success")
 
                 if (jsonObjectSuccess) {
 
-                }*/
+                }
             }
             override fun onFailure(call: Call<CommonResponse>, t: Throwable) {
                 Log.d("통신", "통신 실패: $t")
@@ -169,15 +187,21 @@ class RegisterSixthViewModel: ViewModel() {
         })
     }
 
-    fun codeCertification() {
+   /* fun codeCertification() {
+        Log.d("통신", "codeCertification - 시작")
+
         val codeCertificationRequest = EmailCertificationRequest(code = uiState.value.validationCode)
+        Log.d("통신", "codeCertification - $codeCertificationRequest")
+
         val codeCertificationRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.emailCertification(codeCertificationRequest)
 
         codeCertificationRequestCall.enqueue(object: Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
+                Log.d("통신", "codeCertification - onResponse")
 
-                val jsonObjectResponse = JSONObject(response.body().toString())
-                val jsonObjectSuccess = jsonObjectResponse.getBoolean("success")
+                val jsonObject = Gson().toJson(response.body())
+                val jo = JSONObject(jsonObject)
+                val jsonObjectSuccess = jo.getBoolean("success")
 
                 if (jsonObjectSuccess) {
                     _uiState.update { currentState ->
@@ -194,5 +218,5 @@ class RegisterSixthViewModel: ViewModel() {
                 Log.d("회원 가입 통신", "요청 내용 - $codeCertificationRequestCall")
             }
         })
-    }
+    }*/
 }

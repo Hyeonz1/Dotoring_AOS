@@ -204,7 +204,7 @@ fun SixthRegisterScreen(
                         placeholder = stringResource(id = R.string.register6_verification_code),
                         btnText = stringResource(R.string.register6_verify),
                         width = width,
-                        onClick = { registerSixthViewModel.codeCertification() },
+                        onClick = { registerSixthUiState.validationCode  },
                         onDone = { focusManager.clearFocus() },
                         imeAction = ImeAction.Done
                     )
