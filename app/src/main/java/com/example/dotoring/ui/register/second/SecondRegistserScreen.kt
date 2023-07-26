@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
+import com.example.dotoring.navigation.AuthScreen
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
 import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
@@ -84,7 +85,7 @@ fun SecondRegisterScreen(
 
             Spacer(modifier = Modifier.size(60.dp))
 
-            RegisterScreenNextButton()
+            RegisterScreenNextButton(onClick = { navController.navigate(AuthScreen.Register3.route)}, enabled = true )
         }
     }
 }

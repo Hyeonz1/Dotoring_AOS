@@ -40,6 +40,7 @@ class HomeViewModel: ViewModel() {
                             nickname = getObject.getString("nickname"),
                             profileImage = getObject.getString("profileImage"),
                             major = getObject.getString("major"),
+                            job = getObject.getString("job"),
                             introduction = getObject.getString("introduction")
                         )
 

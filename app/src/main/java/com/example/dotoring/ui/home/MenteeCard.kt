@@ -10,8 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -112,6 +110,6 @@ fun MenteeCard(mentee: Mentee, navController: NavHostController, menteeDetailedV
 @Composable
 private fun HomePreview() {
     DotoringTheme {
-        MenteeCard((Mentee(nickname = "현지", profileImage = "ㅋㅋ", major = "소프트웨어공학과", introduction = "하이")), navController = rememberNavController())
+        MenteeCard((Mentee(nickname = "현지", profileImage = "ㅋㅋ", major = "소프트웨어공학과", job = "개발자", introduction = "하이")), navController = rememberNavController())
     }
 }

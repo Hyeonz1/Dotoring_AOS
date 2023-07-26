@@ -69,8 +69,9 @@ class RegisterFirstViewModel(): ViewModel() {
     }
 
     fun enableNextButton() {
-        firstBtnState = true
-        Log.d("현지", "test")
+        _uiState.update { currentState ->
+            currentState.copy(firstBtnState = true)
+        }
     }
 
 
