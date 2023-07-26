@@ -1,5 +1,9 @@
 package com.example.dotoring.ui.register.second
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +15,11 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -18,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
@@ -28,9 +38,41 @@ import com.example.dotoring.ui.theme.DotoringTheme
 import de.charlex.compose.HtmlText
 
 @Composable
-private fun ImageUploadButton() {
+private fun ImageUploadButton(
+    registerSecondViewModel: RegisterSecondViewModel = viewModel(),
+    uploadEmploymentFile: Boolean
+) {
+
+    val registerSecondUiState by registerSecondViewModel.uiState.collectAsState()
+
+    var selectedImageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = {
+                uri ->
+            selectedImageUri = uri
+            val file = registerSecondViewModel.uriToFile(uri)
+
+            if (uploadEmploymentFile) {
+                registerSecondViewModel.uploadEmploymentFile()
+                registerSecondViewModel.updateEmploymentCertification(file)
+
+            } else {
+                registerSecondViewModel.uploadGraduationFile()
+                registerSecondViewModel.updateGraduationCertification(file)
+            }
+
+
+        }
+    )
+
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { singlePhotoPickerLauncher.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        ) },
         modifier = Modifier.size(width = 300.dp, height = 80.dp),
         border = BorderStroke(width = 0.5.dp, color = colorResource(id = R.color.grey_200)),
         colors = ButtonDefaults.buttonColors(
@@ -47,8 +89,10 @@ private fun ImageUploadButton() {
 
 @Composable
 fun SecondRegisterScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    registerSecondViewModel: RegisterSecondViewModel = viewModel(),
 ) {
+
     Column(
         modifier = Modifier.padding(top = 50.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -64,7 +108,7 @@ fun SecondRegisterScreen(
 
             Spacer(modifier = Modifier.size(10.dp))
 
-            ImageUploadButton()
+            ImageUploadButton(uploadEmploymentFile = true)
 
             Spacer(modifier = Modifier.size(50.dp))
 
@@ -81,7 +125,7 @@ fun SecondRegisterScreen(
 
             Spacer(modifier = Modifier.size(10.dp))
 
-            ImageUploadButton()
+            ImageUploadButton(uploadEmploymentFile = false)
 
             Spacer(modifier = Modifier.size(60.dp))
 
