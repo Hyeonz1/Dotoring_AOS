@@ -13,6 +13,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -22,13 +24,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
+import com.example.dotoring.ui.register.sixth.RegisterSixthViewModel
 import com.example.dotoring.ui.theme.DotoringTheme
 
 @Composable
-fun MenteeDetailed(navController: NavController) {
+fun MenteeDetailed(menteeDetailedViewModel: MentiDetailedViewModel = viewModel(),
+                   navController: NavController) {
+    val menteeDetailedUiState by menteeDetailedViewModel.uiState.collectAsState()
 
     Scaffold(
         floatingActionButton = {
@@ -68,16 +74,16 @@ fun MenteeDetailed(navController: NavController) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Image(
-                            painter = painterResource(R.drawable.sample2),
+                        /*Image(
+                            painter = painterResource(menteeDetailedUiState.profileImage),
                             contentDescription = null,
                             modifier = Modifier.size(100.dp)
                         )
-
+*/
                         Spacer(modifier = Modifier.size(10.dp))
 
                         Text(
-                            text = "학과, n학년",
+                            text = menteeDetailedUiState.major,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -85,7 +91,7 @@ fun MenteeDetailed(navController: NavController) {
                         Spacer(modifier = Modifier.size(5.dp))
 
                         Text(
-                            text = "닉네임",
+                            text = menteeDetailedUiState.nickname,
                             fontSize = 30.sp,
                             fontWeight = FontWeight.ExtraBold,
                             color = colorResource(id = R.color.navy)
@@ -97,7 +103,7 @@ fun MenteeDetailed(navController: NavController) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 50.dp),
+                            .padding(start = 50.dp, end = 50.dp),
                         horizontalAlignment = Alignment.Start
 
                     ) {
@@ -109,7 +115,7 @@ fun MenteeDetailed(navController: NavController) {
                             )
                             Spacer(modifier = Modifier.size(8.dp))
                             Text(
-                                text = "분야 내용",
+                                text = menteeDetailedUiState.job,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Normal
                             )
@@ -125,7 +131,7 @@ fun MenteeDetailed(navController: NavController) {
                             )
                             Spacer(modifier = Modifier.size(8.dp))
                             Text(
-                                text = "한 줄 소개 내용",
+                                text = menteeDetailedUiState.introduction,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Normal
                             )
@@ -141,7 +147,7 @@ fun MenteeDetailed(navController: NavController) {
                             )
                             Spacer(modifier = Modifier.size(8.dp))
                             Text(
-                                text = "원하는 멘토링 내용",
+                                text = menteeDetailedUiState.mentoring,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Normal
                             )
