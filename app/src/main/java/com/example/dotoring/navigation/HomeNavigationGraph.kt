@@ -63,6 +63,7 @@ fun NavGraphBuilder.messageDetailNavGraph(navController: NavHostController) {
     }
 }
 
+
 sealed class MessageDetailScreen(val route: String) {
     object MessageDetailed: MessageDetailScreen(route = "MESSAGE_DETAILED")
 }

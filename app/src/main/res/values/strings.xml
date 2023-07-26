@@ -71,10 +71,10 @@
     <string name="register6_verify_error">인증 코드가 달라요.</string>
     <string name="register6_to_login_page">로그인하러 가기</string>
 
-    <string name="university">전남대학교 학생들이</string>
-    <string name="mentor_login1">선배님을 기다리고 있어요</string>
+    <string name="university">&#60;전남대학교&#62; 선배와 후배를</string>
+    <string name="mentor_login1">한 공간에서 만나보세요.</string>
     <string name="login_text">회원서비스 이용을 위해 로그인해 주세요.</string>
-    <string name="login">로그인</string>
+    <string name="id">아이디</string>
     <string name="password">비밀번호</string>
 
     <string name="message_info">쪽지 내용은 300자 이내로 제한됩니다.</string>

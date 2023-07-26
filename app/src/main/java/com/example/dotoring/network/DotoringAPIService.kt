@@ -1,6 +1,8 @@
 package com.example.dotoring.network
 
 import com.example.dotoring.dto.CommonResponse
+import com.example.dotoring.dto.login.LoginRequest
+import com.example.dotoring.dto.message.MessageRequest
 import com.example.dotoring.dto.register.EmailCertificationRequest
 import com.example.dotoring.dto.register.EmailCodeRequest
 import com.example.dotoring.dto.register.FinalSignUpRequest
@@ -95,11 +97,51 @@ interface DotoringAPIService {
     ): Call<CommonResponse>
 
     @GET("api/mento/{id}")
-    fun loadDetailedInfo(
-        @Path("id") id: Int
+    fun loadDMentoDetailedInfo(
+        @Path("id") userId: String
     ): Call<CommonResponse>
 
+    @GET("api/menti/{id}")
+    fun loadMentiDetailedInfo(
+        @Path("id") mentiId: String
+    ): Call<CommonResponse>
+
+    @POST("api/auth/login")
+    fun doLogin(
+        @Body loginRequest: LoginRequest
+    ): Call<CommonResponse>
+
+    @POST("api/auth/reissue")
+    fun reissue(
+    ): Call<CommonResponse>
+
+    @POST("api/mento/letter/in/{mentiid}")
+    fun inSendMessage(
+        @Body MessageRequest: MessageRequest
+    ): Call<CommonResponse>
+
+    @POST("api/mento/letter/out/{mentiid}")
+    fun outSendMessage(
+        @Body MessageRequest: MessageRequest
+    ): Call<CommonResponse>
+
+    @GET("api/mento/room")
+    fun loadMessageBox(
+    ): Call<CommonResponse>
+
+    @GET("api/mento/letter/{roomPk}")
+    fun loadDetailedMessage(
+        @Path("roomPk") roomPk: Long,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+
+    ): Call<CommonResponse>
+
+
+
 }
+
+
 
 
 object DotoringAPI {
