@@ -5,4 +5,6 @@ data class RegisterFirstUiState(
     val careerLevel: String = "",
     val job: String = "",
     val major: String = ""
+
+        , val firstBtnState: Boolean=false
 )

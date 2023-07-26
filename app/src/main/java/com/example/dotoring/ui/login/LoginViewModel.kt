@@ -57,36 +57,43 @@ class LoginViewModel: ViewModel() {
 
 
     fun sendLogin(navController: NavHostController) {
-        navController.navigate(Graph.HOME)
-//        val sendLoginRequest= LoginRequest(loginId = uiState.value.id, password = uiState.value.pwd)
-//        val sendLoginRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.doLogin(sendLoginRequest)
-//
-//        sendLoginRequestCall.enqueue(object : Callback<CommonResponse>
-//        {
-//            override fun onResponse(
-//                call: Call<CommonResponse>,
-//                response: Response<CommonResponse>
-//            ) {
-//                val jsonObjectResponse = JSONObject(response.body().toString())
-//                val jsonObjectSuccess = jsonObjectResponse.getBoolean("success")
-//
-//                if (jsonObjectSuccess) {
-//                    val accessToken= response.headers()["Authorization"]
-//                    val refreshToken= response.headers()["set-cookie"]
-//                    MyApplication.token_prefs.accessToken = accessToken
-//                    MyApplication.token_prefs.refreshToken = refreshToken
-//
-//                    navController.navigate(Graph.HOME)
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<CommonResponse>, t: Throwable) {
-//                Log.d("통신", "통신 실패: $t")
-//                Log.d("회원 가입 통신", "요청 내용 - $sendLoginRequestCall")
-//
-//            }
-//        })
-//
+        //navController.navigate(Graph.HOME)
+        val sendLoginRequest= LoginRequest(loginId = uiState.value.id, password = uiState.value.pwd)
+        val sendLoginRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.doLogin(sendLoginRequest)
+        Log.d("통신", "ㅌ통신함수 실행:")
+
+        sendLoginRequestCall.enqueue(object : Callback<CommonResponse>
+        {
+
+            override fun onResponse(
+                call: Call<CommonResponse>,
+                response: Response<CommonResponse>
+            ) {
+                Log.d("로그인", "통신 성공 : ${response.raw()}")
+                 Log.d("로그인", "통신 성공 : " + response.body().toString())
+                val jsonObject = JSONObject(response.body().toString())
+                Log.d("f로그인","로그인 성공할락말락")
+                val jsonObjectSuccess = jsonObject.getBoolean("success")
+                Log.d("통신", "ㅌ통신성공??:")
+
+                if (jsonObjectSuccess) {
+                    Log.d("통신", "ㅌ통신함수 성공:")
+                    val accessToken= response.headers()["Authorization"]
+                    val refreshToken= response.headers()["set-cookie"]
+                    MyApplication.token_prefs.accessToken = accessToken
+                    MyApplication.token_prefs.refreshToken = refreshToken
+
+                    navController.navigate(Graph.HOME)
+                }
+            }
+
+            override fun onFailure(call: Call<CommonResponse>, t: Throwable) {
+                Log.d("통신", "통신 실패: $t")
+                Log.d("회원 가입 통신", "요청 내용 - $sendLoginRequestCall")
+
+            }
+        })
+
     }
 
 
