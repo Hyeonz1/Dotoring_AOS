@@ -74,16 +74,31 @@ interface DotoringAPIService {
         @Body finalSignUpRequest: FinalSignUpRequest
     ):Call <CommonResponse>
 
-    @GET("api/mento")
+    @GET("api/menti")
     fun searchMentee(
+    ): Call<CommonResponse>
+
+    @GET("api/menti")
+    fun searchMenteeWithMajors(
+        @Query("majors") majors: String
+    ): Call<CommonResponse>
+
+    @GET("api/menti")
+    fun searchMenteeWithJobs(
+        @Query("jobs") jobs: String
+    ): Call<CommonResponse>
+
+    @GET("api/menti")
+    fun searchMenteeWithAllFilter(
         @Query("majors") majors: String,
         @Query("jobs") jobs: String
     ): Call<CommonResponse>
 
     @GET("api/mento/{id}")
     fun loadDetailedInfo(
-        @Path("id") userId: String
+        @Path("id") id: Int
     ): Call<CommonResponse>
+
 }
 
 

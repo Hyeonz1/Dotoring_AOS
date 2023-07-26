@@ -23,6 +23,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,13 +44,16 @@ import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.BottomNavScreen
 import com.example.dotoring.R
 import com.example.dotoring.navigation.HomeNavGraph
-import com.example.dotoring.ui.home.data.DataSource
 import com.example.dotoring.ui.home.data.Mentee
 import com.example.dotoring.ui.theme.DotoringTheme
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(navController: NavHostController, homeViewModel: HomeViewModel = viewModel(),
+) {
+    val homeUiState by homeViewModel.uiState.collectAsState()
+
     Row() {
         Spacer(modifier = Modifier.weight(1f))
 
@@ -116,7 +120,8 @@ fun MainScreen(navController: NavHostController) {
             Spacer(modifier = Modifier.size(30.dp))
 
             MenteeList(
-                menteeList = DataSource().loadMenties()
+                menteeList = homeUiState.mentiList,
+                navController = navController
             )
         }
 
@@ -157,10 +162,10 @@ private fun FilteringButton(onClick: () -> Unit, width: Dp, text: String) {
 }
 
 @Composable
-private fun MenteeList(menteeList: List<Mentee>) {
+private fun MenteeList(menteeList: List<Mentee>, navController: NavHostController) {
     LazyColumn() {
         items(menteeList) {mentee ->
-            MenteeCard(mentee = mentee)
+            MenteeCard(mentee = mentee, navController = navController)
             Spacer(modifier = Modifier.size(8.dp))
         }
     }
@@ -206,7 +211,7 @@ private fun SearchField(value: String, onValueChange: (String) -> Unit) {
 @Composable
 fun HomeScreenPreview() {
     DotoringTheme() {
-        SearchField(value = "", onValueChange = { })
+        MainScreen(navController = rememberNavController())
     }
 }
 
