@@ -1,6 +1,7 @@
 package com.example.dotoring.ui.message.messageBox
 
 import android.service.autofill.OnClickAction
+import android.util.Log
 import android.widget.AdapterView.OnItemClickListener
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -53,8 +55,13 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 @Composable
     fun MessageBoxScreen( messageBoxViewModel: MessageBoxViewModel = viewModel(), navController: NavHostController
     ) {
-        messageBoxViewModel.renderMessageBoxScreen(navController)
+
         val messageBoxUiState by messageBoxViewModel.uiState.collectAsState()
+    Log.d("쪽지함", " 쪽지함 실행")
+    LaunchedEffect(Unit) {
+    messageBoxViewModel.renderMessageBoxScreen(navController)
+    }
+    Log.d("쪽지함", " 쪽지함 ")
         val scrollState = rememberLazyListState()
 
         Column(
@@ -69,10 +76,9 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
 
-                LazyColumn(state = scrollState) {
+                LazyColumn(state = scrollState, ) {
                     this.items(messageBoxUiState.messageList) {
                         messageBox -> MessageListItem(messageBox=messageBox, navController = navController)
-//
                     }
                 }
 

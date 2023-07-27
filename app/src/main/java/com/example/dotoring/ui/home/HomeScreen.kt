@@ -24,6 +24,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,8 +55,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun MainScreen(navController: NavHostController, homeViewModel: HomeViewModel = viewModel(),
 ) {
     val homeUiState by homeViewModel.uiState.collectAsState()
-Log.d("홈통신", " 홈통신 실행")
-    homeViewModel.loadMentiList()
+    Log.d("홈통신", " 홈통신 실행")
+    LaunchedEffect(Unit) {
+        homeViewModel.loadMentiList()
+    }
+    Log.d("홈","확인 성공할락말락")
 
     Row() {
         Spacer(modifier = Modifier.weight(1f))
@@ -167,7 +171,7 @@ private fun FilteringButton(onClick: () -> Unit, width: Dp, text: String) {
 @Composable
 private fun MenteeList(menteeList: List<Mentee>, navController: NavHostController) {
     LazyColumn() {
-        items(menteeList) {mentee ->
+        items(menteeList) { mentee ->
             MenteeCard(mentee = mentee, navController = navController)
             Spacer(modifier = Modifier.size(8.dp))
         }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.dotoring.dto.CommonResponse
 import com.example.dotoring.network.DotoringAPI
 import com.example.dotoring.ui.home.data.Mentee
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,46 +20,46 @@ class HomeViewModel: ViewModel() {
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     fun loadMentiList() {
-        val mentiListRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.searchMentee()
+        DotoringAPI.retrofitService.searchMentee()
+            .enqueue(object : Callback<CommonResponse> {
+                override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
+                    val commonResponse = response.body()
 
-        mentiListRequestCall.enqueue(object: Callback<CommonResponse> {
-            override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
+                    if (commonResponse != null && commonResponse.success) {
+                        val responseJsonObject = commonResponse.response
 
-                val jsonObjectResponse = JSONObject(response.body().toString())
-                val jsonObjectSuccess = jsonObjectResponse.getBoolean("success")
-                val jsonObjectSuccessResponse = jsonObjectResponse.getJSONObject("response")
-                val mentiList = jsonObjectSuccessResponse.getJSONArray("content")
+                        val mentiList = responseJsonObject?.optJSONArray("content")
 
-                val uiMentiList: MutableList<Mentee> = mutableListOf()
+                        if (mentiList != null && mentiList.length() > 0) {
+                            val uiMentiList: MutableList<Mentee> = mutableListOf()
 
-                if (jsonObjectSuccess && mentiList.length() > 0) {
-                    for (i in 0 until mentiList.length()){
-                        Log.d("멘티리스트 가져오기"+ " i", i.toString())
-                        val getObject = mentiList.getJSONObject(i)
+                            for (i in 0 until mentiList.length()) {
+                                val mentiObject = mentiList.optJSONObject(i)
 
-                        val menti = Mentee(
-                            nickname = getObject.getString("nickname"),
-                            profileImage = getObject.getString("profileImage"),
-                            major = getObject.getString("major"),
-                            job = getObject.getString("job"),
-                            introduction = getObject.getString("introduction")
-                        )
+                                val mentee = Mentee(
+                                    id = mentiObject.getLong("id"),
+                                    nickname = mentiObject.getString("nickname"),
+                                    profileImage = mentiObject.getString("profileImage"),
+                                    major = mentiObject.getString("major"),
+                                    job = mentiObject.getString("job"),
+                                    introduction = mentiObject.getString("introduction")
+                                )
 
-                        uiMentiList.add(menti)
-                    }
+                                uiMentiList.add(mentee)
+                            }
 
-                    _uiState.update { currentState ->
-                        currentState.copy(mentiList = uiMentiList)
+                            _uiState.update { currentState ->
+                                currentState.copy(mentiList = uiMentiList)
+                            }
+                        }
+                    } else {
+                        Log.d("통신", "응답이 실패하거나 데이터가 없습니다.")
                     }
                 }
-            }
-            override fun onFailure(call: Call<CommonResponse>, t: Throwable) {
-                Log.d("통신", "통신 실패: $t")
-                Log.d("회원 가입 통신", "요청 내용 - $mentiListRequestCall")
-            }
-        })
+
+                override fun onFailure(call: Call<CommonResponse>, t: Throwable) {
+                    Log.d("통신", "통신 실패: $t")
+                }
+            })
     }
-
-
-
 }

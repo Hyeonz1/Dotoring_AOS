@@ -13,6 +13,7 @@ import com.example.dotoring.dto.message.MessageRequest
 import com.example.dotoring.navigation.Graph
 import com.example.dotoring.network.DotoringAPI
 import com.example.dotoring.ui.message.messageBox.MessageBox
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -48,9 +49,10 @@ class MessageDetailViewModel: ViewModel() {
             ) {
                 Log.d("메세지", "통신 성공 : ${response.raw()}")
                 Log.d("메세지", "통신 성공 : " + response.body().toString())
-                val jsonObject = JSONObject(response.body().toString())
+                val jsonObject= Gson().toJson(response.body())
                 Log.d("메세지","로그인 성공할락말락")
-                val jsonObjectSuccess = jsonObject.getBoolean("success")
+                val jo = JSONObject(jsonObject)
+                val jsonObjectSuccess = jo.getBoolean("success")
                 Log.d("메세지", "ㅌ통신성공??:")
 
                 if (jsonObjectSuccess) {
@@ -79,12 +81,16 @@ class MessageDetailViewModel: ViewModel() {
             call: Call<CommonResponse>,
             response: Response<CommonResponse>
         ) {
-            val jsonObjectResponse = JSONObject(response.body().toString())
-            val jsonObjectSuccess = jsonObjectResponse.getBoolean("success")
-
+            Log.d("메세지", "통신 성공 : ${response.raw()}")
+            Log.d("메세지", "통신 성공 : " + response.body().toString())
+            val jsonObject= Gson().toJson(response.body())
+            Log.d("메세지","로그인 성공할락말락")
+            val jo = JSONObject(jsonObject)
+            val jsonObjectSuccess = jo.getBoolean("success")
+            Log.d("메세지", "ㅌ통신성공??:")
 
             if (jsonObjectSuccess) {
-                val jsonObjectArray = jsonObjectResponse.getJSONArray("response")
+                val jsonObjectArray = jo.getJSONArray("response")
                 val uiMessageDetailList: MutableList<MessageDetail> = mutableListOf()
 
 
