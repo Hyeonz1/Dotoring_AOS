@@ -48,7 +48,6 @@ val client: OkHttpClient = OkHttpClient.Builder()
 //    })
     .build()
 
-
 val gson : Gson = GsonBuilder()
     .setLenient()
     .create()
