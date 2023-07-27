@@ -6,8 +6,8 @@ data class MessageBoxUiState (
 
         )
 data class MessageBox(
-    val roomPK: Int = 1 ,
-    val memberPK: Int = 1 ,
+    val roomPK: Long = 1 ,
+    val memberPK: Long = 1 ,
     val nickname: String ="",
     val lastLetter: String="",
     val updateAt: String=""

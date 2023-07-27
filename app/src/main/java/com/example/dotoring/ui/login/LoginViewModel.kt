@@ -72,33 +72,35 @@ class LoginViewModel: ViewModel() {
                 response: Response<CommonResponse>
             ) {
 
+                Log.d("로그인", "통신 성공 :" +response.body())
+                Log.d("로그인", "통신?"+response.message())
                 Log.d("로그인", "통신 성공 : ${response.raw()}")
                 Log.d("로그인", "통신 성공 : " + response.isSuccessful)
                 val jsonObject= Gson().toJson(response.body())
                 Log.d("로그인", "로그인??" )
                 val jo = JSONObject(jsonObject)
-                Log.d("f로그인","로그인 성공할락말락")
+                Log.d("f로그인","로그인 성공할락말락" +jo)
                 val jsonObjectSuccess = jo.getBoolean("success")
-                Log.d("통신", "ㅌ통신성공??:")
+                Log.d("로그인", "ㅌ통신성공??:")
 
                 if (jsonObjectSuccess) {
-                    Log.d("통신", "ㅌ통신함수 성공:")
+                    Log.d("로그인", "ㅌ통신함수 성공:")
                     val accessToken= response.headers()["Authorization"]
                     val refreshToken= response.headers()["set-cookie"]
-                    Log.d("통신", "헤더 추출완료")
+                    Log.d("로그인", "헤더 추출완료")
                     MyApplication.prefs.setString("Authorization", accessToken)
 
-                    Log.d("통신", "엑세스"+accessToken)
+                    Log.d("로그인", "엑세스"+accessToken)
                     MyApplication.prefs.setRefresh("Cookie", refreshToken)
                     //MyApplication.token_prefs.refreshToken = refreshToken
-                    Log.d("통신", "토큰 prefs")
+                    Log.d("로그인", "리프레쉬"+refreshToken)
                     navController.navigate(Graph.HOME)
-                    Log.d("통신", "컨트롤러")
+                    Log.d("로그인", "컨트롤러")
                 }
             }
 
             override fun onFailure(call: Call<CommonResponse>, t: Throwable) {
-                Log.d("통신", "통신 실패: $t")
+                Log.d("로그인", "통신 실패: $t")
                 Log.d("회원 가입 통신", "요청 내용 - $sendLoginRequestCall")
 
             }

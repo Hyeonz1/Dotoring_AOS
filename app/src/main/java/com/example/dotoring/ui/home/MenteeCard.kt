@@ -110,6 +110,6 @@ fun MenteeCard(mentee: Mentee, navController: NavHostController, menteeDetailedV
 @Composable
 private fun HomePreview() {
     DotoringTheme {
-        MenteeCard((Mentee(nickname = "현지", profileImage = "ㅋㅋ", major = "소프트웨어공학과", job = "개발자", introduction = "하이")), navController = rememberNavController())
+        MenteeCard((Mentee(id = 2, nickname = "현지", profileImage = "ㅋㅋ", major = "소프트웨어공학과", job = "개발자", introduction = "하이")), navController = rememberNavController())
     }
 }

@@ -29,15 +29,23 @@ import java.net.CookieManager
 
 
 private const val BASE_URL =
-    "http://192.168.0.10:8080/"
+    "http://172.30.1.62:8080/"
 
+//val interceptor = HttpLoggingInterceptor().apply {
+//    level = HttpLoggingInterceptor.Level.BODY
+//}
+
+//val otherClient: OkHttpClient = OkHttpClient.Builder()
+//    .addInterceptor(interceptor)
+//    .cookieJar(JavaNetCookieJar(CookieManager()))
+//    .build()
 
 val client: OkHttpClient = OkHttpClient.Builder()
     .addInterceptor(AppInterceptor())
     .cookieJar(JavaNetCookieJar(CookieManager()))
-    .addInterceptor(HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    })
+//    .addInterceptor(HttpLoggingInterceptor().apply {
+//        level = HttpLoggingInterceptor.Level.BODY
+//    })
     .build()
 
 
@@ -50,6 +58,12 @@ val retrofit: Retrofit = Retrofit.Builder()
     .addConverterFactory(GsonConverterFactory.create(gson))
     .client(client)
     .build()
+
+//val otherRetrofit: Retrofit = Retrofit.Builder()
+//    .baseUrl(BASE_URL)
+//    .addConverterFactory(GsonConverterFactory.create(gson))
+//    .client(otherClient)
+//    .build()
 
 
 class AppInterceptor : Interceptor {
@@ -169,3 +183,10 @@ object DotoringAPI {
         retrofit.create(DotoringAPIService::class.java)
     }
 }
+
+//object DotoringSecondAPI {
+//    val retrofitService: DotoringAPIService by lazy {
+//        otherRetrofit.create(DotoringAPIService::class.java)
+//    }
+//}
+
