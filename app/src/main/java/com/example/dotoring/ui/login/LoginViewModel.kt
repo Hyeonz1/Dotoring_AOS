@@ -15,7 +15,6 @@ import com.example.dotoring.navigation.Graph
 import com.example.dotoring.navigation.HomeNavGraph
 import com.example.dotoring.network.DotoringAPI
 import com.example.dotoring.ui.home.HomeScreen
-import com.example.dotoring.ui.login.data.TokenSharedPreferences
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -60,6 +59,7 @@ class LoginViewModel: ViewModel() {
     fun sendLogin(navController: NavHostController) {
         //navController.navigate(Graph.HOME)
         val sendLoginRequest= LoginRequest(loginId = uiState.value.id, password = uiState.value.pwd)
+        Log.d("리퀘","리퀘실헹" + "loginId")
         val sendLoginRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.doLogin(sendLoginRequest)
         Log.d("통신", "ㅌ통신함수 실행:")
 
@@ -71,10 +71,11 @@ class LoginViewModel: ViewModel() {
                 call: Call<CommonResponse>,
                 response: Response<CommonResponse>
             ) {
+
                 Log.d("로그인", "통신 성공 : ${response.raw()}")
-                Log.d("로그인", "통신 성공 : " + response.body().toString())
+                Log.d("로그인", "통신 성공 : " + response.isSuccessful)
                 val jsonObject= Gson().toJson(response.body())
-                Log.d("로그인", "로그인??" +jsonObject)
+                Log.d("로그인", "로그인??" )
                 val jo = JSONObject(jsonObject)
                 Log.d("f로그인","로그인 성공할락말락")
                 val jsonObjectSuccess = jo.getBoolean("success")
@@ -84,10 +85,15 @@ class LoginViewModel: ViewModel() {
                     Log.d("통신", "ㅌ통신함수 성공:")
                     val accessToken= response.headers()["Authorization"]
                     val refreshToken= response.headers()["set-cookie"]
-                    MyApplication.token_prefs.accessToken = accessToken
-                    MyApplication.token_prefs.refreshToken = refreshToken
+                    Log.d("통신", "헤더 추출완료")
+                    MyApplication.prefs.setString("Authorization", accessToken)
 
+                    Log.d("통신", "엑세스"+accessToken)
+                    MyApplication.prefs.setRefresh("Cookie", refreshToken)
+                    //MyApplication.token_prefs.refreshToken = refreshToken
+                    Log.d("통신", "토큰 prefs")
                     navController.navigate(Graph.HOME)
+                    Log.d("통신", "컨트롤러")
                 }
             }
 

@@ -8,6 +8,7 @@ import com.example.dotoring.navigation.Graph
 import com.example.dotoring.navigation.MessageDetailScreen
 import com.example.dotoring.network.DotoringAPI
 import com.example.dotoring.ui.home.data.Mentee
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,12 +38,15 @@ class MessageBoxViewModel : ViewModel() {
                 call: Call<CommonResponse>,
                 response: Response<CommonResponse>
             ) {
-                val jsonObjectResponse = JSONObject(response.body().toString())
-                val jsonObjectSuccess = jsonObjectResponse.getBoolean("success")
+                val jsonObject= Gson().toJson(response.body())
+                Log.d("로그인", "로그인??" )
+                val jo = JSONObject(jsonObject)
+                Log.d("f로그인","로그인 성공할락말락")
+                val jsonObjectSuccess = jo.getBoolean("success")
 
 
                 if (jsonObjectSuccess) {
-                    val jsonObjectArray = jsonObjectResponse.getJSONArray("response")
+                    val jsonObjectArray = jo.getJSONArray("response")
                     val uiMessageBoxList: MutableList<MessageBox> = mutableListOf()
 
 
