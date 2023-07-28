@@ -1,5 +1,7 @@
 package com.example.dotoring.ui.detail
 
+import android.util.Log
+import android.view.RoundedCorner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,15 +10,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -45,7 +50,8 @@ fun MenteeDetailed(menteeDetailedViewModel: MentiDetailedViewModel = viewModel()
                 Icon(
                     painter = painterResource(id = R.drawable.ic_mail),
                     contentDescription = "send mail to mentee",
-                    tint = colorResource(id = R.color.white)
+                    tint = colorResource(id = R.color.white),
+                    modifier = Modifier.size(30.dp)
                 )
             }
         }
@@ -65,37 +71,54 @@ fun MenteeDetailed(menteeDetailedViewModel: MentiDetailedViewModel = viewModel()
                 modifier = Modifier.fillMaxSize()
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 100.dp)
+                     modifier = Modifier
+                         .fillMaxSize()
+                         .padding(top = 100.dp)
 
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        /*Image(
-                            painter = painterResource(menteeDetailedUiState.profileImage),
-                            contentDescription = null,
-                            modifier = Modifier.size(100.dp)
-                        )
-*/
+
+                        (if(menteeDetailedUiState.profileImage != null){
+                                menteeDetailedUiState.profileImage
+                            } else { R.drawable.sample })?.let { it1 ->
+                                Image(
+                                    painter = painterResource(id = it1),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(100.dp)
+                                        .clip(
+                                            RoundedCornerShape(20.dp),
+                                ))
+                            }
+
+
                         Spacer(modifier = Modifier.size(10.dp))
 
-                        Text(
-                            text = menteeDetailedUiState.major,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Medium
-                        )
+                        (if(menteeDetailedUiState.major != null){
+                            menteeDetailedUiState.major
+                        } else {"소프트웨어공학과"})?.let { it1 ->
+                            Text(
+                                text = it1,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
 
                         Spacer(modifier = Modifier.size(5.dp))
 
-                        Text(
-                            text = menteeDetailedUiState.nickname,
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = colorResource(id = R.color.navy)
-                        )
+                        (if(menteeDetailedUiState.nickname != null){
+                            menteeDetailedUiState.nickname
+                        } else {"도토리"})?.let { it1 ->
+                            Text(
+                                text = it1,
+                                fontSize = 30.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = colorResource(id = R.color.navy)
+                            )
+                        }
+
                     }
 
                     Spacer(modifier = Modifier.size(40.dp))
@@ -114,11 +137,17 @@ fun MenteeDetailed(menteeDetailedViewModel: MentiDetailedViewModel = viewModel()
                                 fontWeight = FontWeight.Bold
                             )
                             Spacer(modifier = Modifier.size(8.dp))
-                            Text(
-                                text = menteeDetailedUiState.job,
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Normal
-                            )
+
+                            (if(menteeDetailedUiState.job != null){
+                                menteeDetailedUiState.job
+                            } else {"도토리"})?.let { it1 ->
+                                Text(
+                                    text = it1,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Normal,
+                                    color = colorResource(id = R.color.navy)
+                                )
+                            }
                         }
 
                         Spacer(modifier = Modifier.size(30.dp))
@@ -130,11 +159,17 @@ fun MenteeDetailed(menteeDetailedViewModel: MentiDetailedViewModel = viewModel()
                                 fontWeight = FontWeight.Bold
                             )
                             Spacer(modifier = Modifier.size(8.dp))
-                            Text(
-                                text = menteeDetailedUiState.introduction,
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Normal
-                            )
+
+                            (if(menteeDetailedUiState.introduction != null){
+                                menteeDetailedUiState.introduction
+                            } else {"도토리"})?.let { it1 ->
+                                Text(
+                                    text = it1,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Normal,
+                                    color = colorResource(id = R.color.navy)
+                                )
+
                         }
 
                         Spacer(modifier = Modifier.size(30.dp))
@@ -160,13 +195,16 @@ fun MenteeDetailed(menteeDetailedViewModel: MentiDetailedViewModel = viewModel()
     }
 
 
-}
+}}
 
+/*
 @Preview
 @Composable
 fun MenteeDetailedPreview() {
     DotoringTheme() {
         MenteeDetailed(navController = rememberNavController())
-        /*SearchField(value = "", onValueChange = { })*/
+        */
+/*SearchField(value = "", onValueChange = { })*//*
+
     }
-}
+}*/

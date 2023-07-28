@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.dotoring.dto.CommonResponse
 import com.example.dotoring.network.DotoringAPI
+import com.example.dotoring.ui.home.data.DataSource
 import com.example.dotoring.ui.home.data.Mentee
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +21,11 @@ class HomeViewModel: ViewModel() {
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     fun loadMentiList() {
+        _uiState.update {
+            it -> it.copy(mentiList = DataSource().loadMenties())
+        }
+    }
+    /*fun loadMentiList() {
         DotoringAPI.retrofitService.searchMentee()
             .enqueue(object : Callback<CommonResponse> {
                 override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
@@ -61,5 +67,5 @@ class HomeViewModel: ViewModel() {
                     Log.d("통신", "통신 실패: $t")
                 }
             })
-    }
+    }*/
 }

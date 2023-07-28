@@ -2,6 +2,7 @@ package com.example.dotoring.ui.home
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -49,6 +51,7 @@ import com.example.dotoring.navigation.HomeNavGraph
 import com.example.dotoring.ui.home.data.Mentee
 import com.example.dotoring.ui.theme.DotoringTheme
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.layout.ContentScale
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
@@ -57,82 +60,97 @@ fun MainScreen(navController: NavHostController, homeViewModel: HomeViewModel = 
     val homeUiState by homeViewModel.uiState.collectAsState()
     Log.d("홈통신", " 홈통신 실행")
     LaunchedEffect(Unit) {
+        /*homeViewModel.loadMentiList()*/
         homeViewModel.loadMentiList()
     }
     Log.d("홈","확인 성공할락말락")
 
-    Row() {
-        Spacer(modifier = Modifier.weight(1f))
+    Box(modifier = Modifier
+        .fillMaxSize()){
+        Image(
+            painter=painterResource(R.drawable.home_screen_background),
+            contentDescription=null,
+            contentScale = ContentScale.FillWidth)
+    }
 
-        Column (
-            horizontalAlignment = Alignment.Start
-        ) {
-            Spacer(modifier = Modifier.size(50.dp))
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Transparent)
+    ) {
+        Row() {
+            Spacer(modifier = Modifier.weight(1f))
 
-            Column(
+            Column (
                 horizontalAlignment = Alignment.Start
             ) {
-                DotoringLogo()
-
                 Spacer(modifier = Modifier.size(50.dp))
 
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.Bottom
+                Column(
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    Column() {
-                        Text(
-                            text = stringResource(id = R.string.home_for_u),
-                            fontSize = 17.sp,
-                            fontWeight = FontWeight.Light
-                        )
+                    DotoringLogo()
 
-                        Spacer(modifier = Modifier.size(5.dp))
+                    Spacer(modifier = Modifier.size(50.dp))
 
-                        Text(
-                            text = stringResource(id = R.string.home_recommended_mentee),
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.ExtraBold
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Column() {
+                            Text(
+                                text = stringResource(id = R.string.home_for_u),
+                                fontSize = 17.sp,
+                                fontWeight = FontWeight.Light
+                            )
 
+                            Spacer(modifier = Modifier.size(5.dp))
+
+                            Text(
+                                text = stringResource(id = R.string.home_recommended_mentee),
+                                fontSize = 30.sp,
+                                fontWeight = FontWeight.ExtraBold
+
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.size(width = 150.dp, height = 10.dp))
+
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_search_unfocused),
+                            contentDescription = null
                         )
                     }
+                }
 
-                    Spacer(modifier = Modifier.size(width = 150.dp, height = 10.dp))
+                Spacer(modifier = Modifier.size(30.dp))
 
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_search_unfocused),
-                        contentDescription = null
+                Row() {
+                    FilteringButton(
+                        onClick = { /*TODO*/ },
+                        width = 140.dp,
+                        text = stringResource(id = R.string.home_major)
+                    )
+
+                    Spacer(modifier = Modifier.size(15.dp))
+
+                    FilteringButton(
+                        onClick = { /*TODO*/ },
+                        width = 140.dp,
+                        text = stringResource(id = R.string.home_job_objectives)
                     )
                 }
-            }
 
-            Spacer(modifier = Modifier.size(30.dp))
+                Spacer(modifier = Modifier.size(30.dp))
 
-            Row() {
-                FilteringButton(
-                    onClick = { /*TODO*/ },
-                    width = 140.dp,
-                    text = stringResource(id = R.string.home_major)
-                )
-
-                Spacer(modifier = Modifier.size(15.dp))
-
-                FilteringButton(
-                    onClick = { /*TODO*/ },
-                    width = 140.dp,
-                    text = stringResource(id = R.string.home_job_objectives)
+                MenteeList(
+                    menteeList = homeUiState.mentiList,
+                    navController = navController
                 )
             }
 
-            Spacer(modifier = Modifier.size(30.dp))
-
-            MenteeList(
-                menteeList = homeUiState.mentiList,
-                navController = navController
-            )
+            Spacer(modifier = Modifier.weight(1f))
         }
-
-        Spacer(modifier = Modifier.weight(1f))
     }
 }
 

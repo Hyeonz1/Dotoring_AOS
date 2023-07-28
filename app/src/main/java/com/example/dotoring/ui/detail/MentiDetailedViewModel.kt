@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.dotoring.dto.CommonResponse
 import com.example.dotoring.network.DotoringAPI
+import com.example.dotoring.ui.home.data.DataSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +18,15 @@ class MentiDetailedViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(MentiDetailedUiState())
     val uiState: StateFlow<MentiDetailedUiState> = _uiState.asStateFlow()
 
-    fun loadMenteeInfo() {
+    fun loadMentiInfo(profileImage: Int?, nickname: String?, job: String?, major: String?, introduction: String?) {
+        Log.d("업데이트", "loadMentiInfo 실행")
+        _uiState.update { currentState ->
+            currentState.copy( profileImage = profileImage, nickname= nickname, job = job, major = major, introduction = introduction)
+        }
+        Log.d("업데이트", "넣은 값: ${nickname} uiState: ${uiState.value.nickname}")
+
+    }
+   /* fun loadMenteeInfo() {
         val loadMenteeInfoRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.loadMentiDetailedInfo(id = uiState.value.id)
 
         loadMenteeInfoRequestCall.enqueue(object: Callback<CommonResponse> {
@@ -50,5 +59,5 @@ class MentiDetailedViewModel: ViewModel() {
                 Log.d("회원 가입 통신", "요청 내용 - $loadMenteeInfoRequestCall")
             }
         })
-    }
+    }*/
 }
