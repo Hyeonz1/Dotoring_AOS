@@ -1,6 +1,8 @@
 package com.example.dotoring.ui.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.runtime.getValue
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,9 +12,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +30,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
+import com.example.dotoring.navigation.Graph
 import com.example.dotoring.navigation.MentiDetailScreen
 import com.example.dotoring.ui.detail.MentiDetailedViewModel
 import com.example.dotoring.ui.home.data.Mentee
@@ -31,9 +38,8 @@ import com.example.dotoring.ui.theme.DotoringTheme
 
 @Composable
 fun MenteeCard(mentee: Mentee, navController: NavHostController, menteeDetailedViewModel: MentiDetailedViewModel = viewModel()) {
-/*
+
     val menteeDetailedUiState by menteeDetailedViewModel.uiState.collectAsState()
-*/
 
     val space: Dp = 5.dp
     val spaceBetweenPhotoAndDescription: Dp = 10.dp
@@ -41,6 +47,7 @@ fun MenteeCard(mentee: Mentee, navController: NavHostController, menteeDetailedV
     val nickname = mentee.nickname
     val profileImage = mentee.profileImage
     val major = mentee.major
+    val job = mentee.job
     val introduction = mentee.introduction
 
     Card(
@@ -48,9 +55,9 @@ fun MenteeCard(mentee: Mentee, navController: NavHostController, menteeDetailedV
             .size(width = 284.dp, height = 127.dp)
             .clip(RoundedCornerShape(20.dp))
             .clickable {
-                       navController.navigate(MentiDetailScreen.MentiDetailed.route)
-                       menteeDetailedViewModel.loadMenteeInfo()
-                       },
+                navController.navigate(Graph.MENTI_DETAILS)
+
+            },
         elevation = 5.dp
     ) {
         Row(
@@ -61,11 +68,12 @@ fun MenteeCard(mentee: Mentee, navController: NavHostController, menteeDetailedV
             Spacer(modifier = Modifier.size(25.dp))
 
             Image(
-                painter = painterResource(id=img),
+                painter = painterResource(id=profileImage),
                 contentDescription = "멘토 사진",
                 modifier = Modifier
                     .size(width = 83.dp, height = 91.dp)
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(20.dp)),
+                contentScale = ContentScale.Crop
             )
 
             Spacer(modifier = Modifier.size(spaceBetweenPhotoAndDescription))
@@ -88,7 +96,7 @@ fun MenteeCard(mentee: Mentee, navController: NavHostController, menteeDetailedV
                 Spacer(modifier = Modifier.size(space))
 
                 Text(
-                    text = "희망 직무 분야",
+                    text = job,
                     fontSize = 10.sp
                 )
 
@@ -110,6 +118,6 @@ fun MenteeCard(mentee: Mentee, navController: NavHostController, menteeDetailedV
 @Composable
 private fun HomePreview() {
     DotoringTheme {
-        MenteeCard((Mentee(id = 2, nickname = "현지", profileImage = "ㅋㅋ", major = "소프트웨어공학과", job = "개발자", introduction = "하이")), navController = rememberNavController())
+        MenteeCard((Mentee(nickname = "현지", profileImage = R.drawable.sample, major = "소프트웨어공학과", job = "개발자", introduction = "하이")), navController = rememberNavController())
     }
 }
