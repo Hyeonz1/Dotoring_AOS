@@ -70,9 +70,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
-import com.example.dotoring.ui.message.messageBox.MessageBox
+
 import com.example.dotoring.ui.message.messageBox.MessageBoxViewModel
 import com.example.dotoring.ui.message.messageBox.MessageListItem
+import com.example.dotoring.ui.message.messageBox.data.source
+import com.example.dotoring.ui.message.messageDetail.data.MessageDetail
+import com.example.dotoring.ui.message.messageDetail.data.chatSource
 import com.example.dotoring.ui.register.first.RegisterFirstViewModel
 import com.example.dotoring.ui.theme.DotoringTheme
 import com.example.dotoring.ui.theme.Gray
@@ -86,7 +89,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 @Composable
 fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewModel(), navController: NavHostController) {
     messageDetailViewModel.renderMessageDetailScreen(navController)
-
+    val ChatList = chatSource().loadChat()
     var message by remember { mutableStateOf("") }
     val messageDetailUiState by messageDetailViewModel.uiState.collectAsState()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
@@ -139,8 +142,8 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
                                 modifier = Modifier
                                     .padding(15.dp)
                             ) {
-                                Text(text = "닉네임 들어갈 자리")
-                                Text(text = "학과")
+                                Text(text = "sonny567")
+                                Text(text = "정보통신")
 
                             }
                         }
@@ -153,7 +156,7 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
                             .padding(5.dp)) {
                         val scrollState = rememberLazyListState()
                         LazyColumn(state = scrollState) {
-                            this.items(messageDetailUiState.chatList) {
+                            this.items(ChatList) {
                                     messageDetail ->
                                 if(messageDetail.writer){
                                     MentoChatBox(messageDetail=messageDetail) }
@@ -216,7 +219,7 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
 }
 
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun MessageField(navController: NavHostController,value:String, onValueChange:(String)->Unit, textField: String, messageDetailViewModel: MessageDetailViewModel = viewModel()) {
 
@@ -248,7 +251,13 @@ fun MessageField(navController: NavHostController,value:String, onValueChange:(S
             .height(40.dp)
             .align(End)
             , shape = RoundedCornerShape(30.dp),
-            onClick = { messageDetailViewModel.sendMessage(navController) }) {
+            onClick = { MessageDetail(
+                letterId = 6,
+                content = "넵 알겠습니다.",
+                writer = false,
+                nickname = "sonny567",
+                createdAt = "2023-07-28"
+            )  }) {
             Image(
                 painter = painterResource(R.drawable.send_active),
                 contentDescription = null,

@@ -12,7 +12,7 @@ import com.example.dotoring.dto.login.LoginRequest
 import com.example.dotoring.dto.message.MessageRequest
 import com.example.dotoring.navigation.Graph
 import com.example.dotoring.network.DotoringAPI
-import com.example.dotoring.ui.message.messageBox.MessageBox
+import com.example.dotoring.ui.message.messageDetail.data.MessageDetail
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -49,6 +49,7 @@ class MessageDetailViewModel: ViewModel() {
             ) {
                 Log.d("메세지", "통신 성공 : ${response.raw()}")
                 Log.d("메세지", "통신 성공 : " + response.body().toString())
+
                 val jsonObject= Gson().toJson(response.body())
                 Log.d("메세지","로그인 성공할락말락")
                 val jo = JSONObject(jsonObject)
@@ -90,26 +91,26 @@ class MessageDetailViewModel: ViewModel() {
             Log.d("메세지", "ㅌ통신성공??:")
 
             if (jsonObjectSuccess) {
-                val jsonObjectArray = jo.getJSONArray("response")
+               // val jsonObjectArray = jo.getJSONArray("response")
                 val uiMessageDetailList: MutableList<MessageDetail> = mutableListOf()
+//
+//
+//                for (i in 0 until jsonObjectArray.length()) {
+//                    Log.d("로그인" + " i", i.toString())
+//                    val getObject = jsonObjectArray.getJSONObject(i)
+//                    val time=getObject.getString("createdAt")
+//
+//
+//                    val messageDetail = MessageDetail(
+//                        nickname = getObject.getString("nickname"),
+//                        letterId = getObject.getInt("letterId"),
+//                        content = getObject.getString("content"),
+//                        writer = getObject.getBoolean("writer"),
+//                        createdAt = getObject.getString("createdAt")
+//                    )
 
-
-                for (i in 0 until jsonObjectArray.length()) {
-                    Log.d("로그인" + " i", i.toString())
-                    val getObject = jsonObjectArray.getJSONObject(i)
-                    val time=getObject.getString("createdAt")
-
-
-                    val messageDetail = MessageDetail(
-                        nickname = getObject.getString("nickname"),
-                        letterId = getObject.getInt("letterId"),
-                        content = getObject.getString("content"),
-                        writer = getObject.getBoolean("writer"),
-                        createdAt = getObject.getString("createdAt")
-                    )
-
-                    uiMessageDetailList.add(messageDetail)
-                }
+                   //// uiMessageDetailList.add(MessageDetail)
+            //    }
 
                 _uiState.update { currentState ->
                     currentState.copy(chatList = uiMessageDetailList)
