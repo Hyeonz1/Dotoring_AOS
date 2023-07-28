@@ -46,6 +46,8 @@ import com.example.dotoring.R
 import com.example.dotoring.navigation.Graph
 import com.example.dotoring.navigation.MentiDetailScreen
 import com.example.dotoring.navigation.MessageDetailScreen
+import com.example.dotoring.ui.message.messageBox.data.MessageBox
+import com.example.dotoring.ui.message.messageBox.data.source
 import com.example.dotoring.ui.theme.DotoringTheme
 import com.example.dotoring.ui.theme.Gray
 import com.example.dotoring.ui.theme.Navy
@@ -55,7 +57,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 @Composable
     fun MessageBoxScreen( messageBoxViewModel: MessageBoxViewModel = viewModel(), navController: NavHostController
     ) {
-
+    val messageList = source().loadRoom()
         val messageBoxUiState by messageBoxViewModel.uiState.collectAsState()
     Log.d("쪽지함", " 쪽지함 실행")
     LaunchedEffect(Unit) {
@@ -77,7 +79,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
                 LazyColumn(state = scrollState, ) {
-                    this.items(messageBoxUiState.messageList) {
+                    this.items(messageList) {
                         messageBox -> MessageListItem(messageBox=messageBox, navController = navController)
                     }
                 }
@@ -89,6 +91,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
     @Composable
     fun MessageListItem(messageBoxViewModel: MessageBoxViewModel = viewModel(), messageBox: MessageBox, navController: NavHostController){
         val messageBoxUiState by messageBoxViewModel.uiState.collectAsState()
+        val messageList = source().loadRoom()
         Column(modifier = Modifier
             .width(300.dp)
             , horizontalAlignment = Alignment.CenterHorizontally
