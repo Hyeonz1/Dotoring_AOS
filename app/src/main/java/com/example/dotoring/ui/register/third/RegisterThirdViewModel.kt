@@ -66,7 +66,8 @@ class RegisterThirdViewModel: ViewModel() {
 
         verifyNicknameResponseCall.enqueue(object: Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
-                Log.d("통신", "onResponse")
+                Log.d("통신", "onResponse"+response.body())
+                Log.d("통신", "onResponse"+response.isSuccessful)
 
                 if (response.isSuccessful && response.body() != null) {
                     Log.d("통신", "Success")
