@@ -226,7 +226,7 @@ fun RegisterScreenFirst(
         ) {
             RegisterScreenTop(1, R.string.register1_q1)
 
-            Spacer(modifier = Modifier.size(100.dp))
+            Spacer(modifier = Modifier.weight(1f))
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -235,14 +235,15 @@ fun RegisterScreenFirst(
                     registerFirstViewModel
                 )
 
-                Spacer(modifier = Modifier.size(100.dp))
+                Spacer(modifier = Modifier.size(50.dp))
 
                 RegisterScreenNextButton(onClick = {navController.navigate(AuthScreen.Register2.route)}, enabled = registerFirstUiState.firstBtnState)
             }
 
+            Spacer(modifier = Modifier.weight(3f))
+
         }
     }, text = "직무 필터 선택")
-    // HtmlText(textId = R.string.register_title)
 }
 
 
