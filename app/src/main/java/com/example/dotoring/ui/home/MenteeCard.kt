@@ -1,7 +1,6 @@
 package com.example.dotoring.ui.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.runtime.getValue
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -16,8 +15,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -31,7 +28,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
 import com.example.dotoring.navigation.Graph
-import com.example.dotoring.navigation.MentiDetailScreen
 import com.example.dotoring.ui.detail.MentiDetailedViewModel
 import com.example.dotoring.ui.home.data.Mentee
 import com.example.dotoring.ui.theme.DotoringTheme
@@ -68,7 +64,7 @@ fun MenteeCard(mentee: Mentee, navController: NavHostController, menteeDetailedV
             Spacer(modifier = Modifier.size(25.dp))
 
             Image(
-                painter = painterResource(id=profileImage),
+                painter = painterResource(id=R.drawable.menti2),
                 contentDescription = "멘토 사진",
                 modifier = Modifier
                     .size(width = 83.dp, height = 91.dp)

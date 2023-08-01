@@ -1,9 +1,9 @@
 package com.example.dotoring.dto
 
-import org.json.JSONObject
+import com.google.gson.JsonElement
 
 data class CommonResponse(
     val success: Boolean,
-    val response: JSONObject?,
+    val response: JsonElement?,
     val error: CommonErrorResponse
 )

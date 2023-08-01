@@ -1,8 +1,8 @@
 package com.example.dotoring.ui.register.second
 
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
@@ -35,8 +35,27 @@ import com.example.dotoring.navigation.AuthScreen
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
 import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import de.charlex.compose.HtmlText
 
+
+
+/*@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+private fun RequirePermission() {
+    val filePermissionState = rememberPermissionState(
+        android.Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+
+    if (filePermissionState.status.isGranted) {
+        Log.d("권한", "filePermissionState 허용")
+    } else {
+        Log.d("권한", "filePermissionState 비허용")
+//        filePermissionState.launchPermissionRequest()
+    }
+}*/
+
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun ImageUploadButton(
     registerSecondViewModel: RegisterSecondViewModel = viewModel(),
@@ -45,20 +64,36 @@ private fun ImageUploadButton(
 
     val registerSecondUiState by registerSecondViewModel.uiState.collectAsState()
 
-    var selectedImageUri by remember {
-        mutableStateOf<Uri?>(null)
+    var selectedUri by remember { mutableStateOf<Uri?>(null) }
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        uri -> selectedUri = uri
+
+        val file = registerSecondViewModel.uriToFile(uri)
+
+        Log.d("파일", "file: $file")
+
+        if(uploadEmploymentFile) {
+            registerSecondViewModel.uploadEmploymentFile()
+            registerSecondViewModel.updateEmploymentCertification(file)
+        } else {
+            registerSecondViewModel.uploadGraduationFile()
+            registerSecondViewModel.updateGraduationCertification(file)
+        }
     }
 
-    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
+
+/*    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument(),
         onResult = {
                 uri ->
-            selectedImageUri = uri
+            selectedUri = uri
             val file = registerSecondViewModel.uriToFile(uri)
 
             if (uploadEmploymentFile) {
                 registerSecondViewModel.uploadEmploymentFile()
                 registerSecondViewModel.updateEmploymentCertification(file)
+                Log.d("선택", "uploadEmploymentFile == true: $file")
 
             } else {
                 registerSecondViewModel.uploadGraduationFile()
@@ -67,12 +102,23 @@ private fun ImageUploadButton(
 
 
         }
-    )
+    )*/
 
     Button(
-        onClick = { singlePhotoPickerLauncher.launch(
-            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-        ) },
+        onClick = {
+                  launcher.launch("*/*")
+            /*singlePhotoPickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )*/
+            /*if (filePermissionState.status.isGranted) {
+                Log.d("권한", "filePermissionState 허용")
+            } else {
+                Log.d("권한", "filePermissionState 비허용")
+                filePermissionState.launchPermissionRequest()
+                Log.d("권한", "launchPermissionRequest")
+
+            }*/
+                  },
         modifier = Modifier.size(width = 300.dp, height = 80.dp),
         border = BorderStroke(width = 0.5.dp, color = colorResource(id = R.color.grey_200)),
         colors = ButtonDefaults.buttonColors(
