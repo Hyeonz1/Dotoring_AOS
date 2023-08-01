@@ -26,6 +26,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
 import com.example.dotoring.navigation.AuthScreen
+import com.example.dotoring.ui.register.MentoInformation
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
 import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
@@ -33,7 +34,8 @@ import com.example.dotoring.ui.theme.DotoringTheme
 @Composable
 fun FifthRegisterScreen(
     registerFifthViewModel: RegisterFifthViewModel = viewModel(),
-    navController: NavHostController
+    navController: NavHostController,
+    mentoInformation: MentoInformation
     ) {
 
     val registerFifthUiState by registerFifthViewModel.uiState.collectAsState()
@@ -83,7 +85,16 @@ fun FifthRegisterScreen(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                RegisterScreenNextButton(onClick = { navController.navigate(AuthScreen.Register6.route) }, enabled = registerFifthUiState.btnState)
+                RegisterScreenNextButton(onClick = {
+                    val mentoInfo = mentoInformation
+
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        key = "mentoInfo",
+                        value = mentoInfo
+                    )
+
+                    navController.navigate(AuthScreen.Register6.route)
+                                                   }, enabled = registerFifthUiState.btnState)
 
                 Spacer(modifier = Modifier.weight(3f))
 
@@ -100,6 +111,6 @@ fun FifthRegisterScreen(
 @Composable
 private fun RegisterScreenPreview() {
     DotoringTheme {
-        FifthRegisterScreen(navController = rememberNavController())
+        FifthRegisterScreen(navController = rememberNavController(), mentoInformation = MentoInformation())
     }
 }

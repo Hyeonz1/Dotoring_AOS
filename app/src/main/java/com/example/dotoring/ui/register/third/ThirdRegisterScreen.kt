@@ -24,6 +24,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
 import com.example.dotoring.navigation.AuthScreen
+import com.example.dotoring.ui.register.MentoInformation
 import com.example.dotoring.ui.register.util.CommonTextField
 import com.example.dotoring.ui.register.util.EffectiveCheckButton
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
@@ -33,7 +34,8 @@ import com.example.dotoring.ui.theme.DotoringTheme
 @Composable
 fun ThirdRegisterScreen(
     registerThirdViewModel: RegisterThirdViewModel = viewModel(),
-    navController: NavHostController
+    navController: NavHostController,
+    mentoInformation: MentoInformation
 ) {
 
     val registerThirdUiState by registerThirdViewModel.uiState.collectAsState()
@@ -104,7 +106,22 @@ fun ThirdRegisterScreen(
 
         Spacer(modifier = Modifier.weight(1.5f))
 
-        RegisterScreenNextButton(onClick = { navController.navigate(AuthScreen.Register4.route) },enabled = registerThirdUiState.btnState)
+        RegisterScreenNextButton(onClick = {
+            val mentoInfo = MentoInformation(
+                company = mentoInformation.company,
+                careerLevel = mentoInformation.careerLevel,
+                job = mentoInformation.job,
+                major = mentoInformation.major,
+                employmentCertification = mentoInformation.employmentCertification,
+                graduateCertification = mentoInformation.graduateCertification,
+                nickname = registerThirdUiState.nickname
+            )
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                key = "mentoInfo",
+                value = mentoInfo
+            )
+            navController.navigate(AuthScreen.Register4.route)
+                                           },enabled = registerThirdUiState.btnState)
 
         Spacer(modifier = Modifier.weight(10f))
     }
@@ -114,6 +131,6 @@ fun ThirdRegisterScreen(
 @Composable
 private fun RegisterScreenPreview() {
     DotoringTheme {
-        ThirdRegisterScreen(navController = rememberNavController())
+        ThirdRegisterScreen(navController = rememberNavController(), mentoInformation = MentoInformation())
     }
 }

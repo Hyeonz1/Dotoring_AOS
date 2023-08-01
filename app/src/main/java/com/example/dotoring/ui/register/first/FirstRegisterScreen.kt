@@ -42,6 +42,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.navigation.AuthScreen
+import com.example.dotoring.ui.register.MentoInformation
 import com.example.dotoring.util.FilterBottomSheet
 
 @Composable
@@ -226,7 +227,7 @@ fun RegisterScreenFirst(
         ) {
             RegisterScreenTop(1, R.string.register1_q1)
 
-            Spacer(modifier = Modifier.size(100.dp))
+            Spacer(modifier = Modifier.weight(1f))
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -235,10 +236,28 @@ fun RegisterScreenFirst(
                     registerFirstViewModel
                 )
 
-                Spacer(modifier = Modifier.size(100.dp))
+                Spacer(modifier = Modifier.size(50.dp))
 
-                RegisterScreenNextButton(onClick = {navController.navigate(AuthScreen.Register2.route)}, enabled = registerFirstUiState.firstBtnState)
+                RegisterScreenNextButton(
+                    onClick = {
+                        val mentoInfo = MentoInformation(
+                            company = registerFirstUiState.company,
+                            careerLevel = registerFirstUiState.careerLevel.toInt(),
+                            job = registerFirstUiState.job,
+                            major= registerFirstUiState.major
+                            )
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            key = "mentoInfo",
+                            value = mentoInfo
+                        )
+                        navController.navigate(AuthScreen.Register2.route)
+                              },
+                    enabled = registerFirstUiState.firstBtnState
+                )
             }
+
+            Spacer(modifier = Modifier.weight(3f))
+
 
         }
     }, text = "직무 필터 선택")
