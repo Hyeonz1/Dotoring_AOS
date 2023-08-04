@@ -53,7 +53,7 @@ fun ThirdRegisterScreen(
             stringResource(id = R.string.register3_guide)
         )
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(1.5f))
 
         Row() {
 
@@ -92,7 +92,7 @@ fun ThirdRegisterScreen(
                     fontSize = 10.sp
                 )
 
-                Spacer(modifier = Modifier.size(28.dp))
+                Spacer(modifier = Modifier.size(15.dp))
 
                 Text(
                     text = stringResource(R.string.register3_),
@@ -123,7 +123,7 @@ fun ThirdRegisterScreen(
             navController.navigate(AuthScreen.Register4.route)
                                            },enabled = registerThirdUiState.btnState)
 
-        Spacer(modifier = Modifier.weight(10f))
+        Spacer(modifier = Modifier.weight(8f))
     }
 }
 
