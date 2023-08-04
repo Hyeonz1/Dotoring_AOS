@@ -42,6 +42,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.navigation.AuthScreen
+import com.example.dotoring.ui.register.MentoInformation
 import com.example.dotoring.util.FilterBottomSheet
 
 @Composable
@@ -54,7 +55,9 @@ private fun Introduce( registerFirstViewModel: RegisterFirstViewModel = viewMode
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Row() {
+
             Text(
                 text = stringResource(id = R.string.register1_im),
                 modifier = Modifier.padding(top = 10.dp),
@@ -66,13 +69,18 @@ private fun Introduce( registerFirstViewModel: RegisterFirstViewModel = viewMode
                 Column() {
                     IntroduceContent(
                         value = registerFirstUiState.company,
-                        onValueChange = { registerFirstViewModel.updateUserCompany(it) },
+                        onValueChange = {
+                            registerFirstViewModel.updateUserCompany(it)
+//                            if (it != "") {
+//                                            registerFirstViewModel.updateCareerFieldState()
+//                            }
+                                        },
                         placeholder = stringResource(id = R.string.register1_company),
                         text = stringResource(R.string.register1_belong_to),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                         keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(
                             FocusDirection.Next)}),
-                        readOnly = false
+                        readOnly = false,
                     )
 
                     Spacer(modifier = Modifier.size(10.dp))
@@ -140,6 +148,7 @@ private fun IntroduceContent(
     keyboardActions: KeyboardActions,
     keyboardOptions: KeyboardOptions,
     readOnly: Boolean,
+//    onFocusChanged: () -> Unit
     ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -168,6 +177,11 @@ private fun IntroduceContent(
                     interactionSource = interactionSource,
                     colors = colors
                 ),
+//                .onFocusChanged {
+//                    if ( !it.isFocused ) {
+//                        onFocusChanged
+//                    }
+//                },
             visualTransformation = VisualTransformation.None,
             interactionSource = interactionSource,
             enabled = true,
@@ -186,9 +200,11 @@ private fun IntroduceContent(
                 // for text field styling
                 placeholder = {
                     Text(
-                    text = placeholder,
-                    fontSize = 13.sp,
-                    textAlign = TextAlign.Center)
+                        text = placeholder,
+                        modifier = Modifier.fillMaxWidth(),
+                        fontSize = 15.sp,
+                        textAlign = TextAlign.Center
+                    )
                 },
                 colors = colors,
                 interactionSource = interactionSource,
@@ -237,13 +253,30 @@ fun RegisterScreenFirst(
 
                 Spacer(modifier = Modifier.size(50.dp))
 
-                RegisterScreenNextButton(onClick = {navController.navigate(AuthScreen.Register2.route)}, enabled = registerFirstUiState.firstBtnState)
+                RegisterScreenNextButton(
+                    onClick = {
+                        val mentoInfo = MentoInformation(
+                            company = registerFirstUiState.company,
+                            careerLevel = registerFirstUiState.careerLevel.toInt(),
+                            job = registerFirstUiState.job,
+                            major= registerFirstUiState.major
+                            )
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            key = "mentoInfo",
+                            value = mentoInfo
+                        )
+                        navController.navigate(AuthScreen.Register2.route)
+                              },
+                    enabled = registerFirstUiState.firstBtnState
+                )
             }
 
             Spacer(modifier = Modifier.weight(3f))
 
+
         }
     }, text = "직무 필터 선택")
+    // HtmlText(textId = R.string.register_title)
 }
 
 

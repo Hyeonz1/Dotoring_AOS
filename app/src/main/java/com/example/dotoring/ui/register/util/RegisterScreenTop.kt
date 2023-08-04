@@ -57,13 +57,14 @@ fun RegisterScreenTop(screenNumber: Int, question: Int, guide: String = "") {
                 Spacer(modifier = Modifier.size(10.dp))
                 Row() {
                     Text(
-                        text = stringResource(id = R.string.register_Q)
+                        text = stringResource(id = R.string.register_Q),
+                        fontSize= 20.sp
                     )
 
                     Column() {
                         HtmlText(
                             textId = question,
-                            fontSize = 18.sp
+                            fontSize = 20.sp
                         )
 
                         Spacer(modifier = Modifier.size(5.dp))

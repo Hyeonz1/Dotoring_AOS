@@ -30,10 +30,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
+import com.example.dotoring.navigation.AuthScreen
+import com.example.dotoring.ui.register.MentoInformation
 import com.example.dotoring.ui.register.util.CommonTextField
 import com.example.dotoring.ui.register.util.EffectiveCheckButton
 import com.example.dotoring.ui.register.util.RegisterScreenTop
@@ -42,7 +43,8 @@ import com.example.dotoring.ui.theme.DotoringTheme
 @Composable
 fun SixthRegisterScreen(
     registerSixthViewModel: RegisterSixthViewModel = viewModel(),
-    navController: NavHostController
+    navController: NavHostController,
+    mentoInformation: MentoInformation
 ) {
     val registerSixthUiState by registerSixthViewModel.uiState.collectAsState()
     val focusManager = LocalFocusManager.current
@@ -58,7 +60,7 @@ fun SixthRegisterScreen(
     ) {
         RegisterScreenTop(screenNumber = 6, question = R.string.register6_q6)
 
-        Spacer(modifier = Modifier.weight(1.5f))
+        Spacer(modifier = Modifier.weight(1f))
 
         Column() {
             Text(
@@ -204,7 +206,9 @@ fun SixthRegisterScreen(
                         placeholder = stringResource(id = R.string.register6_verification_code),
                         btnText = stringResource(R.string.register6_verify),
                         width = width,
-                        onClick = { registerSixthUiState.validationCode  },
+                        onClick = {
+                            registerSixthViewModel.codeCertification()
+                              },
                         onDone = { focusManager.clearFocus() },
                         imeAction = ImeAction.Done
                     )
@@ -222,9 +226,14 @@ fun SixthRegisterScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Register6ScreenNextButton(onClick = {/*ToDo*/}, enabled = registerSixthUiState.btnState)
+        Register6ScreenNextButton(
+            onClick = {
+                      registerSixthViewModel.finalRegistser(mentoInformation)
+                    navController.navigate(AuthScreen.Login.route)
+            },
+            enabled = registerSixthUiState.btnState)
 
-        Spacer(modifier = Modifier.weight(0.8f))
+        Spacer(modifier = Modifier.weight(1.5f))
     }
 }
 
@@ -270,6 +279,6 @@ private fun TextFieldWithEffectiveCheckButton(value: String, onValueChange: (Str
 @Composable
 private fun RegisterScreenPreview() {
     DotoringTheme {
-        SixthRegisterScreen(navController = rememberNavController())
+        SixthRegisterScreen(navController = rememberNavController(), mentoInformation = MentoInformation())
     }
 }

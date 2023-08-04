@@ -1,13 +1,14 @@
 package com.example.dotoring.ui.register.second
 
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,68 +33,31 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
 import com.example.dotoring.navigation.AuthScreen
+import com.example.dotoring.ui.register.MentoInformation
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
 import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import de.charlex.compose.HtmlText
 
-
-
-/*@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-private fun RequirePermission() {
-    val filePermissionState = rememberPermissionState(
-        android.Manifest.permission.READ_EXTERNAL_STORAGE
-    )
-
-    if (filePermissionState.status.isGranted) {
-        Log.d("권한", "filePermissionState 허용")
-    } else {
-        Log.d("권한", "filePermissionState 비허용")
-//        filePermissionState.launchPermissionRequest()
-    }
-}*/
-
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun ImageUploadButton(
     registerSecondViewModel: RegisterSecondViewModel = viewModel(),
     uploadEmploymentFile: Boolean
 ) {
-
-    val registerSecondUiState by registerSecondViewModel.uiState.collectAsState()
-
-    var selectedUri by remember { mutableStateOf<Uri?>(null) }
-
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
-        uri -> selectedUri = uri
-
-        val file = registerSecondViewModel.uriToFile(uri)
-
-        Log.d("파일", "file: $file")
-
-        if(uploadEmploymentFile) {
-            registerSecondViewModel.uploadEmploymentFile()
-            registerSecondViewModel.updateEmploymentCertification(file)
-        } else {
-            registerSecondViewModel.uploadGraduationFile()
-            registerSecondViewModel.updateGraduationCertification(file)
-        }
+    var selectedImageUri by remember {
+        mutableStateOf<Uri?>(null)
     }
 
-
-/*    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocument(),
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
         onResult = {
                 uri ->
-            selectedUri = uri
+            selectedImageUri = uri
             val file = registerSecondViewModel.uriToFile(uri)
 
             if (uploadEmploymentFile) {
                 registerSecondViewModel.uploadEmploymentFile()
                 registerSecondViewModel.updateEmploymentCertification(file)
-                Log.d("선택", "uploadEmploymentFile == true: $file")
 
             } else {
                 registerSecondViewModel.uploadGraduationFile()
@@ -102,23 +66,12 @@ private fun ImageUploadButton(
 
 
         }
-    )*/
+    )
 
     Button(
-        onClick = {
-                  launcher.launch("*/*")
-            /*singlePhotoPickerLauncher.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )*/
-            /*if (filePermissionState.status.isGranted) {
-                Log.d("권한", "filePermissionState 허용")
-            } else {
-                Log.d("권한", "filePermissionState 비허용")
-                filePermissionState.launchPermissionRequest()
-                Log.d("권한", "launchPermissionRequest")
-
-            }*/
-                  },
+        onClick = { singlePhotoPickerLauncher.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        ) },
         modifier = Modifier.size(width = 300.dp, height = 80.dp),
         border = BorderStroke(width = 0.5.dp, color = colorResource(id = R.color.grey_200)),
         colors = ButtonDefaults.buttonColors(
@@ -137,15 +90,18 @@ private fun ImageUploadButton(
 fun SecondRegisterScreen(
     navController: NavHostController,
     registerSecondViewModel: RegisterSecondViewModel = viewModel(),
+    mentoInformation: MentoInformation
 ) {
+    val registerSecondUiState by registerSecondViewModel.uiState.collectAsState()
 
     Column(
-        modifier = Modifier.padding(top = 50.dp),
+        modifier = Modifier.padding(top = 50.dp)
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         RegisterScreenTop(screenNumber = 2, question = R.string.register2_q2)
 
-        Spacer(modifier = Modifier.padding(35.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         Column {
             HtmlText(
@@ -175,8 +131,27 @@ fun SecondRegisterScreen(
 
             Spacer(modifier = Modifier.size(60.dp))
 
-            RegisterScreenNextButton(onClick = { navController.navigate(AuthScreen.Register3.route)}, enabled = true )
+            RegisterScreenNextButton(
+                onClick = {
+                    val mentoInfo = MentoInformation(
+                        company = mentoInformation.company,
+                        careerLevel = mentoInformation.careerLevel,
+                        job = mentoInformation.job,
+                        major = mentoInformation.major,
+                        employmentCertification = registerSecondUiState.employmentCertification,
+                        graduateCertification = registerSecondUiState.graduationCertification
+                    )
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        key = "mentoInfo",
+                        value = mentoInfo
+                    )
+                    navController.navigate(AuthScreen.Register3.route)
+                          },
+                enabled = true )
         }
+
+        Spacer(modifier = Modifier.weight(3f))
+
     }
 }
 
@@ -184,6 +159,6 @@ fun SecondRegisterScreen(
 @Composable
 private fun RegisterScreenPreview() {
     DotoringTheme {
-        SecondRegisterScreen(navController = rememberNavController())
+        SecondRegisterScreen(navController = rememberNavController(), mentoInformation = MentoInformation())
     }
 }

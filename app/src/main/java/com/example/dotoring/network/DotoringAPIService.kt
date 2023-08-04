@@ -5,7 +5,6 @@ import com.example.dotoring.dto.CommonResponse
 import com.example.dotoring.dto.login.LoginRequest
 import com.example.dotoring.dto.message.MessageRequest
 import com.example.dotoring.dto.register.EmailCertificationRequest
-import com.example.dotoring.dto.register.EmailCodeRequest
 import com.example.dotoring.dto.register.FinalSignUpRequest
 import com.example.dotoring.dto.register.IdValidationRequest
 import com.example.dotoring.dto.register.NicknameValidationRequest
@@ -21,6 +20,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.HTTP
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -29,23 +30,25 @@ import java.net.CookieManager
 
 
 private const val BASE_URL =
-    "http://172.30.1.62:8080/"
+    "http://192.168.0.32:8080/"
 
 //val interceptor = HttpLoggingInterceptor().apply {
 //    level = HttpLoggingInterceptor.Level.BODY
 //}
 
-//val otherClient: OkHttpClient = OkHttpClient.Builder()
-//    .addInterceptor(interceptor)
-//    .cookieJar(JavaNetCookieJar(CookieManager()))
-//    .build()
-
 val client: OkHttpClient = OkHttpClient.Builder()
     .addInterceptor(AppInterceptor())
     .cookieJar(JavaNetCookieJar(CookieManager()))
-//    .addInterceptor(HttpLoggingInterceptor().apply {
-//        level = HttpLoggingInterceptor.Level.BODY
-//    })
+    .addInterceptor(HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    })
+    .build()
+
+val registerClient: OkHttpClient = OkHttpClient.Builder()
+    .cookieJar(JavaNetCookieJar(CookieManager()))
+    .addInterceptor(HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    })
     .build()
 
 val gson : Gson = GsonBuilder()
@@ -58,11 +61,11 @@ val retrofit: Retrofit = Retrofit.Builder()
     .client(client)
     .build()
 
-//val otherRetrofit: Retrofit = Retrofit.Builder()
-//    .baseUrl(BASE_URL)
-//    .addConverterFactory(GsonConverterFactory.create(gson))
-//    .client(otherClient)
-//    .build()
+val registerRetrofit: Retrofit = Retrofit.Builder()
+    .baseUrl(BASE_URL)
+    .addConverterFactory(GsonConverterFactory.create(gson))
+    .client(registerClient)
+    .build()
 
 
 class AppInterceptor : Interceptor {
@@ -81,22 +84,22 @@ class AppInterceptor : Interceptor {
 
 interface DotoringAPIService {
 
-    @POST("api/member/validate-nickname")
+    @POST("api/member/valid-nickname")
     fun nicknameValidation(
         @Body nicknameValidationRequest: NicknameValidationRequest
     ): Call<CommonResponse>
 
-    @POST("api/member/validate-loginId")
+    @POST("api/member/valid-loginId")
     fun loginIdValidation(
         @Body loginValidationRequest: IdValidationRequest
     ): Call<CommonResponse>
 
-    @GET("api/member/email")
+    @GET("api/member/code")
     fun sendAuthenticationCode(
-        @Body emailCodeRequest: EmailCodeRequest
+        @Query("email", encoded = true) email: String
     ): Call<CommonResponse>
 
-    @POST("api/member/validate-code")
+    @POST("api/member/valid-code")
     fun emailCertification(
         @Body emailCertificationRequest: EmailCertificationRequest
     ): Call<CommonResponse>
@@ -104,6 +107,7 @@ interface DotoringAPIService {
     @GET("api/member/job-major")
     fun getJobAndMajorList(): Call<CommonResponse>
 
+    @Multipart
     @POST("api/signup-mento")
     fun signUpAsMento(
         @Body finalSignUpRequest: FinalSignUpRequest
@@ -183,9 +187,9 @@ object DotoringAPI {
     }
 }
 
-//object DotoringSecondAPI {
-//    val retrofitService: DotoringAPIService by lazy {
-//        otherRetrofit.create(DotoringAPIService::class.java)
-//    }
-//}
+object DotoringRegisterAPI {
+    val retrofitService: DotoringAPIService by lazy {
+        registerRetrofit.create(DotoringAPIService::class.java)
+    }
+}
 
