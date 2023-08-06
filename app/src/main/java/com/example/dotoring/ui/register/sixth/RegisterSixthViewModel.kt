@@ -5,9 +5,12 @@ import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.dotoring.dto.CommonResponse
-import com.example.dotoring.dto.register.EmailCodeRequest
+import com.example.dotoring.dto.register.EmailCertificationRequest
+import com.example.dotoring.dto.register.FinalSignUpRequest
 import com.example.dotoring.dto.register.IdValidationRequest
-import com.example.dotoring.network.DotoringAPI
+import com.example.dotoring.dto.register.MentoSignupRequestDTO
+import com.example.dotoring.network.DotoringRegisterAPI
+import com.example.dotoring.ui.register.MentoInformation
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -75,6 +78,9 @@ class RegisterSixthViewModel: ViewModel() {
     }
 
     fun updateEmail(emailInput: String) {
+
+//        val emailInput = emailInput.replace("@", "%40")
+
         _uiState.update { currentState ->
             currentState.copy(email = emailInput)
         }
@@ -132,7 +138,7 @@ class RegisterSixthViewModel: ViewModel() {
         val idValidationRequest = IdValidationRequest(loginId = uiState.value.memberId)
         Log.d("통신", "userIdDuplicationCheck - $idValidationRequest")
 
-        val idValidationRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.loginIdValidation(idValidationRequest)
+        val idValidationRequestCall: Call<CommonResponse> = DotoringRegisterAPI.retrofitService.loginIdValidation(idValidationRequest)
 
         idValidationRequestCall.enqueue(object: Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
@@ -161,16 +167,17 @@ class RegisterSixthViewModel: ViewModel() {
     }
 
     fun sendAuthenticationCode() {
+        val email = uiState.value.email
         Log.d("통신", "sendAuthenticationCode - 시작")
+        Log.d("통신", "sendAuthenticationCode - $email")
 
-        val authenticationCodeRequest = EmailCodeRequest(email = uiState.value.email)
-        Log.d("통신", "sendAuthenticationCode - $authenticationCodeRequest")
-
-        val authenticationCodeRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.sendAuthenticationCode(authenticationCodeRequest)
+        val authenticationCodeRequestCall: Call<CommonResponse> = DotoringRegisterAPI.retrofitService.sendAuthenticationCode(email = uiState.value.email)
 
         authenticationCodeRequestCall.enqueue(object: Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
                 Log.d("통신", "sendAuthenticationCode - onResponse")
+                Log.d("통신", "sendAuthenticationCode - response.body() : ${response.body()}")
+                Log.d("통신", "sendAuthenticationCode - response.code() : ${response.code()}")
 
                 val jsonObject = Gson().toJson(response.body())
                 val jo = JSONObject(jsonObject)
@@ -187,17 +194,19 @@ class RegisterSixthViewModel: ViewModel() {
         })
     }
 
-   /* fun codeCertification() {
+    fun codeCertification() {
         Log.d("통신", "codeCertification - 시작")
 
-        val codeCertificationRequest = EmailCertificationRequest(code = uiState.value.validationCode)
-        Log.d("통신", "codeCertification - $codeCertificationRequest")
+        val codeCertificationRequest = EmailCertificationRequest(emailVerificationCode = uiState.value.validationCode, email = uiState.value.email)
+        Log.d("통신", "codeCertification - Request: $codeCertificationRequest")
 
-        val codeCertificationRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.emailCertification(codeCertificationRequest)
+        val codeCertificationRequestCall: Call<CommonResponse> = DotoringRegisterAPI.retrofitService.emailCertification(codeCertificationRequest)
 
         codeCertificationRequestCall.enqueue(object: Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
                 Log.d("통신", "codeCertification - onResponse")
+                Log.d("통신", "codeCertification - response.body() : ${response.body()}")
+                Log.d("통신", "codeCertification - response.code() : ${response.code()}")
 
                 val jsonObject = Gson().toJson(response.body())
                 val jo = JSONObject(jsonObject)
@@ -218,5 +227,50 @@ class RegisterSixthViewModel: ViewModel() {
                 Log.d("회원 가입 통신", "요청 내용 - $codeCertificationRequestCall")
             }
         })
-    }*/
+    }
+
+    fun finalRegistser(mentoInformation: MentoInformation) {
+        Log.d("통신", "finalRegister - 통신 시작")
+        val finalRegisterRequest = FinalSignUpRequest(
+            certifications = listOf(
+                mentoInformation.employmentCertification,
+                mentoInformation.graduateCertification
+            ),
+            mentoSignupRequestDTO = MentoSignupRequestDTO(
+                company = mentoInformation.company,
+                careerLevel = mentoInformation.careerLevel,
+                job = mentoInformation.job,
+                major = mentoInformation.major,
+                nickname = mentoInformation.nickname,
+                introduction = mentoInformation.introduction,
+                loginId = uiState.value.memberId,
+                password = uiState.value.password,
+                email = uiState.value.email
+            )
+        )
+
+        Log.d("통신", "finalRegister - Request: $finalRegisterRequest")
+
+        val finalRegisterRequestCall: Call<CommonResponse> = DotoringRegisterAPI.retrofitService.signUpAsMento(finalRegisterRequest)
+
+        finalRegisterRequestCall.enqueue(object: Callback<CommonResponse> {
+            override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
+                Log.d("통신", "finalRegister - onResponse")
+                Log.d("통신", "finalRegister - response.body() : ${response.body()}")
+                Log.d("통신", "finalRegister - response.code() : ${response.code()}")
+
+                val jsonObject = Gson().toJson(response.body())
+                val jo = JSONObject(jsonObject)
+                val jsonObjectSuccess = jo.getBoolean("success")
+
+                if (jsonObjectSuccess) {
+
+                }
+            }
+            override fun onFailure(call: Call<CommonResponse>, t: Throwable) {
+                Log.d("통신", "통신 실패: $t")
+                Log.d("회원 가입 통신", "요청 내용 - $finalRegisterRequestCall")
+            }
+        })
+    }
 }

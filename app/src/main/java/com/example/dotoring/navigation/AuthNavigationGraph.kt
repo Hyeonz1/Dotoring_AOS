@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.example.dotoring.ui.login.LoginScreen
+import com.example.dotoring.ui.register.MentoInformation
 import com.example.dotoring.ui.register.fifth.FifthRegisterScreen
 import com.example.dotoring.ui.register.first.RegisterScreenFirst
 import com.example.dotoring.ui.register.fourth.FourthRegisterScreen
@@ -30,23 +31,48 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
         }
 
         composable(route = AuthScreen.Register2.route) {
-            SecondRegisterScreen(navController = navController)
+            val result =
+                navController.previousBackStackEntry!!.savedStateHandle.get<MentoInformation>("mentoInfo")
+
+            if (result != null) {
+                SecondRegisterScreen(navController = navController, mentoInformation = result)
+            }
         }
 
         composable(route = AuthScreen.Register3.route) {
-            ThirdRegisterScreen(navController = navController)
+            val result =
+                navController.previousBackStackEntry!!.savedStateHandle.get<MentoInformation>("mentoInfo")
+
+            if (result != null) {
+                ThirdRegisterScreen(navController = navController, mentoInformation = result)
+            }
         }
 
         composable(route = AuthScreen.Register4.route) {
-            FourthRegisterScreen(navController = navController)
+            val result =
+                navController.previousBackStackEntry!!.savedStateHandle.get<MentoInformation>("mentoInfo")
+
+            if (result != null) {
+                FourthRegisterScreen(navController = navController, mentoInformation = result)
+            }
         }
 
         composable(route = AuthScreen.Register5.route) {
-            FifthRegisterScreen(navController = navController)
+            val result =
+                navController.previousBackStackEntry!!.savedStateHandle.get<MentoInformation>("mentoInfo")
+
+            if (result != null) {
+                FifthRegisterScreen(navController = navController, mentoInformation = result)
+            }
         }
 
         composable(route = AuthScreen.Register6.route) {
-            SixthRegisterScreen(navController = navController)
+            val result =
+                navController.previousBackStackEntry!!.savedStateHandle.get<MentoInformation>("mentoInfo")
+
+            if (result != null) {
+                SixthRegisterScreen(navController = navController, mentoInformation = result)
+            }
         }
 
     }

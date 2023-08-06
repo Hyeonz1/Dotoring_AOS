@@ -8,6 +8,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,6 +33,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
 import com.example.dotoring.navigation.AuthScreen
+import com.example.dotoring.ui.register.MentoInformation
 import com.example.dotoring.ui.register.util.RegisterScreenNextButton
 import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
@@ -42,9 +44,6 @@ private fun ImageUploadButton(
     registerSecondViewModel: RegisterSecondViewModel = viewModel(),
     uploadEmploymentFile: Boolean
 ) {
-
-    val registerSecondUiState by registerSecondViewModel.uiState.collectAsState()
-
     var selectedImageUri by remember {
         mutableStateOf<Uri?>(null)
     }
@@ -91,15 +90,18 @@ private fun ImageUploadButton(
 fun SecondRegisterScreen(
     navController: NavHostController,
     registerSecondViewModel: RegisterSecondViewModel = viewModel(),
+    mentoInformation: MentoInformation
 ) {
+    val registerSecondUiState by registerSecondViewModel.uiState.collectAsState()
 
     Column(
-        modifier = Modifier.padding(top = 50.dp),
+        modifier = Modifier.padding(top = 50.dp)
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         RegisterScreenTop(screenNumber = 2, question = R.string.register2_q2)
 
-        Spacer(modifier = Modifier.padding(35.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         Column {
             HtmlText(
@@ -129,8 +131,27 @@ fun SecondRegisterScreen(
 
             Spacer(modifier = Modifier.size(60.dp))
 
-            RegisterScreenNextButton(onClick = { navController.navigate(AuthScreen.Register3.route)}, enabled = true )
+            RegisterScreenNextButton(
+                onClick = {
+                    val mentoInfo = MentoInformation(
+                        company = mentoInformation.company,
+                        careerLevel = mentoInformation.careerLevel,
+                        job = mentoInformation.job,
+                        major = mentoInformation.major,
+                        employmentCertification = registerSecondUiState.employmentCertification,
+                        graduateCertification = registerSecondUiState.graduationCertification
+                    )
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        key = "mentoInfo",
+                        value = mentoInfo
+                    )
+                    navController.navigate(AuthScreen.Register3.route)
+                          },
+                enabled = true )
         }
+
+        Spacer(modifier = Modifier.weight(3f))
+
     }
 }
 
@@ -138,6 +159,6 @@ fun SecondRegisterScreen(
 @Composable
 private fun RegisterScreenPreview() {
     DotoringTheme {
-        SecondRegisterScreen(navController = rememberNavController())
+        SecondRegisterScreen(navController = rememberNavController(), mentoInformation = MentoInformation())
     }
 }

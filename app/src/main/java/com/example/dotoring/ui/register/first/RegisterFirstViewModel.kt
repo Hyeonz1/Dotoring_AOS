@@ -1,13 +1,9 @@
 package com.example.dotoring.ui.register.first
 
-import android.util.Log
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.util.FilterBottomSheet
@@ -21,50 +17,75 @@ class RegisterFirstViewModel(): ViewModel() {
     private val _uiState = MutableStateFlow(RegisterFirstUiState())
     val uiState: StateFlow<RegisterFirstUiState> = _uiState.asStateFlow()
 
-    var companyInput by mutableStateOf("")
-        private set
-
-    var yearInput by mutableStateOf("")
-        private set
-
-    var jobInput by mutableStateOf("")
-        private set
-
-    var majorInput by mutableStateOf("")
-        private set
-
-    var firstBtnState by mutableStateOf(false)
-        private set
-
     fun updateUserCompany(userCompany: String) {
-        companyInput = userCompany
-
         _uiState.update { currentState ->
             currentState.copy(company = userCompany)
         }
     }
 
-    fun updateUserCareer(userCareer: String) {
-        yearInput = userCareer
+    fun updateCompanyFieldState(emptyField: Boolean) {
+        if (emptyField) {
+            _uiState.update { currentState ->
+                currentState.copy(fillCompanyField = false)
+            }
+        } else {
+            _uiState.update { currentState ->
+                currentState.copy(fillCompanyField = true)
+            }
+        }
+    }
 
+    fun updateUserCareer(userCareer: String) {
         _uiState.update { currentState ->
             currentState.copy(careerLevel = userCareer)
         }
     }
 
-    fun updateUserJob(userJob: String) {
-        jobInput = userJob
+    fun updateCareerFieldState(emptyField: Boolean) {
+        if (emptyField) {
+            _uiState.update { currentState ->
+                currentState.copy(fillCareerField = false)
+            }
+        } else {
+            _uiState.update { currentState ->
+                currentState.copy(fillCareerField = true)
+            }
+        }
+    }
 
+    fun updateUserJob(userJob: String) {
         _uiState.update { currentState ->
             currentState.copy(job = userJob)
         }
     }
 
-    fun updateUserMajor(userMajor: String) {
-        majorInput = userMajor
+    fun updateJobFieldState(emptyField: Boolean) {
+        if (emptyField) {
+            _uiState.update { currentState ->
+                currentState.copy(fillJobField = false)
+            }
+        } else {
+            _uiState.update { currentState ->
+                currentState.copy(fillJobField = true)
+            }
+        }
+    }
 
+    fun updateUserMajor(userMajor: String) {
         _uiState.update { currentState ->
             currentState.copy(major = userMajor)
+        }
+    }
+
+    fun updateMajorFieldState(emptyField: Boolean) {
+        if (emptyField) {
+            _uiState.update { currentState ->
+                currentState.copy(fillCareerField = false)
+            }
+        } else {
+            _uiState.update { currentState ->
+                currentState.copy(fillCareerField = true)
+            }
         }
     }
 

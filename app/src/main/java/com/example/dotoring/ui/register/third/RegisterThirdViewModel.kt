@@ -11,7 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import com.example.dotoring.dto.CommonResponse
 import com.example.dotoring.dto.register.NicknameValidationRequest
-import com.example.dotoring.network.DotoringAPI
+import com.example.dotoring.network.DotoringRegisterAPI
 import kotlinx.coroutines.flow.update
 import retrofit2.Call
 import retrofit2.Callback
@@ -62,12 +62,15 @@ class RegisterThirdViewModel: ViewModel() {
     fun verifyNickname() {
         val verifyNicknameRequest = NicknameValidationRequest(nickname = uiState.value.nickname)
         Log.d("통신", "Request: ${verifyNicknameRequest.toString()}")
-        val verifyNicknameResponseCall: Call<CommonResponse> = DotoringAPI.retrofitService.nicknameValidation(verifyNicknameRequest)
+        val verifyNicknameResponseCall: Call<CommonResponse> = DotoringRegisterAPI.retrofitService.nicknameValidation(verifyNicknameRequest)
 
         verifyNicknameResponseCall.enqueue(object: Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
-                Log.d("통신", "onResponse"+response.body())
-                Log.d("통신", "onResponse"+response.isSuccessful)
+
+                Log.d("통신", "onResponse")
+                Log.d("통신", "닉네임 중복 확인: ${response.body()}")
+                Log.d("통신", "닉네임 중복 확인: ${response.code()}")
+
 
                 if (response.isSuccessful && response.body() != null) {
                     Log.d("통신", "Success")
