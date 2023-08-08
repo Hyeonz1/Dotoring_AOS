@@ -25,17 +25,17 @@ class RegisterSecondViewModel: ViewModel() {
 
     }
 
-    fun updateEmploymentCertification(file: File) {
+    fun updateEmploymentCertification(imageUri: Uri?) {
         _uiState.update { currentState ->
             currentState.copy(
-               employmentCertification = file)
+               employmentCertification = imageUri)
         }
     }
 
-    fun updateGraduationCertification(file: File) {
+    fun updateGraduationCertification(imageUri: Uri?) {
         _uiState.update { currentState ->
             currentState.copy(
-                graduationCertification = file)
+                graduationCertification = imageUri)
         }
     }
     fun uploadEmploymentFile() {
