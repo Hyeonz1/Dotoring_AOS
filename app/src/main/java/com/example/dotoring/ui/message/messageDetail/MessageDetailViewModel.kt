@@ -12,7 +12,8 @@ import com.example.dotoring.dto.login.LoginRequest
 import com.example.dotoring.dto.message.MessageRequest
 import com.example.dotoring.navigation.Graph
 import com.example.dotoring.network.DotoringAPI
-import com.example.dotoring.ui.message.messageDetail.data.MessageDetail
+import com.example.dotoring.ui.home.data.Mentee
+import com.example.dotoring.ui.message.util.RoomInfo
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,16 +28,16 @@ class MessageDetailViewModel: ViewModel() {
 
     private val _uiState = MutableStateFlow(MessageDetailUiState())
     val uiState: StateFlow<MessageDetailUiState> = _uiState.asStateFlow()
+    val uiMessageDetailList: MutableList<MessageDetail> = mutableListOf()
 
-
-    fun updateContent(contentInput: String) {
+    fun updateContent(messageDetail: MessageDetail) {
         _uiState.update { currentState ->
-            currentState.copy(content = contentInput)
+            currentState.copy(chatList = uiMessageDetailList)
         }
     }
 
     fun sendMessage(navController: NavHostController){
-        val sendMessageRequest= MessageRequest(content = uiState.value.content)
+        val sendMessageRequest= MessageRequest(content = uiState.value.writeContent)
         val sendMessageRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.inSendMessage(sendMessageRequest)
         Log.d("통신", "ㅌ통신함수 실행:")
 
@@ -58,7 +59,7 @@ class MessageDetailViewModel: ViewModel() {
 
                 if (jsonObjectSuccess) {
                     Log.d("메세지", "ㅌ통신함수 성공:")
-                    renderMessageDetailScreen(navController)
+                    renderMessageDetailScreen(navController, roomInfo = RoomInfo())
 
                 }
             }
@@ -72,16 +73,19 @@ class MessageDetailViewModel: ViewModel() {
 
     }
 
-    fun renderMessageDetailScreen(navController: NavHostController) {
+    fun renderMessageDetailScreen(navController: NavHostController, roomInfo: RoomInfo) {
+
 
         val renderMessageDetailRequestCall: Call<CommonResponse> =
-            DotoringAPI.retrofitService.loadDetailedMessage(roomPk = 1, page=1, size=6 )
-
+            DotoringAPI.retrofitService.loadDetailedMessage(
+                roomPk = roomInfo.RoomPk, page=1, size=6 )
+        Log.d("메세지", "통" + roomInfo.RoomPk )
         renderMessageDetailRequestCall.enqueue(object : Callback<CommonResponse> {
         override fun onResponse(
             call: Call<CommonResponse>,
             response: Response<CommonResponse>
         ) {
+
             Log.d("메세지", "통신 성공 : ${response.raw()}")
             Log.d("메세지", "통신 성공 : " + response.body().toString())
             val jsonObject= Gson().toJson(response.body())
@@ -91,26 +95,32 @@ class MessageDetailViewModel: ViewModel() {
             Log.d("메세지", "ㅌ통신성공??:")
 
             if (jsonObjectSuccess) {
-               // val jsonObjectArray = jo.getJSONArray("response")
+                val jsonObjectArray = jo.getJSONArray("response")
+                val messageDetail = jsonObjectArray.optJSONArray("content")
+//                val getContentObject = jsonObjectArray.getJSONObject(1)
+//                val jsonContentArray = getContentObject.getJSONArray("content")
+
                 val uiMessageDetailList: MutableList<MessageDetail> = mutableListOf()
 //
 //
-//                for (i in 0 until jsonObjectArray.length()) {
-//                    Log.d("로그인" + " i", i.toString())
-//                    val getObject = jsonObjectArray.getJSONObject(i)
-//                    val time=getObject.getString("createdAt")
-//
-//
-//                    val messageDetail = MessageDetail(
-//                        nickname = getObject.getString("nickname"),
-//                        letterId = getObject.getInt("letterId"),
-//                        content = getObject.getString("content"),
-//                        writer = getObject.getBoolean("writer"),
-//                        createdAt = getObject.getString("createdAt")
-//                    )
+                if (messageDetail != null && messageDetail.length() > 0) {
+                    val uiMentiList: MutableList<Mentee> = mutableListOf()
 
-                   //// uiMessageDetailList.add(MessageDetail)
-            //    }
+                    for (i in 0 until messageDetail.length()) {
+                        val messageObject = messageDetail.optJSONObject(i)
+//                    val time=getObject.getString("createdAt")
+
+
+                    val messageDetail = MessageDetail(
+                        nickname = messageObject.getString("nickname"),
+                        letterId = messageObject.getLong("letterId"),
+                        content = messageObject.getString("content"),
+                        writer = messageObject.getBoolean("writer"),
+                        createdAt = messageObject.getString("createdAt")
+                    )
+
+                    uiMessageDetailList.add(messageDetail)
+                }
 
                 _uiState.update { currentState ->
                     currentState.copy(chatList = uiMessageDetailList)

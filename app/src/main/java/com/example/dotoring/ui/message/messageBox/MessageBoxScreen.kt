@@ -43,11 +43,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
+import com.example.dotoring.navigation.AuthScreen
 import com.example.dotoring.navigation.Graph
 import com.example.dotoring.navigation.MentiDetailScreen
 import com.example.dotoring.navigation.MessageDetailScreen
-import com.example.dotoring.ui.message.messageBox.data.MessageBox
-import com.example.dotoring.ui.message.messageBox.data.source
+import com.example.dotoring.ui.message.util.RoomInfo
+import com.example.dotoring.ui.register.MentoInformation
 import com.example.dotoring.ui.theme.DotoringTheme
 import com.example.dotoring.ui.theme.Gray
 import com.example.dotoring.ui.theme.Navy
@@ -57,8 +58,8 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 @Composable
     fun MessageBoxScreen( messageBoxViewModel: MessageBoxViewModel = viewModel(), navController: NavHostController
     ) {
-    val messageList = source().loadRoom()
         val messageBoxUiState by messageBoxViewModel.uiState.collectAsState()
+    val messageList = messageBoxUiState.messageList
     Log.d("쪽지함", " 쪽지함 실행")
     LaunchedEffect(Unit) {
     messageBoxViewModel.renderMessageBoxScreen(navController)
@@ -91,7 +92,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
     @Composable
     fun MessageListItem(messageBoxViewModel: MessageBoxViewModel = viewModel(), messageBox: MessageBox, navController: NavHostController){
         val messageBoxUiState by messageBoxViewModel.uiState.collectAsState()
-        val messageList = source().loadRoom()
+//        val messageList = source().loadRoom()
         Column(modifier = Modifier
             .width(300.dp)
             , horizontalAlignment = Alignment.CenterHorizontally
@@ -102,7 +103,18 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
                     .width(350.dp)
                     .height(100.dp)
                     .padding(horizontal = 5.dp)
-                    .clickable { navController.navigate(MessageDetailScreen.MessageDetailed.route) }
+                    .clickable {
+                        val roomInfo = RoomInfo(
+                            RoomPk = messageBox.roomPK,
+                        )
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            key = "RoomInfo",
+                            value = roomInfo.RoomPk
+                        )
+                        navController.navigate(MessageDetailScreen.MessageDetailed.route)
+                    },
+
+
 
             ) {
                 Box(

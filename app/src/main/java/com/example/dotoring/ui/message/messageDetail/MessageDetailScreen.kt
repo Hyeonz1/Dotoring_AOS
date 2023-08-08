@@ -73,9 +73,7 @@ import com.example.dotoring.R
 
 import com.example.dotoring.ui.message.messageBox.MessageBoxViewModel
 import com.example.dotoring.ui.message.messageBox.MessageListItem
-import com.example.dotoring.ui.message.messageBox.data.source
-import com.example.dotoring.ui.message.messageDetail.data.MessageDetail
-import com.example.dotoring.ui.message.messageDetail.data.chatSource
+import com.example.dotoring.ui.message.util.RoomInfo
 import com.example.dotoring.ui.register.first.RegisterFirstViewModel
 import com.example.dotoring.ui.theme.DotoringTheme
 import com.example.dotoring.ui.theme.Gray
@@ -87,12 +85,12 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewModel(), navController: NavHostController) {
-    messageDetailViewModel.renderMessageDetailScreen(navController)
-    val ChatList = chatSource().loadChat()
+fun MessageDetailScreen( roomInfo: RoomInfo,messageDetailViewModel: MessageDetailViewModel = viewModel(), navController: NavHostController) {
+    messageDetailViewModel.renderMessageDetailScreen(navController, roomInfo)
     var message by remember { mutableStateOf("") }
     val messageDetailUiState by messageDetailViewModel.uiState.collectAsState()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
+    val chatlist = messageDetailUiState.chatList
 
     BackdropScaffold(
         scaffoldState = scaffoldState,
@@ -156,7 +154,7 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
                             .padding(5.dp)) {
                         val scrollState = rememberLazyListState()
                         LazyColumn(state = scrollState) {
-                            this.items(ChatList) {
+                            this.items(chatlist) {
                                     messageDetail ->
                                 if(messageDetail.writer){
                                     MentoChatBox(messageDetail=messageDetail) }
@@ -223,6 +221,7 @@ fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewMod
 @Composable
 fun MessageField(navController: NavHostController,value:String, onValueChange:(String)->Unit, textField: String, messageDetailViewModel: MessageDetailViewModel = viewModel()) {
 
+    val messageDetailUiState by messageDetailViewModel.uiState.collectAsState()
     Column(modifier = Modifier
         .background(color= Gray)) {
         val keyboardController = LocalSoftwareKeyboardController.current
@@ -251,13 +250,7 @@ fun MessageField(navController: NavHostController,value:String, onValueChange:(S
             .height(40.dp)
             .align(End)
             , shape = RoundedCornerShape(30.dp),
-            onClick = { MessageDetail(
-                letterId = 6,
-                content = "넵 알겠습니다.",
-                writer = false,
-                nickname = "sonny567",
-                createdAt = "2023-07-28"
-            )  }) {
+            onClick = { messageDetailViewModel.sendMessage(navController)  }) {
             Image(
                 painter = painterResource(R.drawable.send_active),
                 contentDescription = null,
@@ -373,7 +366,7 @@ fun MentoChatBox(messageDetailViewModel: MessageDetailViewModel = viewModel(), m
 @Composable
 fun MessageDetailPreview() {
     DotoringTheme {
-        MessageDetailScreen(navController = rememberNavController())
+        MessageDetailScreen(navController = rememberNavController(), roomInfo = RoomInfo())
     }
 }
 

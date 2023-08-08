@@ -12,8 +12,11 @@ import com.example.dotoring.ui.Calender.CalenderScreen
 import com.example.dotoring.ui.detail.MenteeDetailed
 import com.example.dotoring.ui.home.MainScreen
 import com.example.dotoring.ui.message.messageBox.MessageBoxScreen
+import com.example.dotoring.ui.message.util.RoomInfo
 import com.example.dotoring.ui.message.messageDetail.MessageDetailScreen
 import com.example.dotoring.ui.mypage.MyPageScreen
+import com.example.dotoring.ui.register.MentoInformation
+import com.example.dotoring.ui.register.fourth.FourthRegisterScreen
 
 @Composable
 fun HomeNavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -40,6 +43,7 @@ fun HomeNavGraph(navController: NavHostController, modifier: Modifier = Modifier
         mentiDetailNavGraph(navController)
 
         messageDetailNavGraph(navController = navController)
+
     }
 }
 
@@ -60,7 +64,12 @@ fun NavGraphBuilder.messageDetailNavGraph(navController: NavHostController) {
         startDestination = MessageDetailScreen.MessageDetailed.route
     ) {
         composable(route = MessageDetailScreen.MessageDetailed.route) {
-            MessageDetailScreen(navController = navController)
+            val result =
+                navController.previousBackStackEntry!!.savedStateHandle.get<RoomInfo>("RoomInfo")
+
+            if (result != null) {
+                MessageDetailScreen(navController = navController, roomInfo = RoomInfo())
+            }
         }
     }
 }
