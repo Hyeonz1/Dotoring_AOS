@@ -5,7 +5,9 @@ import com.example.dotoring.dto.CommonResponse
 import com.example.dotoring.dto.login.LoginRequest
 import com.example.dotoring.dto.message.MessageRequest
 import com.example.dotoring.dto.register.EmailCertificationRequest
+import com.example.dotoring.dto.register.FinalSignUpRequest
 import com.example.dotoring.dto.register.IdValidationRequest
+import com.example.dotoring.dto.register.MentoSignupRequestDTO
 import com.example.dotoring.dto.register.NicknameValidationRequest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -109,13 +111,18 @@ interface DotoringAPIService {
     @GET("api/member/job-major")
     fun getJobAndMajorList(): Call<CommonResponse>
 
+    @POST("api/signup-mento")
+    fun signUpAsMento(
+        @Body mentoSingupRequest: MentoSignupRequestDTO
+    ): Call<CommonResponse>
+/*
     @Multipart
     @POST("api/signup-mento")
     fun signUpAsMento(
-        @Part certifications: List<MultipartBody.Part?>,
-        @PartMap mentoSignupRequestDTO: HashMap<String, RequestBody>
+        @Part certifications: List<MultipartBody.Part>,
+        @PartMap mentoSignupRequestDTO: MutableMap<String, HashMap<String, RequestBody>>
 //        @Body finalSignUpRequest: FinalSignUpRequest
-    ):Call <CommonResponse>
+    ):Call <CommonResponse>*/
 
     @GET("api/menti")
     fun searchMentee(

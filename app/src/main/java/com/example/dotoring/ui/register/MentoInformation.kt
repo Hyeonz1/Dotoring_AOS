@@ -10,7 +10,7 @@ class MentoInformation(
     val careerLevel: Int = 1,
     val job: String="",
     val major: String="",
-    val employmentCertification: Uri? =null,
+    val employmentCertification: Uri? = null,
     val graduateCertification: Uri? = null,
     val nickname: String = "",
     val introduction: String = "",
