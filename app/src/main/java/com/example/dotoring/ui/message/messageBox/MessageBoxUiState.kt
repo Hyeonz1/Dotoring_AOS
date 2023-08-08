@@ -1,9 +1,16 @@
 package com.example.dotoring.ui.message.messageBox
 
-import com.example.dotoring.ui.message.messageBox.data.MessageBox
 
 
 data class MessageBoxUiState (
     val messageList: List<MessageBox> = listOf<MessageBox> (),
 
     )
+
+data class MessageBox(
+    val roomPK: Long,
+    val memberPK: Long,
+    val nickname: String,
+    val lastLetter: String,
+    val major: String,
+    val updateAt: String )

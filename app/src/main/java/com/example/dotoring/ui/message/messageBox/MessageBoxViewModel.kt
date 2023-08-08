@@ -8,7 +8,6 @@ import com.example.dotoring.navigation.Graph
 import com.example.dotoring.navigation.MessageDetailScreen
 import com.example.dotoring.network.DotoringAPI
 import com.example.dotoring.ui.home.data.Mentee
-import com.example.dotoring.ui.message.messageBox.data.MessageBox
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,8 +32,8 @@ class MessageBoxViewModel : ViewModel() {
 
         val renderMessageBoxRequestCall: Call<CommonResponse> =
             DotoringAPI.retrofitService.loadMessageBox()
-        Log.d("쪽지함", "여긴가 :" + renderMessageBoxRequestCall)
-        renderMessageBoxRequestCall.enqueue(object : Callback<CommonResponse> {
+         Log.d("쪽지함", "여긴가 :" + renderMessageBoxRequestCall)
+         renderMessageBoxRequestCall.enqueue(object : Callback<CommonResponse> {
             override fun onResponse(
                 call: Call<CommonResponse>,
                 response: Response<CommonResponse>
@@ -46,35 +45,35 @@ class MessageBoxViewModel : ViewModel() {
                 Log.d("쪽지함", "통신 성공 : ${response.raw()}")
                 Log.d("쪽지함", "통신 성공 : " + response.isSuccessful)
                 val jsonObject= Gson().toJson(response.body())
-                Log.d("홈", "로그인??"+response.body() )
-                Log.d("쪽지함", "들어옴" )
+                Log.d("홈", "통로그인??"+response.body() )
+                Log.d("쪽지함", "통들어옴" )
                 val jo = JSONObject(jsonObject)
-                Log.d("쪽지함","들어옴")
+                Log.d("쪽지함","통통들어옴")
                 val jsonObjectSuccess = jo.getBoolean("success")
 
 
                 if (jsonObjectSuccess) {
-//                    val jsonObjectArray = jo.getJSONArray("response")
+                    val jsonObjectArray = jo.getJSONArray("response")
                     val uiMessageBoxList: MutableList<MessageBox> = mutableListOf()
 
 
-//                    for (i in 0 until 7) {
-//                        Log.d("로그인" + " i", i.toString())
-//                        val getObject = jsonObjectArray.getJSONObject(i)
-//
-//
-//
-//                        val messagebox = MessageBox(
-//                            roomPK = getObject.getLong("roomPK"),
-//                            memberPK = getObject.getLong("memberPK"),
-//                            nickname = getObject.getString("nickname"),
-//                            lastLetter = getObject.getString("lastLetter"),
-//                            major = getObject.getString("major"),
-//                            updateAt = getObject.getString("updateAt")
-//                        )
-//
-//                        uiMessageBoxList.add(messagebox)
-//                    }
+                    for (i in 0 until 7) {
+                        Log.d("로그인" + " i", i.toString())
+                        val getObject = jsonObjectArray.getJSONObject(i)
+
+
+
+                        val messagebox = MessageBox(
+                            roomPK = getObject.getLong("roomPK"),
+                            memberPK = getObject.getLong("memberPK"),
+                            nickname = getObject.getString("nickname"),
+                            lastLetter = getObject.getString("lastLetter"),
+                            major = getObject.getString("major"),
+                            updateAt = getObject.getString("updateAt")
+                        )
+
+                        uiMessageBoxList.add(messagebox)
+                    }
 
                     _uiState.update { currentState ->
                         currentState.copy(messageList = uiMessageBoxList)
