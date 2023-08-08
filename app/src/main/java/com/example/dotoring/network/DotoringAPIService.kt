@@ -5,14 +5,15 @@ import com.example.dotoring.dto.CommonResponse
 import com.example.dotoring.dto.login.LoginRequest
 import com.example.dotoring.dto.message.MessageRequest
 import com.example.dotoring.dto.register.EmailCertificationRequest
-import com.example.dotoring.dto.register.FinalSignUpRequest
 import com.example.dotoring.dto.register.IdValidationRequest
 import com.example.dotoring.dto.register.NicknameValidationRequest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.JavaNetCookieJar
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -20,9 +21,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.HTTP
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.PartMap
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.io.IOException
@@ -110,7 +112,9 @@ interface DotoringAPIService {
     @Multipart
     @POST("api/signup-mento")
     fun signUpAsMento(
-        @Body finalSignUpRequest: FinalSignUpRequest
+        @Part certifications: List<MultipartBody.Part?>,
+        @PartMap mentoSignupRequestDTO: HashMap<String, RequestBody>
+//        @Body finalSignUpRequest: FinalSignUpRequest
     ):Call <CommonResponse>
 
     @GET("api/menti")
