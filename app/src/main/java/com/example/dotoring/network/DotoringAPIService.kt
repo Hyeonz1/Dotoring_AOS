@@ -30,7 +30,8 @@ import java.net.CookieManager
 
 
 private const val BASE_URL =
-    "http://192.168.0.32:8080/"
+    "http://172.30.1.10:8080/"
+
 
 //val interceptor = HttpLoggingInterceptor().apply {
 //    level = HttpLoggingInterceptor.Level.BODY
@@ -111,7 +112,7 @@ interface DotoringAPIService {
     @POST("api/signup-mento")
     fun signUpAsMento(
         @Body finalSignUpRequest: FinalSignUpRequest
-    ):Call <CommonResponse>
+    ):Call<CommonResponse>
 
     @GET("api/menti")
     fun searchMentee(
