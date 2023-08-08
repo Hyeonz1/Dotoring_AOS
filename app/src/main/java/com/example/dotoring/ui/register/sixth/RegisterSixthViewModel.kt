@@ -1,6 +1,8 @@
 package com.example.dotoring.ui.register.sixth
 
+import android.net.Uri
 import android.os.CountDownTimer
+import android.os.Environment
 import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -16,10 +18,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import okhttp3.FormBody
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class RegisterSixthViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(RegisterSixthUiState())
@@ -229,29 +240,135 @@ class RegisterSixthViewModel: ViewModel() {
         })
     }
 
+    private fun makePart(uri: Uri?, fileName: String): MultipartBody.Part {
+        val path : String = Environment.getExternalStorageDirectory().absolutePath + "/AP/"
+        val dir : File = File(path)
+
+        if (!dir.exists()) {
+            dir.mkdirs()
+        }
+
+        val fullName = path + "fileName"
+        val file : File = File(fullName)
+
+
+//        val image = File.createTempFile(fileName, ".pdf", null)
+//        val destinationUri = Uri.fromFile(image)
+//
+//        val requestFile = file.asRequestBody("application/pdf".toMediaTypeOrNull())
+
+
+//        val requestFile = Request.Builder()
+//            .post(file.asRequestBody())
+//            .build()
+
+//        val filePath = uri?.path
+//        val imageFile = File(filePath).createNewFile()
+//        val requestFile : RequestBody = RequestBody.create(
+//            IMAGE_TYPE_JPEG.toMediaTypeOrNull(), imageFile
+//        )
+        val fileBody = uri!!.path?.let { File(it) }
+        var requestBody : RequestBody = fileBody!!.asRequestBody("*/*".toMediaType())
+        var body : MultipartBody.Part = MultipartBody.Part.createFormData("uploaded_file", fileName, requestBody)
+//        val requestFile = file.asRequestBody("*/*".toMediaType())
+//
+//        return MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+        return body
+    }
+
     fun finalRegistser(mentoInformation: MentoInformation) {
         Log.d("통신", "finalRegister - 통신 시작")
-        val finalRegisterRequest = FinalSignUpRequest(
-            certifications = listOf(
-                mentoInformation.employmentCertification,
-                mentoInformation.graduateCertification
-            ),
-            mentoSignupRequestDTO = MentoSignupRequestDTO(
-                company = mentoInformation.company,
-                careerLevel = mentoInformation.careerLevel,
-                job = mentoInformation.job,
-                major = mentoInformation.major,
-                nickname = mentoInformation.nickname,
-                introduction = mentoInformation.introduction,
-                loginId = uiState.value.memberId,
-                password = uiState.value.password,
-                email = uiState.value.email
-            )
+
+       /* val employmentCertification = makePart(mentoInformation.employmentCertification, "doc_${mentoInformation.nickname}_employment.pdf")
+        val graduateCertification = makePart(mentoInformation.graduateCertification, "doc_${mentoInformation.nickname}_graduation.pdf")
+
+        val certifications = listOf(
+            employmentCertification,
+            graduateCertification
         )
 
-        Log.d("통신", "finalRegister - Request: $finalRegisterRequest")
+        Log.d("통신", "finalRegister - certifications: $certifications")
 
-        val finalRegisterRequestCall: Call<CommonResponse> = DotoringRegisterAPI.retrofitService.signUpAsMento(finalRegisterRequest)
+        val company : RequestBody = FormBody.Builder()
+            .add("company", mentoInformation.company)
+            .build()
+
+        val careerLevel : RequestBody = FormBody.Builder()
+            .add("careerLevel", mentoInformation.careerLevel.toString())
+            .build()
+
+        val job : RequestBody = FormBody.Builder()
+            .add("job", mentoInformation.job)
+            .build()
+
+        val major : RequestBody = FormBody.Builder()
+            .add("major", mentoInformation.major)
+            .build()
+
+        val introduction : RequestBody = FormBody.Builder()
+            .add("introduction", mentoInformation.introduction)
+            .build()
+
+        val loginId : RequestBody = FormBody.Builder()
+            .add("loginId", uiState.value.memberId)
+            .build()
+
+        val password : RequestBody = FormBody.Builder()
+            .add("password", uiState.value.password)
+            .build()
+
+        val email : RequestBody = FormBody.Builder()
+            .add("email", uiState.value.email)
+            .build()
+
+        val map = hashMapOf<String, RequestBody>()
+        map["company"] = company
+        map["careerLevel"] = careerLevel
+        map["job"] = job
+        map["major"] = major
+        map["introduction"] = introduction
+        map["loginId"] = loginId
+        map["password"] = password
+        map["email"] = email
+
+        val mentoSignupRequestDTO = mutableMapOf<String, HashMap<String, RequestBody>>()
+        mentoSignupRequestDTO["mentoSignupRequestDTO"] = map*/
+
+//        val requestBody : RequestBody = MultipartBody.Builder()
+//                .setType(MultipartBody.FORM)
+//                .addFormDataPart("company", mentoInformation.company)
+//                .addFormDataPart("careerLevel", mentoInformation.careerLevel.toString())
+//                .addFormDataPart("job", mentoInformation.job)
+//                .addFormDataPart("major", mentoInformation.major)
+//                .addFormDataPart("introduction", mentoInformation.introduction)
+//                .addFormDataPart("loginId", uiState.value.memberId)
+//                .addFormDataPart("password", uiState.value.password)
+//                .addFormDataPart("email", uiState.value.email)
+//                .build()
+//        Log.d("통신", "finalRegister - mentoRequestDTO : $mentoSignupRequestDTO")
+
+
+        val mentoSignupRequestDTO: MentoSignupRequestDTO = MentoSignupRequestDTO(
+            company = mentoInformation.company,
+            careerLevel = mentoInformation.careerLevel,
+            job = mentoInformation.job,
+            major = mentoInformation.major,
+            nickname = mentoInformation.nickname,
+            introduction = mentoInformation.introduction,
+            loginId = uiState.value.memberId,
+            password = uiState.value.password,
+            email = uiState.value.email
+        )
+
+        val finalRegisterRequestCall: Call<CommonResponse> = DotoringRegisterAPI.retrofitService.signUpAsMento(
+            /*certifications = certifications,
+            mentoSignupRequestDTO = mentoSignupRequestDTO*/
+        mentoSingupRequest = mentoSignupRequestDTO
+        )
+
+        Log.d("통신", "finalRegister - finalRegisterRequestCall: $finalRegisterRequestCall")
+
 
         finalRegisterRequestCall.enqueue(object: Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {

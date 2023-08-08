@@ -2,6 +2,7 @@ package com.example.dotoring.ui.home.data
 
 import com.example.dotoring.R
 
+/*
 class DataSource {
     fun loadMenties(): List<Mentee> {
         return listOf<Mentee>(
@@ -16,4 +17,4 @@ class DataSource {
 
         )
     }
-}
+}*/

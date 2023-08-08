@@ -1,6 +1,8 @@
 package com.example.dotoring.ui.register.second
 
+import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,6 +30,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.net.toFile
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -38,13 +42,15 @@ import com.example.dotoring.ui.register.util.RegisterScreenNextButton
 import com.example.dotoring.ui.register.util.RegisterScreenTop
 import com.example.dotoring.ui.theme.DotoringTheme
 import de.charlex.compose.HtmlText
+import java.io.File
 
 @Composable
 private fun ImageUploadButton(
     registerSecondViewModel: RegisterSecondViewModel = viewModel(),
     uploadEmploymentFile: Boolean
 ) {
-    var selectedImageUri by remember {
+
+/*    var selectedImageUri by remember {
         mutableStateOf<Uri?>(null)
     }
 
@@ -63,15 +69,36 @@ private fun ImageUploadButton(
                 registerSecondViewModel.uploadGraduationFile()
                 registerSecondViewModel.updateGraduationCertification(file)
             }
-
-
         }
-    )
+    )*/
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+            selectedUri ->
+        if (selectedUri != null) {
+            Log.d("uri", "selectedUri: file selected $selectedUri")
+            Log.d("uri", "selectedUri: file path ${selectedUri.path}")
+            if (uploadEmploymentFile) {
+                registerSecondViewModel.uploadEmploymentFile()
+                registerSecondViewModel.updateEmploymentCertification(selectedUri)
+
+            } else {
+                registerSecondViewModel.uploadGraduationFile()
+                registerSecondViewModel.updateGraduationCertification(selectedUri)
+            }
+
+        } else {
+            Log.d("uri", "selectedUri: No file was selected.")
+        }
+    }
 
     Button(
-        onClick = { singlePhotoPickerLauncher.launch(
+        onClick = {
+/*            singlePhotoPickerLauncher.launch(
             PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-        ) },
+        )*/
+                  launcher.launch("*/*")
+
+                  },
         modifier = Modifier.size(width = 300.dp, height = 80.dp),
         border = BorderStroke(width = 0.5.dp, color = colorResource(id = R.color.grey_200)),
         colors = ButtonDefaults.buttonColors(
@@ -95,7 +122,8 @@ fun SecondRegisterScreen(
     val registerSecondUiState by registerSecondViewModel.uiState.collectAsState()
 
     Column(
-        modifier = Modifier.padding(top = 50.dp)
+        modifier = Modifier
+            .padding(top = 50.dp)
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

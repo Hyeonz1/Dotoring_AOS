@@ -12,30 +12,30 @@ class RegisterSecondViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(RegisterSecondUiState())
     val uiState: StateFlow<RegisterSecondUiState> = _uiState.asStateFlow()
 
-    fun uriToFile(imageUri: Uri?): File {
-        val path = imageUri?.path
+//    fun uriToFile(imageUri: Uri?): File {
+//        val path = imageUri?.path
+//
+//        return File(path.toString())
+//
+//        /*if (file.absolutePath == path) {
+//            Log.d("테스트", "파일 패스 테스트 성공")
+//        }
+//
+//        return file*/
+//
+//    }
 
-        return File(path.toString())
-
-        /*if (file.absolutePath == path) {
-            Log.d("테스트", "파일 패스 테스트 성공")
-        }
-
-        return file*/
-
-    }
-
-    fun updateEmploymentCertification(file: File) {
+    fun updateEmploymentCertification(imageUri: Uri) {
         _uiState.update { currentState ->
             currentState.copy(
-               employmentCertification = file)
+               employmentCertification = imageUri)
         }
     }
 
-    fun updateGraduationCertification(file: File) {
+    fun updateGraduationCertification(imageUri: Uri) {
         _uiState.update { currentState ->
             currentState.copy(
-                graduationCertification = file)
+                graduationCertification = imageUri)
         }
     }
     fun uploadEmploymentFile() {
