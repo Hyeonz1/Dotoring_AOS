@@ -61,8 +61,7 @@ fun loadMentiList() {
                             val mentee = Mentee(
 //                                    id = mentiObject.getLong("id"),
                                 nickname = mentiObject.getString("nickname"),
-//                                    profileImage = mentiObject.getString("profileImage"),
-                                profileImage = 3,
+                                profileImage = mentiObject.getString("profileImage"),
                                 major = mentiObject.getString("major"),
                                 job = mentiObject.getString("job"),
                                 introduction = mentiObject.getString("introduction")
