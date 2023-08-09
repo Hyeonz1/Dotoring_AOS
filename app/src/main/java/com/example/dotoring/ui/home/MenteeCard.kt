@@ -1,5 +1,6 @@
 package com.example.dotoring.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.runtime.getValue
 import androidx.compose.foundation.clickable
@@ -41,7 +42,8 @@ fun MenteeCard(mentee: Mentee, navController: NavHostController, menteeDetailedV
     val spaceBetweenPhotoAndDescription: Dp = 10.dp
 
     val nickname = mentee.nickname
-    val profileImage = mentee.profileImage
+    val profileImage = "http://192.168.0.32:8080/files/${mentee.profileImage}"
+    Log.d("profileImage", "$profileImage")
     val major = mentee.major
     val job = mentee.job
     val introduction = mentee.introduction
@@ -70,11 +72,11 @@ fun MenteeCard(mentee: Mentee, navController: NavHostController, menteeDetailedV
             Spacer(modifier = Modifier.size(25.dp))
 
             AsyncImage(
-                model = profileImage ,
+                model = profileImage,
                 contentDescription = "멘티 사진",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(width = 83.dp, height = 91.dp)
+                    .size(70.dp)
                     .clip(RoundedCornerShape(20.dp)),
                 placeholder = painterResource(id = R.drawable.sample_detail_image)
             )
