@@ -53,7 +53,8 @@ fun NavGraphBuilder.mentiDetailNavGraph(navController: NavHostController) {
     ) {
         composable(route = MentiDetailScreen.MentiDetailed.route) {
             val result =
-                navController.previousBackStackEntry!!.savedStateHandle.get<MenteeDetail>("menteeDetail")
+                navController.previousBackStackEntry?.savedStateHandle?.get<MenteeDetail>("menteeDetail")
+
             if(result != null) {
                 MenteeDetailed(navController = navController, menteeDetail = result)
             }
