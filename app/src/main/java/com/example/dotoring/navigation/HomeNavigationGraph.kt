@@ -1,6 +1,8 @@
 package com.example.dotoring.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.navigation
@@ -41,7 +43,7 @@ fun HomeNavGraph(navController: NavHostController, modifier: Modifier = Modifier
 
         mentiDetailNavGraph(navController)
 
-        messageDetailNavGraph(navController = navController)
+        messageDetailNavGraph(navController)
 
     }
 }
@@ -67,21 +69,23 @@ fun NavGraphBuilder.messageDetailNavGraph(navController: NavHostController) {
         route = Graph.MESSAGE_DETAILS,
         startDestination = MessageDetailScreen.MessageDetailed.route
     ) {
-        composable(route = MessageDetailScreen.MessageDetailed.route) {
-            val result =
-                navController.previousBackStackEntry!!.savedStateHandle.get<MessageBox>("RoomInfo")
-
-            if (result != null) {
-                val roomInfo=result.roomPK
-                MessageDetailScreen(navController = navController, roomInfo = roomInfo)
-            }
+//        composable(route = MessageDetailScreen.MessageDetailed.route) {
+//            val result =remember {
+//                navController.previousBackStackEntry!!.savedStateHandle.get<MessageBox>("roomPK")
+//            }
+//            Log.d("메세지", "메시지 실행:")
+//            if (result != null) {
+//                val roomInfo=result.roomPK
+//                MessageDetailScreen(navController = navController, roomPk = roomInfo)
+//            }
         }
-//        composable(route = MessageDetailScreen.MessageDetailed.route){
-//            MessageDetailScreen(navController = navController)
+        composable(route = MessageDetailScreen.MessageDetailed.route){
+            MessageDetailScreen(navController = navController)
+            Log.d("메세지","메세지")
 
         }
     }
-}
+
 
 
 sealed class MessageDetailScreen(val route: String) {

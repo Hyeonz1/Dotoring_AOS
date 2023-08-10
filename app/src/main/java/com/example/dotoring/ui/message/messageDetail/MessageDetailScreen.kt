@@ -70,11 +70,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MessageDetailScreen(roomInfo: Long,roomessageDetailViewModel: MessageDetailViewModel = viewModel(), navController: NavHostController) {
+fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewModel(), navController: NavHostController) {
 //    val roomPk = roomInfo.roomPK
-//    Log.d("메시지", " 메시지 실행" + roomPk)
-    messageDetailViewModel.renderMessageDetailScreen(navController)
-//    Log.d("메시지", " 메시지?? 실행" + roomPk)
+    Log.d("메시지", " 메시지 실행" + 1)
+    messageDetailViewModel.renderMessageDetailScreen(navController, 1)
+    Log.d("메시지", " 메시지?? 실행" + 1)
     var message by remember { mutableStateOf("") }
     val messageDetailUiState by messageDetailViewModel.uiState.collectAsState()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
@@ -187,7 +187,7 @@ fun MessageDetailScreen(roomInfo: Long,roomessageDetailViewModel: MessageDetailV
                         .background(Color.White),
                     shape = RoundedCornerShape(35.dp),
                 ) {
-                    MessageField(value = message, onValueChange = {message = it}, textField = stringResource(id = R.string.message_textField), navController = navController)
+                    MessageField(value = messageDetailUiState.writeContent, onValueChange = {messageDetailViewModel.updateContent(it)}, textField = stringResource(id = R.string.message_textField), navController = navController, scaffoldState = BackdropScaffoldState(BackdropValue.Concealed))
                 }
 
 
@@ -207,8 +207,8 @@ fun MessageDetailScreen(roomInfo: Long,roomessageDetailViewModel: MessageDetailV
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun MessageField( navController: NavHostController,value:String, onValueChange:(String)->Unit, textField: String, messageDetailViewModel: MessageDetailViewModel = viewModel()) {
-
+fun MessageField( scaffoldState: BackdropScaffoldState, navController: NavHostController,value:String, onValueChange:(String)->Unit, textField: String, messageDetailViewModel: MessageDetailViewModel = viewModel()) {
+    val scope = rememberCoroutineScope()
     val messageDetailUiState by messageDetailViewModel.uiState.collectAsState()
     Column(modifier = Modifier
         .background(color= Gray)) {
@@ -240,6 +240,9 @@ fun MessageField( navController: NavHostController,value:String, onValueChange:(
             , shape = RoundedCornerShape(30.dp),
             onClick = {
                 messageDetailViewModel.sendMessage(navController)
+
+                scope.launch { scaffoldState.reveal() }
+
             }) {
             Image(
                 painter = painterResource(R.drawable.send_active),

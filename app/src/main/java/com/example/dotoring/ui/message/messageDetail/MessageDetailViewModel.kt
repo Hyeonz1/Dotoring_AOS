@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import com.example.dotoring.dto.CommonResponse
 import com.example.dotoring.dto.message.MessageRequest
 import com.example.dotoring.network.DotoringAPI
+import com.example.dotoring.ui.detail.MenteeDetail
 import com.example.dotoring.ui.message.messageBox.MessageBox
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,7 @@ class MessageDetailViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(MessageDetailUiState())
     val uiState: StateFlow<MessageDetailUiState> = _uiState.asStateFlow()
 
+
 //    val uiMessageDetailList: MutableList<MessageDetail> = mutableListOf()
 
 //    fun updateContent(messageDetail: MessageDetail) {
@@ -30,30 +32,38 @@ class MessageDetailViewModel: ViewModel() {
 //        }
 //    }
 
+    fun updateContent(writeinput: String) {
+        _uiState.update { currentState ->
+            currentState.copy(writeContent = writeinput)
+        }
+    }
+
     fun sendMessage(navController: NavHostController){
         val sendMessageRequest= MessageRequest(content = uiState.value.writeContent)
+        Log.d("송신", "통신함수 실행:" + sendMessageRequest.content)
         val sendMessageRequestCall: Call<CommonResponse> = DotoringAPI.retrofitService.inSendMessage(sendMessageRequest)
-        Log.d("통신", "ㅌ통신함수 실행:")
+        Log.d("송신", "통신함수 실행:" )
 
         sendMessageRequestCall.enqueue(object : Callback<CommonResponse>
         {
+
 
             override fun onResponse(
                 call: Call<CommonResponse>,
                 response: Response<CommonResponse>
             ) {
-                Log.d("메세지", "통신 성공 : ${response.raw()}")
-                Log.d("메세지", "통신 성공 : " + response.body().toString())
+                Log.d("송신", "통신 성공 : ${response.raw()}")
+                Log.d("송신", "통신 성공 : " + response.body().toString())
 
                 val jsonObject= Gson().toJson(response.body())
-                Log.d("메세지","로그인 성공할락말락")
+                Log.d("송신","로그인 성공할락말락")
                 val jo = JSONObject(jsonObject)
                 val jsonObjectSuccess = jo.getBoolean("success")
-                Log.d("메세지", "ㅌ통신성공??:")
+                Log.d("송신", "ㅌ통신성공??:")
 
                 if (jsonObjectSuccess) {
-                    Log.d("메세지", "ㅌ통신함수 성공:")
-                    renderMessageDetailScreen(navController)
+                    Log.d("송신", "ㅌ통신함수 성공:")
+                    renderMessageDetailScreen(navController, 1)
 //                    renderMessageDetailScreen(navController)
 
                 }
@@ -68,12 +78,24 @@ class MessageDetailViewModel: ViewModel() {
 
     }
 
-    fun renderMessageDetailScreen(navController: NavHostController) {
+//    fun loadMentiInfo(menteeDetail: MenteeDetail) {
+//        Log.d("업데이트", "loadMentiInfo 실행")
+//        _uiState.update { currentState ->
+//            currentState.copy(profileImage = menteeDetail.profileImage,
+//                nickname = menteeDetail.nickname,
+//                job = menteeDetail.job,
+//                major = menteeDetail.major,
+//                introduction = menteeDetail.introduction,
+//                mentoring = menteeDetail.mentoring)
+//        }
+//
+//    }
+    fun renderMessageDetailScreen(navController: NavHostController, roomPk: Long) {
 
 
 //        val renderMessageDetailRequestCall: Call<CommonResponse> =
             DotoringAPI.retrofitService.loadDetailedMessage(
-                roomPk = 1, page=1, size=6 ).enqueue(object : Callback<CommonResponse> {
+                roomPk = 1, page=0, size=6).enqueue(object : Callback<CommonResponse> {
         override fun onResponse(
             call: Call<CommonResponse>,
             response: Response<CommonResponse>

@@ -96,10 +96,10 @@ import com.example.dotoring.ui.theme.nanumSquareFamily
                     .height(100.dp)
                     .padding(horizontal = 5.dp)
                     .clickable {
-                        navController.currentBackStackEntry?.savedStateHandle?.set(
-                            key = "RoomInfo",
-                            value = messageBox
-                        )
+//                        navController.currentBackStackEntry?.savedStateHandle?.set(
+//                            key = "RoomInfo",
+//                            value = messageBox
+//                        )
                         navController.navigate(MessageDetailScreen.MessageDetailed.route)
                     },
 
