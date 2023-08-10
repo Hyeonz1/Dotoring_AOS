@@ -1,13 +1,10 @@
 package com.example.dotoring.ui.message.messageBox
 
-import android.service.autofill.OnClickAction
 import android.util.Log
-import android.widget.AdapterView.OnItemClickListener
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -43,17 +40,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
-import com.example.dotoring.navigation.AuthScreen
-import com.example.dotoring.navigation.Graph
-import com.example.dotoring.navigation.MentiDetailScreen
 import com.example.dotoring.navigation.MessageDetailScreen
-import com.example.dotoring.ui.message.util.RoomInfo
-import com.example.dotoring.ui.register.MentoInformation
 import com.example.dotoring.ui.theme.DotoringTheme
 import com.example.dotoring.ui.theme.Gray
 import com.example.dotoring.ui.theme.Navy
 import com.example.dotoring.ui.theme.nanumSquareFamily
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
     fun MessageBoxScreen( messageBoxViewModel: MessageBoxViewModel = viewModel(), navController: NavHostController
@@ -92,6 +83,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
     @Composable
     fun MessageListItem(messageBoxViewModel: MessageBoxViewModel = viewModel(), messageBox: MessageBox, navController: NavHostController){
         val messageBoxUiState by messageBoxViewModel.uiState.collectAsState()
+        val messageList = messageBoxUiState.messageList
 //        val messageList = source().loadRoom()
         Column(modifier = Modifier
             .width(300.dp)
@@ -104,13 +96,10 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
                     .height(100.dp)
                     .padding(horizontal = 5.dp)
                     .clickable {
-                        val roomInfo = RoomInfo(
-                            RoomPk = messageBox.roomPK,
-                        )
-                        navController.currentBackStackEntry?.savedStateHandle?.set(
-                            key = "RoomInfo",
-                            value = roomInfo.RoomPk
-                        )
+//                        navController.currentBackStackEntry?.savedStateHandle?.set(
+//                            key = "RoomInfo",
+//                            value = messageBox
+//                        )
                         navController.navigate(MessageDetailScreen.MessageDetailed.route)
                     },
 

@@ -1,6 +1,8 @@
 package com.example.dotoring.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.navigation
@@ -12,8 +14,8 @@ import com.example.dotoring.ui.Calender.CalenderScreen
 import com.example.dotoring.ui.detail.MenteeDetail
 import com.example.dotoring.ui.detail.MenteeDetailed
 import com.example.dotoring.ui.home.MainScreen
+import com.example.dotoring.ui.message.messageBox.MessageBox
 import com.example.dotoring.ui.message.messageBox.MessageBoxScreen
-import com.example.dotoring.ui.message.util.RoomInfo
 import com.example.dotoring.ui.message.messageDetail.MessageDetailScreen
 import com.example.dotoring.ui.mypage.MyPageScreen
 
@@ -41,7 +43,7 @@ fun HomeNavGraph(navController: NavHostController, modifier: Modifier = Modifier
 
         mentiDetailNavGraph(navController)
 
-        messageDetailNavGraph(navController = navController)
+        messageDetailNavGraph(navController)
 
     }
 }
@@ -67,16 +69,23 @@ fun NavGraphBuilder.messageDetailNavGraph(navController: NavHostController) {
         route = Graph.MESSAGE_DETAILS,
         startDestination = MessageDetailScreen.MessageDetailed.route
     ) {
-        composable(route = MessageDetailScreen.MessageDetailed.route) {
-            val result =
-                navController.previousBackStackEntry!!.savedStateHandle.get<RoomInfo>("RoomInfo")
+//        composable(route = MessageDetailScreen.MessageDetailed.route) {
+//            val result =remember {
+//                navController.previousBackStackEntry!!.savedStateHandle.get<MessageBox>("roomPK")
+//            }
+//            Log.d("메세지", "메시지 실행:")
+//            if (result != null) {
+//                val roomInfo=result.roomPK
+//                MessageDetailScreen(navController = navController, roomPk = roomInfo)
+//            }
+        }
+        composable(route = MessageDetailScreen.MessageDetailed.route){
+            MessageDetailScreen(navController = navController)
+            Log.d("메세지","메세지")
 
-            if (result != null) {
-                MessageDetailScreen(navController = navController, roomInfo = RoomInfo())
-            }
         }
     }
-}
+
 
 
 sealed class MessageDetailScreen(val route: String) {

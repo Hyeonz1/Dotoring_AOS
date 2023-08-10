@@ -34,7 +34,8 @@ import java.net.CookieManager
 
 
 private const val BASE_URL =
-    "http://192.168.0.32:8080/"
+    "http://192.168.0.12:8080/"
+
 
 //val interceptor = HttpLoggingInterceptor().apply {
 //    level = HttpLoggingInterceptor.Level.BODY
@@ -145,7 +146,7 @@ interface DotoringAPIService {
     ): Call<CommonResponse>
 
     @GET("api/mento/{id}")
-    fun loadDMentoDetailedInfo(
+    fun loadMentoDetailedInfo(
         @Path("id") userId: String
     ): Call<CommonResponse>
 
@@ -163,7 +164,7 @@ interface DotoringAPIService {
     fun reissue(
     ): Call<CommonResponse>
 
-    @POST("api/mento/letter/in/{mentiid}")
+    @POST("api/mento/letter/in/1")
     fun inSendMessage(
         @Body MessageRequest: MessageRequest
     ): Call<CommonResponse>
@@ -182,7 +183,6 @@ interface DotoringAPIService {
         @Path("roomPk") roomPk: Long,
         @Query("page") page: Int,
         @Query("size") size: Int
-
     ): Call<CommonResponse>
 
 
