@@ -11,8 +11,8 @@ import com.example.dotoring.BottomNavScreen
 import com.example.dotoring.ui.Calender.CalenderScreen
 import com.example.dotoring.ui.detail.MenteeDetailed
 import com.example.dotoring.ui.home.MainScreen
+import com.example.dotoring.ui.message.messageBox.MessageBox
 import com.example.dotoring.ui.message.messageBox.MessageBoxScreen
-import com.example.dotoring.ui.message.util.RoomInfo
 import com.example.dotoring.ui.message.messageDetail.MessageDetailScreen
 import com.example.dotoring.ui.mypage.MyPageScreen
 import com.example.dotoring.ui.register.MentoInformation
@@ -63,13 +63,17 @@ fun NavGraphBuilder.messageDetailNavGraph(navController: NavHostController) {
         route = Graph.MESSAGE_DETAILS,
         startDestination = MessageDetailScreen.MessageDetailed.route
     ) {
-        composable(route = MessageDetailScreen.MessageDetailed.route) {
-            val result =
-                navController.previousBackStackEntry!!.savedStateHandle.get<RoomInfo>("RoomInfo")
+//        composable(route = MessageDetailScreen.MessageDetailed.route) {
+//            val result =
+//                navController.previousBackStackEntry!!.savedStateHandle.get<MessageBox>("RoomInfo")
+//
+//            if (result != null) {
+//                MessageDetailScreen(navController = navController, roomInfo = result)
+//            }
+//        }
+        composable(route = MessageDetailScreen.MessageDetailed.route){
+            MessageDetailScreen(navController = navController)
 
-            if (result != null) {
-                MessageDetailScreen(navController = navController, roomInfo = RoomInfo())
-            }
         }
     }
 }

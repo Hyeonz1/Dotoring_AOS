@@ -1,11 +1,9 @@
 package com.example.dotoring.ui.message.messageDetail
 
-import android.graphics.Paint.Align
-import android.text.Layout
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,7 +18,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
@@ -28,8 +25,6 @@ import androidx.compose.material.BackdropValue
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -43,11 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Bottom
-import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.BottomEnd
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -56,8 +47,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.VerticalAlignmentLine
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -70,23 +59,22 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dotoring.R
+import com.example.dotoring.ui.message.messageBox.MessageBox
 
-import com.example.dotoring.ui.message.messageBox.MessageBoxViewModel
-import com.example.dotoring.ui.message.messageBox.MessageListItem
-import com.example.dotoring.ui.message.util.RoomInfo
-import com.example.dotoring.ui.register.first.RegisterFirstViewModel
 import com.example.dotoring.ui.theme.DotoringTheme
 import com.example.dotoring.ui.theme.Gray
 import com.example.dotoring.ui.theme.Green
 import com.example.dotoring.ui.theme.Navy
 import kotlinx.coroutines.launch
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MessageDetailScreen( roomInfo: RoomInfo,messageDetailViewModel: MessageDetailViewModel = viewModel(), navController: NavHostController) {
-    messageDetailViewModel.renderMessageDetailScreen(navController, roomInfo)
+fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewModel(), navController: NavHostController) {
+//    val roomPk = roomInfo.roomPK
+//    Log.d("메시지", " 메시지 실행" + roomPk)
+    messageDetailViewModel.renderMessageDetailScreen(navController)
+//    Log.d("메시지", " 메시지?? 실행" + roomPk)
     var message by remember { mutableStateOf("") }
     val messageDetailUiState by messageDetailViewModel.uiState.collectAsState()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
@@ -219,7 +207,7 @@ fun MessageDetailScreen( roomInfo: RoomInfo,messageDetailViewModel: MessageDetai
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun MessageField(navController: NavHostController,value:String, onValueChange:(String)->Unit, textField: String, messageDetailViewModel: MessageDetailViewModel = viewModel()) {
+fun MessageField( navController: NavHostController,value:String, onValueChange:(String)->Unit, textField: String, messageDetailViewModel: MessageDetailViewModel = viewModel()) {
 
     val messageDetailUiState by messageDetailViewModel.uiState.collectAsState()
     Column(modifier = Modifier
@@ -250,7 +238,9 @@ fun MessageField(navController: NavHostController,value:String, onValueChange:(S
             .height(40.dp)
             .align(End)
             , shape = RoundedCornerShape(30.dp),
-            onClick = { messageDetailViewModel.sendMessage(navController)  }) {
+            onClick = {
+                messageDetailViewModel.sendMessage(navController)
+            }) {
             Image(
                 painter = painterResource(R.drawable.send_active),
                 contentDescription = null,
@@ -362,11 +352,11 @@ fun MentoChatBox(messageDetailViewModel: MessageDetailViewModel = viewModel(), m
 
 
 
-@Preview(showSystemUi = true)
-@Composable
-fun MessageDetailPreview() {
-    DotoringTheme {
-        MessageDetailScreen(navController = rememberNavController(), roomInfo = RoomInfo())
-    }
-}
+//@Preview(showSystemUi = true)
+//@Composable
+//fun MessageDetailPreview() {
+//    DotoringTheme {
+//        MessageDetailScreen(navController = rememberNavController(), roomPk = MessageBox())
+//    }
+//}
 
