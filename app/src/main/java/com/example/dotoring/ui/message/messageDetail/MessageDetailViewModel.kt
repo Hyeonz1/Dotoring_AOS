@@ -88,8 +88,13 @@ class MessageDetailViewModel: ViewModel() {
             Log.d("메세지", "ㅌ통신성공??:")
 
             if (jsonObjectSuccess) {
+
                 val responseJsonObject = jo.getJSONObject("response")
                 val chatList = responseJsonObject.optJSONArray("content")
+
+                val jsonObjectArray = jo.getJSONObject("response")
+                val messageDetail = jsonObjectArray.optJSONArray("content")
+
 //                val getContentObject = jsonObjectArray.getJSONObject(1)
 //                val jsonContentArray = getContentObject.getJSONArray("content")
 
@@ -121,6 +126,7 @@ class MessageDetailViewModel: ViewModel() {
                 }
             }
         }
+
 
 
         override fun onFailure(call: Call<CommonResponse>, t: Throwable) {

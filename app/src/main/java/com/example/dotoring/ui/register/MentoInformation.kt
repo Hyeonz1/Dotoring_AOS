@@ -1,8 +1,8 @@
 package com.example.dotoring.ui.register
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.io.File
 
 @Parcelize
 class MentoInformation(
@@ -10,8 +10,8 @@ class MentoInformation(
     val careerLevel: Int = 1,
     val job: String="",
     val major: String="",
-    val employmentCertification: File?=null,
-    val graduateCertification: File? = null,
+    val employmentCertification: Uri? = null,
+    val graduateCertification: Uri? = null,
     val nickname: String = "",
     val introduction: String = "",
     val loginId: String = "",

@@ -1,8 +1,8 @@
 package com.example.dotoring.dto.register
 
-import java.io.File
+import okhttp3.MultipartBody
 
 data class FinalSignUpRequest(
-    val certifications: List<File?>,
+    val certifications: List<MultipartBody.Part?>,
     val mentoSignupRequestDTO: MentoSignupRequestDTO
 )

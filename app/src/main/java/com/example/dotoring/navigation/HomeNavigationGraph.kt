@@ -9,14 +9,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.dotoring.BottomNavScreen
 import com.example.dotoring.ui.Calender.CalenderScreen
+import com.example.dotoring.ui.detail.MenteeDetail
 import com.example.dotoring.ui.detail.MenteeDetailed
 import com.example.dotoring.ui.home.MainScreen
 import com.example.dotoring.ui.message.messageBox.MessageBox
 import com.example.dotoring.ui.message.messageBox.MessageBoxScreen
 import com.example.dotoring.ui.message.messageDetail.MessageDetailScreen
 import com.example.dotoring.ui.mypage.MyPageScreen
-import com.example.dotoring.ui.register.MentoInformation
-import com.example.dotoring.ui.register.fourth.FourthRegisterScreen
 
 @Composable
 fun HomeNavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -53,7 +52,12 @@ fun NavGraphBuilder.mentiDetailNavGraph(navController: NavHostController) {
         startDestination = MentiDetailScreen.MentiDetailed.route
     ) {
         composable(route = MentiDetailScreen.MentiDetailed.route) {
-            MenteeDetailed(navController = navController)
+            val result =
+                navController.previousBackStackEntry?.savedStateHandle?.get<MenteeDetail>("menteeDetail")
+
+            if(result != null) {
+                MenteeDetailed(navController = navController, menteeDetail = result)
+            }
         }
     }
 }
@@ -63,16 +67,17 @@ fun NavGraphBuilder.messageDetailNavGraph(navController: NavHostController) {
         route = Graph.MESSAGE_DETAILS,
         startDestination = MessageDetailScreen.MessageDetailed.route
     ) {
-//        composable(route = MessageDetailScreen.MessageDetailed.route) {
-//            val result =
-//                navController.previousBackStackEntry!!.savedStateHandle.get<MessageBox>("RoomInfo")
-//
-//            if (result != null) {
-//                MessageDetailScreen(navController = navController, roomInfo = result)
-//            }
-//        }
-        composable(route = MessageDetailScreen.MessageDetailed.route){
-            MessageDetailScreen(navController = navController)
+        composable(route = MessageDetailScreen.MessageDetailed.route) {
+            val result =
+                navController.previousBackStackEntry!!.savedStateHandle.get<MessageBox>("RoomInfo")
+
+            if (result != null) {
+                val roomInfo=result.roomPK
+                MessageDetailScreen(navController = navController, roomInfo = roomInfo)
+            }
+        }
+//        composable(route = MessageDetailScreen.MessageDetailed.route){
+//            MessageDetailScreen(navController = navController)
 
         }
     }

@@ -70,7 +70,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MessageDetailScreen(messageDetailViewModel: MessageDetailViewModel = viewModel(), navController: NavHostController) {
+fun MessageDetailScreen(roomInfo: Long,roomessageDetailViewModel: MessageDetailViewModel = viewModel(), navController: NavHostController) {
 //    val roomPk = roomInfo.roomPK
 //    Log.d("메시지", " 메시지 실행" + roomPk)
     messageDetailViewModel.renderMessageDetailScreen(navController)

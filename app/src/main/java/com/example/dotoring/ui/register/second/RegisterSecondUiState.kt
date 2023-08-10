@@ -1,10 +1,10 @@
 package com.example.dotoring.ui.register.second
 
-import java.io.File
+import android.net.Uri
 
 data class RegisterSecondUiState(
-    val employmentCertification: File? = null,
+    val employmentCertification: Uri? = null,
     val employmentFileUploaded: Boolean = false,
-    val graduationCertification: File? = null,
+    val graduationCertification: Uri? = null,
     val graduationFileUploaded: Boolean = false
 )

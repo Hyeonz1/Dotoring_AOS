@@ -2,9 +2,6 @@ package com.example.dotoring.ui.detail
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.dotoring.dto.CommonResponse
-import com.example.dotoring.network.DotoringAPI
-import com.example.dotoring.ui.home.data.DataSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,12 +15,16 @@ class MentiDetailedViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(MentiDetailedUiState())
     val uiState: StateFlow<MentiDetailedUiState> = _uiState.asStateFlow()
 
-    fun loadMentiInfo(profileImage: Int?, nickname: String?, job: String?, major: String?, introduction: String?) {
+    fun loadMentiInfo(menteeDetail: MenteeDetail) {
         Log.d("업데이트", "loadMentiInfo 실행")
         _uiState.update { currentState ->
-            currentState.copy( profileImage = profileImage, nickname= nickname, job = job, major = major, introduction = introduction)
+            currentState.copy(profileImage = menteeDetail.profileImage,
+            nickname = menteeDetail.nickname,
+            job = menteeDetail.job,
+            major = menteeDetail.major,
+            introduction = menteeDetail.introduction,
+            mentoring = menteeDetail.mentoring)
         }
-        Log.d("업데이트", "넣은 값: ${nickname} uiState: ${uiState.value.nickname}")
 
     }
    /* fun loadMenteeInfo() {
